@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Details</title>
+    <style>
+        /* Стили для контейнера видеоплеера */
+        .video-container {
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Movie Details</h1>
+
+<div th:if="${movie}">
+    <h2 th:text="${movie.title}"></h2>
+    <p th:text="${movie.description}"></p>
+    <p><strong>Release Year:</strong> <span th:text="${movie.release_year}"></span></p>
+    <p><strong>Director:</strong> <span th:text="${movie.director}"></span></p>
+    <p><strong>Genre:</strong> <span th:text="${movie.genre}"></span></p>
+    <p><strong>Actors:</strong> <span th:text="${movie.actors}"></span></p>
+    <p><strong>Duration:</strong> <span th:text="${movie.duration}"></span></p>
+    <p><strong>Rating:</strong> <span th:text="${movie.rating}"></span></p>
+</div>
+
+<a href="/" name="WATCH">WATCH</a>
+<a th:href="@{/movies/watch/{id}(id=${movie.id})}" name="WATCH">Watch Movie</a>
+</body>
+</html>
