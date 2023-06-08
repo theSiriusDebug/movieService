@@ -5,10 +5,9 @@ import com.example.MovieService.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -44,6 +43,19 @@ public class MovieController {
         } else {
             // Handle case when movie is not found
             return "error"; // or redirect to an error page, display a message, etc.
+        }
+    }
+
+    @GetMapping("/search")
+    public String searchMovie(@RequestParam("title") String title, Model model) {
+        List<Movie> movies = movieRepository.findByTitleStartingWithIgnoreCase(title);
+        if (!movies.isEmpty()) {
+            model.addAttribute("movies", movies);
+            return "search-results"; // Название нового HTML-шаблона
+        } else {
+            // Handle case when no movies are found
+            // You can add an error message or perform other actions
+            return "no-results"; // Название HTML-шаблона для случая без результатов
         }
     }
 }
