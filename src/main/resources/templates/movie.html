@@ -72,7 +72,7 @@
         <p><strong>Actors:</strong> <span th:text="${movie.actors}"></span></p>
         <p><strong>Duration:</strong> <span th:text="${movie.duration}"></span></p>
         <p><strong>Rating:</strong> <span th:text="${movie.rating}"></span></p>
-
+        
         <a th:href="@{/movies/watch/{id}(id=${movie.id})}" class="watch-button">Watch Movie</a>
     </div>
 </div>

@@ -2,6 +2,7 @@ package com.example.MovieService.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
@@ -25,6 +26,9 @@ public class Movie {
     private String coverImage;
     @Column(name = "video")
     private String video;
+    @Transient
+    private MultipartFile coverImageFile;
+
 
     public Movie(long id, String title, String description, String releaseYear  , String director, String genre, String actors, String duration, double rating, String coverImage, String video) {
         this.id = id;
