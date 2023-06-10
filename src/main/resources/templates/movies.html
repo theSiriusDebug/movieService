@@ -4,71 +4,66 @@
   <meta charset="UTF-8">
   <title>Movies</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!--  <style>-->
-<!--        /* Global styles */-->
-<!--        body {-->
-<!--            background-color: #1c1c1c;-->
-<!--            color: #ffffff;-->
-<!--            font-family: Arial, sans-serif;-->
-<!--        }-->
+  <style>
+    body {
+      background-color: #1a1a1a;
+      color: #ffffff;
+    }
 
-<!--        /* Container styles */-->
-<!--        .container {-->
-<!--            max-width: 800px;-->
-<!--            margin: 0 auto;-->
-<!--            padding: 20px;-->
-<!--        }-->
+    .movie-card {
+      background-color: #2a2a2a;
+      margin-bottom: 20px;
+    }
 
-<!--        /* Search form styles */-->
-<!--        .search-form {-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
+    .movie-card .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
 
-<!--        /* Movie card styles */-->
-<!--        .movie-card {-->
-<!--            margin-bottom: 20px;-->
-<!--            background-color: #252525;-->
-<!--            border-radius: 8px;-->
-<!--        }-->
+    .search-form .form-control {
+      background-color: #2a2a2a;
+      color: #ffffff;
+      border-color: #3d3d3d;
+    }
 
-<!--        .movie-card .card-img-top {-->
-<!--            height: 300px;-->
+    .card-title {
+      color: #ff3b3b; /* Измените цвет текста здесь */
+    }
 
-<!--            object-fit: cover;-->
-<!--            border-radius: 8px 8px 0 0;-->
-<!--        }-->
+    .btn-primary {
+      background-color: #ff3b3b;
+      border-color: #ff3b3b;
+    }
 
-<!--        .movie-card .card-body {-->
-<!--            padding: 10px;-->
-<!--        }-->
-
-<!--        .movie-card .card-title {-->
-<!--            color: #ffffff;-->
-<!--            font-size: 18px;-->
-<!--            margin-bottom: 0;-->
-<!--        }-->
-<!--    </style>-->
+    .btn-primary:hover {
+      background-color: #e60000;
+      border-color: #e60000;
+    }
+  </style>
 </head>
 <body>
+</br>
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 d-flex justify-content-between align-items-center">
       <h2>Search Movies</h2>
       <form th:action="@{/movies/search}" method="GET" class="search-form">
-        <div class="form-group">
-          <label for="searchInput">Search Movie by Title:</label>
-          <input type="text" class="form-control" id="searchInput" name="title" required>
+        <div class="form-inline">
+          <div class="form-group mr-2">
+            <input type="text" class="form-control" id="searchInput" name="title" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
       </form>
     </div>
   </div>
 
+  <a href="/movies/create" class="btn btn-primary">Create Movie</a>
   <div class="row">
-    <div th:each="movie : ${movies}" class="col-md-4">
+    <div th:each="movie : ${movies}" class="col-md-3">
       <div class="card movie-card">
         <a th:href="@{/movies/{id}(id=${movie.id})}">
-          <img class="card-img-top" th:src="${movie.coverImage}" alt="Movie Cover">
+          <img class="card-img-top" th:src="@{/{filename}(filename=${movie.coverImage})}" alt="Movie Cover">
           <div class="card-body">
             <h5 class="card-title" th:text="${movie.title}"></h5>
           </div>
@@ -85,7 +80,6 @@
   </div>
 
 </div>
-<a href="/movies/create" class="btn btn-primary">Create Movie</a>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

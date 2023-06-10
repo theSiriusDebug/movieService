@@ -4,77 +4,72 @@
     <meta charset="UTF-8">
     <title>Movie Details</title>
     <style>
-        /* Global styles */
         body {
-            background-color: #1c1c1c;
-            color: #ffffff;
+            background-color: #222;
+            color: #fff;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Container styles */
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            display: flex;
+            align-items: center;
             padding: 20px;
         }
 
-        /* Movie details styles */
-        .movie-details {
-            background-color: #2b2b2b;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+        .description {
+            flex: 1;
+            margin-right: 50px;
         }
 
-        .movie-details h2 {
-            font-size: 24px;
-            margin-top: 0;
+        h1, h2 {
+            color: #fff;
         }
 
-        .movie-details p {
+        p {
             margin-bottom: 10px;
         }
 
-        .movie-details strong {
-            color: #9FEFCF;
+        .cover-image {
+            max-width: 600px;
+            max-height: 600px;
         }
 
-        /* Watch button styles */
         .watch-button {
             display: inline-block;
-            background-color: #6B76DF;
-            color: #ffffff;
-            padding: 12px 24px;
-            border-radius: 4px;
+            padding: 10px 20px;
+            background-color: #ff4646;
+            color: #fff;
             text-decoration: none;
-            margin-right: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            transition: background-color 0.3s ease;
+            border-radius: 4px;
+            transition: background-color 0.3s;
         }
 
         .watch-button:hover {
-            background-color: #FF725C;
+            background-color: #d12f2f;
         }
-
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Movie Details</h1>
-
-    <div class="movie-details" th:if="${movie}">
-        <h2 th:text="${movie.title}"></h2>
-        <p th:text="${movie.description}"></p>
-        <p><strong>Release Year:</strong> <span th:text="${movie.release_year}"></span></p>
-        <p><strong>Director:</strong> <span th:text="${movie.director}"></span></p>
-        <p><strong>Genre:</strong> <span th:text="${movie.genre}"></span></p>
-        <p><strong>Actors:</strong> <span th:text="${movie.actors}"></span></p>
-        <p><strong>Duration:</strong> <span th:text="${movie.duration}"></span></p>
-        <p><strong>Rating:</strong> <span th:text="${movie.rating}"></span></p>
-        
-        <a th:href="@{/movies/watch/{id}(id=${movie.id})}" class="watch-button">Watch Movie</a>
+    <div class="description">
+        <h1>Movie Details</h1>
+        <div th:if="${movie}">
+            <h2 th:text="${movie.title}"></h2>
+            <p><strong>Release Year:</strong> <span th:text="${movie.release_year}"></span></p>
+            <p><strong>Director:</strong> <span th:text="${movie.director}"></span></p>
+            <p><strong>Genre:</strong> <span th:text="${movie.genre}"></span></p>
+            <p><strong>Actors:</strong> <span th:text="${movie.actors}"></span></p>
+            <p><strong>Duration:</strong> <span th:text="${movie.duration}"></span></p>
+            <p><strong>Rating:</strong> <span th:text="${movie.rating}"></span></p>
+            <p><strong>Description:</strong></p>
+            <p th:text="${movie.description}"></p>
+            <br>
+            <a th:href="@{/movies/watch/{id}(id=${movie.id})}" class="watch-button">Watch Movie</a>
+        </div>
     </div>
+    <img class="cover-image" th:src="@{/{filename}(filename=${movie.coverImage})}" alt="Movie Cover">
 </div>
 </body>
 </html>
