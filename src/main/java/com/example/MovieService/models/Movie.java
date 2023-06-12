@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "movies")
@@ -28,7 +29,8 @@ public class Movie {
     private String video;
     @Transient
     private MultipartFile coverImageFile;
-
+    @OneToMany(mappedBy = "movie")
+    private List<Review> reviews;
 
     public Movie(long id, String title, String description, String releaseYear  , String director, String genre, String actors, String duration, double rating, String coverImage, String video) {
         this.id = id;
