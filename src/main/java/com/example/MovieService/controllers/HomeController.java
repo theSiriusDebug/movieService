@@ -1,19 +1,22 @@
 package com.example.MovieService.controllers;
 
+import com.example.MovieService.repositories.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class HomeController {
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/")
     public String homePage() {
-        return "homePage"; // Возвращает имя шаблона домашней страницы (например, home.html)
+        return "homePage";
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "login";
     }
 }

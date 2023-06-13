@@ -1,18 +1,11 @@
 package com.example.MovieService.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,4 +35,52 @@ public class User {
         this.roles = roles;
     }
     public User(){}
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 }
