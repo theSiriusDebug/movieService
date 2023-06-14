@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="mt-4">Search Results</h1>
+
+    <ul class="movie-list">
+        <li th:each="movie : ${movies}" class="movie-list-item">
+            <img th:src="@{/{filename}(filename=${movie.coverImage})}" alt="Movie Cover" width="160" height="80">
+            <a th:href="@{/movies/{id}(id=${movie.id})}" th:text="${movie.title}"></a>
+        </li>
+    </ul>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
