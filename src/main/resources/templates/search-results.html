@@ -4,6 +4,38 @@
     <meta charset="UTF-8">
     <title>Search Results</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding-top: 70px;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .mt-4 {
+            color: #ffffff;
+        }
+
+        .movie-list-item {
+            margin-bottom: 20px;
+        }
+
+        .movie-list-item img {
+            margin-right: 10px;
+        }
+
+        .movie-list-item a {
+            color: #ff3b3b;
+        }
+
+        .movie-list-item a:hover {
+            color: #e60000;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -11,7 +43,6 @@
 
     <ul class="movie-list">
         <li th:each="movie : ${movies}" class="movie-list-item">
-            <img th:src="@{/{filename}(filename=${movie.coverImage})}" alt="Movie Cover" width="160" height="80">
             <a th:href="@{/movies/{id}(id=${movie.id})}" th:text="${movie.title}"></a>
         </li>
     </ul>

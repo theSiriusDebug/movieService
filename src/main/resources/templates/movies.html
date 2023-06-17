@@ -5,14 +5,33 @@
   <title>Movies</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
-    body {
-      background-color: #1a1a1a;
-      color: #ffffff;
-    }
+        body {
+            background-color: #1c1c1c;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #333333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
 
     .movie-card {
-      background-color: #2a2a2a;
+      background-color: #333333;
       margin-bottom: 20px;
+        border: none; /* Убираем обводку */
+
     }
 
     .movie-card .card-img-top {
@@ -61,9 +80,9 @@
   <div th:if="${#request.userPrincipal != null}">
     <!-- Показать кнопку профиля для аутентифицированного пользователя -->
     <a href="/profile" class="btn btn-primary">Profile</a>
-
     <!-- Показать кнопку "Create Movie" только для пользователей с ролью "ADMIN" -->
     <div sec:authorize="hasAuthority('ADMIN')">
+      </br>
       <a href="/movies/create" class="btn btn-primary">Create Movie</a>
     </div>
   </div>
@@ -73,6 +92,8 @@
     <a href="/registration" class="btn btn-primary">Register</a>
     <a href="/login" class="btn btn-primary">Login</a>
   </div>
+
+  </br>
 
   <div class="row">
     <div th:each="movie : ${movies}" class="col-md-3">

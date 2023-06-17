@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>HomePage</title>
@@ -31,11 +31,30 @@
             margin: 0 auto;
             padding: 20px;
         }
+
+        .link-button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            text-align: center;
+            background-color: #ff3b3b;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .link-button:hover {
+            background-color: #e60000;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1><a href="/movies">Movies</a></h1>
+    <a href="/movies" class="link-button">View Movies</a>
+    <a href="/movies/create" class="link-button">Add Movie</a>
 </div>
 </body>
 </html>

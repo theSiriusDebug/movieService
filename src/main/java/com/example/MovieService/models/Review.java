@@ -25,6 +25,8 @@ public class Review {
         this.movie = movie;
     }
 
+    public Review(){}
+
     public long getId() {
         return id;
     }
