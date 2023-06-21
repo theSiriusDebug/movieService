@@ -30,10 +30,12 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private List<Review> reviews;
 
-    public Movie(String title, String description, String releaseYear  , String director, String genre, String actors, String duration, double rating, String coverImage, String video) {
+    private String trailer;
+
+    public Movie(String title, String description, String release_year, String director, String genre, String actors, String duration, double rating, String coverImage, String video) {
         this.title = title;
         this.description = description;
-        this.release_year = releaseYear;
+        this.release_year = release_year;
         this.director = director;
         this.genre = genre;
         this.actors = actors;
@@ -146,5 +148,13 @@ public class Movie {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public String getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
     }
 }

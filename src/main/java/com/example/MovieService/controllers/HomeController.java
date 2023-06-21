@@ -3,6 +3,7 @@ package com.example.MovieService.controllers;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.repositories.UserRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,8 @@ public class HomeController {
     @Autowired
     private UserRepository userRepository;
 
+    private static final Logger logger = Logger.getLogger(HomeController.class);
+
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -31,6 +34,8 @@ public class HomeController {
 
     @GetMapping("/login")
     public String login() {
+        logger.info("Rendering login page");
+
         return "login";
     }
 

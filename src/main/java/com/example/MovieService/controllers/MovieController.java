@@ -6,7 +6,9 @@ import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.repositories.UserRepository;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,27 +35,38 @@ public class MovieController {
     @Autowired
     private UserRepository userRepository;
 
+    private static final Logger logger = Logger.getLogger(MovieController.class);
+
     @GetMapping
-    public String getAll(Model model){
-        model.addAttribute("movies", movieRepository.findAll());
+    public String getAll(@RequestParam(required = false) String sortType, Model model) {
+        if ("by date".equals(sortType)) {
+            model.addAttribute("movies", movieRepository.findAll(Sort.by(Sort.Direction.ASC, "title")));
+        } else if ("by alphabet".equals(sortType)) {
+            model.addAttribute("movies", movieRepository.findAll(Sort.by(Sort.Direction.ASC, "title")));
+        } else if ("rating".equals(sortType)) {
+            model.addAttribute("movies", movieRepository.findAll(Sort.by(Sort.Direction.DESC, "rating")));
+        } else {
+            model.addAttribute("movies", movieRepository.findAll());
+        }
         return "movies";
     }
 
+
     @GetMapping("/{id}")
     public String getMovieDetails(@PathVariable("id") Long id, Model model) {
+        logger.info(String.format("Getting movie details for id: %s", id));
+
         Optional<Movie> movie = movieRepository.findById(id);
         if (movie.isPresent()) {
             model.addAttribute("movie", movie.get());
-
-            // Получение списка комментариев для данного фильма
             List<Review> comments = reviewRepository.findByMovie(movie.get());
             for (Review comment : comments) {
-                User user = comment.getUser(); // Получить связанного пользователя
-                comment.setUser(user); // Установить пользователя в комментарий
+                User user = comment.getUser();
+                comment.setUser(user);
             }
             model.addAttribute("comments", comments);
         } else {
-            // Обработка случая, когда фильм не найден
+            logger.warn(String.format("Movie not found for id: %s", id));
             return "error";
         }
         return "movie";
@@ -61,29 +74,56 @@ public class MovieController {
 
     @GetMapping("/watch/{id}")
     public String watchMovie(@PathVariable long id, Model model) {
+        logger.info(String.format("Watching movie with id: %s", id));
+
         Movie movie = movieRepository.findById(id);
         if (movie != null) {
             String videoUrl = "/" + movie.getVideo();
             model.addAttribute("film", videoUrl);
             return "test";
         } else {
+            logger.warn(String.format("Movie not found for id: %s", id));
+
             return "error";
         }
     }
 
+    @GetMapping("/watch/trailer/{id}")
+    public String watchTrailer(@PathVariable long id, Model model) {
+        logger.info(String.format("Watching trailer with id: %s", id));
+
+        Movie movie = movieRepository.findById(id);
+        if (movie != null) {
+            String videoUrl = "/" + movie.getTrailer();
+            model.addAttribute("trailer", videoUrl);
+            return "trailer";
+        } else {
+            logger.warn(String.format("Movie not found for id: %s", id));
+
+            return "error";
+        }
+    }
+
+
     @GetMapping("/search")
     public String searchMovie(@RequestParam("title") String title, Model model) {
+        logger.info(String.format("Searching for movies with title: %s", title));
+
         List<Movie> movies = movieRepository.findByTitleStartingWithIgnoreCase(title);
         if (!movies.isEmpty()) {
             model.addAttribute("movies", movies);
             return "search-results"; // Название нового HTML-шаблона
         } else {
+            logger.info(String.format("No movies found with title: %s", title));
+
             return "no-results";
         }
     }
 
     @GetMapping("/create")
     public String showCreateForm(Model model) {
+        logger.info("Showing create form");
+
         model.addAttribute("movie", new Movie());
         return "create-movie";
     }
@@ -91,16 +131,15 @@ public class MovieController {
     @PostMapping("/create")
     public String createMovie(@ModelAttribute("movie") Movie movie,
                               @RequestParam("coverImageFile") MultipartFile coverImageFile,
-                              @RequestParam("videoFile") MultipartFile videoFile) {
+                              @RequestParam("videoFile") MultipartFile videoFile,
+                              @RequestParam("trailerFile") MultipartFile trailerFile) {
         if (!coverImageFile.isEmpty()) {
             try {
-                // Генерация уникального имени файла изображения обложки
+                logger.info(String.format("Creating movie: %s", movie.getTitle()));
                 String uniqueCoverImageFilename = UUID.randomUUID().toString() + "-" + coverImageFile.getOriginalFilename();
 
-                // Полный путь сохранения файла изображения обложки
                 String coverImageFilePath = "src/main/resources/static/" + uniqueCoverImageFilename;
 
-                // Сохранение файла изображения обложки на сервере
                 Path coverImagePath = Paths.get(coverImageFilePath);
                 Files.write(coverImagePath, coverImageFile.getBytes());
 
@@ -112,6 +151,7 @@ public class MovieController {
 
         if (!videoFile.isEmpty()) {
             try {
+                logger.info(String.format("Video file, by title: %s is empty", movie.getTitle()));
                 String uniqueVideoFilename = UUID.randomUUID().toString() + "-" + videoFile.getOriginalFilename();
 
                 String videoFilePath = "src/main/resources/static/" + uniqueVideoFilename;
@@ -120,6 +160,22 @@ public class MovieController {
                 Files.write(videoPath, videoFile.getBytes());
 
                 movie.setVideo(uniqueVideoFilename);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (!trailerFile.isEmpty()) {
+            try {
+                logger.info(String.format("Trailer file, by title: %s is empty", movie.getTitle()));
+                String uniqueVideoFilename = UUID.randomUUID().toString() + "-" + videoFile.getOriginalFilename();
+
+                String videoFilePath = "src/main/resources/static/" + uniqueVideoFilename;
+
+                Path videoPath = Paths.get(videoFilePath);
+                Files.write(videoPath, videoFile.getBytes());
+
+                movie.setTrailer(uniqueVideoFilename);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -136,21 +192,21 @@ public class MovieController {
     public String createReview(@PathVariable("id") Long movieId,
                                @RequestParam("reviewText") String reviewText,
                                Principal principal) {
+        logger.info(String.format("Creating review: %s for movie: %s", reviewText, movieRepository.findById(movieId)));
+
         if (principal == null){
+            logger.info("Error creating review");
             return "error";
         }
         String username = principal.getName();
         Optional<User> user = userRepository.findByUsername(username);
-        // Создание нового отзыва
         Review review = new Review();
         review.setMovie(movieRepository.findById(movieId).orElse(null));
         review.setUser(user.get());
         review.setReview(reviewText);
 
-        // Сохранение отзыва в базу данных
         reviewRepository.save(review);
 
-        // Редирект на страницу деталей фильма
         return "redirect:/movies/" + movieId;
     }
 }

@@ -51,7 +51,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/**",
                         "/static/**"
                 ).permitAll()
-                .antMatchers(HttpMethod.GET, "/movies/create").hasAuthority("ADMIN") // Allow only users with ROLE_ADMIN authority to access "/movies/create" using GET method
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
