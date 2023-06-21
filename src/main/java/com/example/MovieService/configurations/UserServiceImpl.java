@@ -1,6 +1,7 @@
 package com.example.MovieService.configurations;
 
 import com.example.MovieService.models.Role;
+
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.repositories.RoleRepository;
