@@ -64,7 +64,7 @@ public class HomeController {
 
 
     @GetMapping("/profile")
-    public String profile(){
-        return "profile";
+    public UserRegistrationDto profile(){
+        return new UserRegistrationDto();
     }
 }
