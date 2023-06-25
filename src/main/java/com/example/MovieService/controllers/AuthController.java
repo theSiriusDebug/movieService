@@ -60,10 +60,5 @@ public class AuthController {
             return "error";
         }
     }
-
-    @GetMapping("/users")
-    private List<User> users(){
-        return userRepository.findAll();
-    }
 }
 
