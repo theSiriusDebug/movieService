@@ -5,19 +5,16 @@ import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.repositories.UserRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Controller;
 import java.util.Optional;
-
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class HomeController {
     @Autowired
     private UserRepository userRepository;
@@ -32,40 +29,28 @@ public class HomeController {
         return "homePage";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        logger.info("Rendering login page");
-
-        return "login";
-    }
-
     @GetMapping("/edit")
-    public String editUser(Model model) {
+    public ResponseEntity<?> editUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
         Optional<User> existingUserOptional = userRepository.findByUsername(currentUserName);
         if (existingUserOptional.isEmpty()) {
-            // Обработка ошибки, если пользователь не найден
-            return "error";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
         User existingUser = existingUserOptional.get();
 
-        model.addAttribute("existingUser", existingUser);
-        model.addAttribute("userRegistrationDto", new UserRegistrationDto());
-
-        return "edit";
+        return ResponseEntity.ok(existingUser);
     }
 
     @PostMapping("/edit")
-    public String updateUser(@ModelAttribute("userRegistrationDto") UserRegistrationDto userRegistrationDto, Model model){
+    public ResponseEntity<?> updateUser(@RequestBody UserRegistrationDto userRegistrationDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
         Optional<User> existingUserOptional = userRepository.findByUsername(currentUserName);
         if (existingUserOptional.isEmpty()) {
-            // Обработка ошибки, если пользователь не найден
-            return "error";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
         User existingUser = existingUserOptional.get();
 
@@ -74,10 +59,9 @@ public class HomeController {
 
         userRepository.save(existingUser);
 
-        model.addAttribute("existingUser", existingUser);
-
-        return "redirect:/home";
+        return ResponseEntity.ok(existingUser);
     }
+
 
     @GetMapping("/profile")
     public String profile(){
