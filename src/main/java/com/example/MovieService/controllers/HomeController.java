@@ -3,6 +3,8 @@ package com.example.MovieService.controllers;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.repositories.UserRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@Api(tags = "Home API")
 public class HomeController {
     @Autowired
     private UserRepository userRepository;
@@ -24,11 +27,13 @@ public class HomeController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @ApiOperation("Get home page")
     @GetMapping("/")
     public String homePage() {
         return "homePage";
     }
 
+    @ApiOperation("Edit user")
     @GetMapping("/edit")
     public ResponseEntity<?> editUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -43,6 +48,7 @@ public class HomeController {
         return ResponseEntity.ok(existingUser);
     }
 
+    @ApiOperation("Update user")
     @PostMapping("/edit")
     public ResponseEntity<?> updateUser(@RequestBody UserRegistrationDto userRegistrationDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -63,6 +69,7 @@ public class HomeController {
     }
 
 
+    @ApiOperation("Get user profile")
     @GetMapping("/profile")
     public UserRegistrationDto profile(){
         return new UserRegistrationDto();

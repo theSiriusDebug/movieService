@@ -1,7 +1,9 @@
 package com.example.MovieService.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +12,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "movies")
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,18 +39,4 @@ public class Movie {
     private List<Review> reviews;
 
     private String trailer;
-
-    public Movie(String title, String description, String release_year, String director, String genre, String actors, String duration, double rating, String coverImage, String video) {
-        this.title = title;
-        this.description = description;
-        this.release_year = release_year;
-        this.director = director;
-        this.genre = genre;
-        this.actors = actors;
-        this.duration = duration;
-        this.rating = rating;
-        this.coverImage = coverImage;
-        this.video = video;
-    }
-    public Movie(){}
 }
