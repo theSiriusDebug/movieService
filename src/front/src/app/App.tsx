@@ -3,6 +3,9 @@ import { classNames } from 'shared/lib/classNames/classNames';
 import { useTheme } from 'app/providers/ThemeProvider';
 import { AppRouter } from 'app/providers/router';
 import { Navbar } from 'widgets/Navbar';
+import { UpperLayout } from 'widgets/UpperLayout';
+
+
 
 const App: FC = () => {
   const { theme } = useTheme();
@@ -11,6 +14,7 @@ const App: FC = () => {
     <div className={classNames('app', {}, [theme])}>
       <Suspense fallback="">
         <Navbar />
+        <UpperLayout/>
         <div className="content-page">
           <AppRouter />
         </div>
