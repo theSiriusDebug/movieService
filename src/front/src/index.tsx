@@ -8,14 +8,15 @@ import 'app/styles/index.scss';
 import { ErrorBoundary } from './app/providers/ErrorBoundary';
 
 render(
-  <BrowserRouter>
-    <StoreProvider>
-      <ErrorBoundary>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </ErrorBoundary>
-    </StoreProvider>{' '}
-  </BrowserRouter>,
-  document.getElementById('root')
+    <BrowserRouter>
+        <StoreProvider>
+            <ErrorBoundary>
+                <ThemeProvider>
+                    <App />
+                </ThemeProvider>
+            </ErrorBoundary>
+        </StoreProvider>
+        {' '}
+    </BrowserRouter>,
+    document.getElementById('root'),
 );
