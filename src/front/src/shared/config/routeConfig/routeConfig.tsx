@@ -11,18 +11,18 @@ export enum AppRoutes {
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
-  [AppRoutes.MAIN]: '/',
-  // последний
-  [AppRoutes.NOT_FOUND]: '*',
+    [AppRoutes.MAIN]: '/',
+    // последний
+    [AppRoutes.NOT_FOUND]: '*',
 };
 
 export const routeConfig: Record<AppRoutes, AppRouterProps> = {
-  [AppRoutes.MAIN]: {
-    path: RoutePath.main,
-    element: <MainPage />,
-  },
-  [AppRoutes.NOT_FOUND]: {
-    path: RoutePath.not_found,
-    element: <NotFoundPage />,
-  },
+    [AppRoutes.MAIN]: {
+        path: RoutePath.main,
+        element: <MainPage />,
+    },
+    [AppRoutes.NOT_FOUND]: {
+        path: RoutePath.not_found,
+        element: <NotFoundPage />,
+    },
 };

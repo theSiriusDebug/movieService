@@ -4,34 +4,34 @@ import { Text, TextTheme } from 'shared/ui/Text/Text';
 import { Theme } from 'app/providers/ThemeProvider';
 
 export default {
-  title: 'shared/Text',
-  component: Text,
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+    title: 'shared/Text',
+    component: Text,
+    argTypes: {
+        backgroundColor: { control: 'color' },
+    },
 } as ComponentMeta<typeof Text>;
 
 const Template: ComponentStory<typeof Text> = (args) => <Text {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  title: 'Title lorem ipsun',
-  text: 'Description Description Description Description',
+    title: 'Title lorem ipsun',
+    text: 'Description Description Description Description',
 };
 
 export const Error = Template.bind({});
 Error.args = {
-  title: 'Title lorem ipsun',
-  text: 'Description Description Description Description',
-  theme: TextTheme.ERROR,
+    title: 'Title lorem ipsun',
+    text: 'Description Description Description Description',
+    theme: TextTheme.ERROR,
 };
 
 export const onlyTitle = Template.bind({});
 onlyTitle.args = {
-  title: 'Title lorem ipsun',
+    title: 'Title lorem ipsun',
 };
 
 export const onlyText = Template.bind({});
 onlyText.args = {
-  text: 'Description Description Description Description',
+    text: 'Description Description Description Description',
 };
