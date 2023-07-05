@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Optional;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,8 +39,9 @@ public class HomeController {
         String currentUserName = authentication.getName();
 
         Optional<User> existingUserOptional = userRepository.findByUsername(currentUserName);
-        if (existingUserOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        if (existingUserOptional.isPresent()) {
+            User existingUser = existingUserOptional.get();
+            return ResponseEntity.ok(existingUser);
         }
         User existingUser = existingUserOptional.get();
 
@@ -55,7 +55,7 @@ public class HomeController {
         String currentUserName = authentication.getName();
 
         Optional<User> existingUserOptional = userRepository.findByUsername(currentUserName);
-        if (existingUserOptional.isEmpty()) {
+        if (!existingUserOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
         User existingUser = existingUserOptional.get();
