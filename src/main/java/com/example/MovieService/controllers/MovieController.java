@@ -6,6 +6,8 @@ import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.repositories.UserRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -17,6 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/movies")
+@Api(tags = "Movie API")
 public class MovieController {
     @Autowired
     private MovieRepository movieRepository;
@@ -29,6 +32,7 @@ public class MovieController {
 
     private static final Logger logger = Logger.getLogger(MovieController.class);
 
+    @ApiOperation("Get all movies")
     @GetMapping
     public ResponseEntity<List<Movie>> getAll(@RequestParam(required = false) String sortType) {
         List<Movie> movies;
@@ -44,6 +48,7 @@ public class MovieController {
         return ResponseEntity.ok(movies);
     }
 
+    @ApiOperation("Get movie details by movie ID")
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieDetails(@PathVariable("id") Long id) {
         Optional<Movie> movie = movieRepository.findById(id);
@@ -61,6 +66,7 @@ public class MovieController {
         }
     }
 
+    @ApiOperation("Watch movie by movie ID")
     @GetMapping("/watch/{id}")
     public ResponseEntity<String> watchMovie(@PathVariable long id) {
         Movie movie = movieRepository.findById(id);
@@ -73,6 +79,7 @@ public class MovieController {
         }
     }
 
+    @ApiOperation("Watch movie by trailer ID")
     @GetMapping("/watch/trailer/{id}")
     public ResponseEntity<String> watchTrailer(@PathVariable long id) {
         Movie movie = movieRepository.findById(id);
@@ -85,6 +92,7 @@ public class MovieController {
         }
     }
 
+    @ApiOperation("Search movies by title")
     @GetMapping("/search")
     public ResponseEntity<List<Movie>> searchMovie(@RequestParam("title") String title) {
         List<Movie> movies = movieRepository.findByTitleStartingWithIgnoreCase(title);
@@ -96,12 +104,14 @@ public class MovieController {
         }
     }
 
+    @ApiOperation("Create a movie")
     @PostMapping("/create")
     public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
         movieRepository.save(movie);
         return ResponseEntity.ok(movie);
     }
 
+    @ApiOperation("Create a review for a movie")
     @PostMapping("/{id}/reviews/create")
     public ResponseEntity<Review> createReview(@PathVariable("id") Long movieId, @RequestParam("reviewText") String reviewText, Principal principal) {
         if (principal == null) {

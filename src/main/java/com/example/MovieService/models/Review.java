@@ -1,13 +1,18 @@
 package com.example.MovieService.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "reviews")
-@Getter @Setter
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,13 +26,4 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
-
-    public Review(long id, String review, User user, Movie movie) {
-        this.id = id;
-        this.review = review;
-        this.user = user;
-        this.movie = movie;
-    }
-
-    public Review(){}
 }

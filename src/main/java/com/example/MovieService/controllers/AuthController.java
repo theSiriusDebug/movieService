@@ -1,9 +1,10 @@
 package com.example.MovieService.controllers;
 
-import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.repositories.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
-
 @Controller
+@Api(tags = "Authentication API")
 public class AuthController {
 
     private final UserService userService;
@@ -33,6 +33,7 @@ public class AuthController {
         return new UserRegistrationDto();
     }
 
+    @ApiOperation("Render login page")
     @GetMapping("/login")
     public String login() {
         logger.info("Rendering login page");
@@ -40,6 +41,7 @@ public class AuthController {
         return "login";
     }
 
+    @ApiOperation("Show registration form")
     @GetMapping("/registration")
     public String showRegistrationForm() {
         logger.info("Showing registration form");
@@ -47,6 +49,7 @@ public class AuthController {
         return "registration";
     }
 
+    @ApiOperation("Register a user account")
     @PostMapping("/registration")
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto userRegistrationDto) {
         try {
