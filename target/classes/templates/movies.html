@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Movies</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+        body {
+
+            background-color: #1c1c1c;
+
+            color: #000000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 20px;
+
+            background-color: #333333;
+
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #FFFFFF;
+        }
+
+    .movie-card {
+
+      background-color: #333333;
+
+      margin-bottom: 20px;
+      border: none;
+      transition: transform 0.3s ease-in-out;
+    }
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  background-image: linear-gradient(#333333, #2d2d2d);
+}
+
+    .movie-card .card-img-top {
+      height: 240px;
+      object-fit: cover;
+    }
+
+    .search-form .form-control {
+
+      background-color: #ffffff;
+
+      color: #000000;
+      border: none;
+    }
+
+    .search-form .form-control:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+
+    .card-title {
+      color: #ffffff;
+    }
+
+    .btn-primary {
+      background-color: #FFFFFF;
+      border-color: #FFFFFF;
+              color: #000000;
+
+    }
+
+    .btn-primary:hover {
+      background-color: #FFFFFF;
+      border-color: #FFFFFF;
+                    color: #000000;
+    }
+    a {
+      text-decoration: none;
+      color: #c3cfd6;
+    }
+
+a:hover {
+  color: #c3cfd6;
+}
+
+
+
+
+  </style>
+</head>
+<body>
+
+</br>
+
+<div th:if="${#request.userPrincipal != null}" class="text-right">
+  <a href="/profile" class="btn btn-primary">Profile</a>
+</div>
+
+<div th:unless="${#request.userPrincipal != null}">
+  <a href="/registration" class="btn btn-primary">Register</a>
+  <a href="/login" class="btn btn-primary">Login</a>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 d-flex justify-content-between align-items-center">
+      <div><form action="/movies" method="get">
+        <input type="submit" name="sortType" value="by date">
+        <input type="submit" name="sortType" value="by alphabet">
+        <input type="submit" name="sortType" value="by rating ">
+      </form>
+      </div>
+      <form th:action="@{/movies/search}" method="GET" class="search-form">
+        <div class="form-inline">
+          <div class="form-group mr-2">
+            <input type="text" class="form-control" id="searchInput" name="title" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  </br>
+
+  <div class="row">
+    <div th:each="movie : ${movies}" class="col-md-2">
+      <div class="card movie-card">
+        <a th:href="@{/movies/{id}(id=${movie.id})}">
+          <h11 class="card-genre" th:text="${movie.release_year}"></h11>
+
+          <img class="card-img-top" th:src="@{/{filename}(filename=${movie.coverImage})}" alt="Movie Cover">
+          <div class="card-body">
+            <h9 class="card-title" th:text="${movie.title}"></h9>
+            <h11 class="card-genre" th:text="${movie.genre}"></h11>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
