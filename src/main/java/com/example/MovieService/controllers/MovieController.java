@@ -20,6 +20,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/movies")
 @Api(tags = "Movie API")
+@CrossOrigin
 public class MovieController {
     @Autowired
     private MovieRepository movieRepository;
