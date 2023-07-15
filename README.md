@@ -25,3 +25,4 @@ Available Endpoints:
 We have strived to create user-friendly and intuitive endpoints, allowing you to easily manage your movies and access the information you need.
 
 If you have any questions or feedback, feel free to reach out to us. We are always ready to assist you and improve our MovieService.
+
