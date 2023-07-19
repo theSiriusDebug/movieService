@@ -1,10 +1,13 @@
 com\example\MovieService\repositories\MovieRepository.class
+com\example\MovieService\controllers\UserProfileController.class
 com\example\MovieService\repositories\RoleRepository.class
 com\example\MovieService\controllers\MovieController.class
 com\example\MovieService\models\Role.class
 com\example\MovieService\models\Movie.class
 com\example\MovieService\models\Review.class
+com\example\MovieService\controllers\MovieStreamingController.class
 com\example\MovieService\controllers\AuthController.class
+com\example\MovieService\controllers\MovieCreationController.class
 com\example\MovieService\controllers\HomeController.class
 com\example\MovieService\MovieServiceApplication.class
 com\example\MovieService\repositories\UserService.class
@@ -13,5 +16,9 @@ com\example\MovieService\models\dtos\UserDto.class
 com\example\MovieService\models\dtos\UserRegistrationDto.class
 com\example\MovieService\models\User.class
 com\example\MovieService\configurations\SecurityConfiguration.class
+com\example\MovieService\controllers\ReviewCreationController.class
+com\example\MovieService\controllers\SearchMovie.class
 com\example\MovieService\repositories\UserRepository.class
+com\example\MovieService\controllers\UserController.class
 com\example\MovieService\configurations\UserServiceImpl.class
+com\example\MovieService\controllers\RegistrationController.class
