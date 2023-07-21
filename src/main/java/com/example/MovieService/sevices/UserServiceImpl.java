@@ -1,4 +1,4 @@
-package com.example.MovieService.configurations;
+package com.example.MovieService.sevices;
 
 import com.example.MovieService.models.Role;
 
@@ -6,7 +6,7 @@ import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.repositories.RoleRepository;
 import com.example.MovieService.repositories.UserRepository;
-import com.example.MovieService.repositories.UserService;
+import com.example.MovieService.sevices.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid username or password."));
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),

@@ -2,7 +2,7 @@ package com.example.MovieService.controllers;
 
 import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.repositories.UserRepository;
-import com.example.MovieService.repositories.UserService;
+import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +34,3 @@ public class AuthController {
         return "login";
     }
 }
-

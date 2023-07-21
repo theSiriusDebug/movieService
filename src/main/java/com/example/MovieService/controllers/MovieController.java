@@ -19,15 +19,18 @@ import java.util.Optional;
 @Api(tags = "MovieController API")
 @CrossOrigin
 public class MovieController {
-    @Autowired
     private MovieRepository movieRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
-    private ReviewRepository reviewRepository;
+    public MovieController(MovieRepository movieRepository, ReviewRepository reviewRepository) {
+        this.movieRepository = movieRepository;
+        this.reviewRepository = reviewRepository;
+    }
 
     @ApiOperation("Get all movies")
     @GetMapping
-    public ResponseEntity<List<Movie>> getAll(@RequestParam(required = false) String sortType) {
+    public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required = false) String sortType) {
         List<Movie> movies;
         if ("by date".equals(sortType)) {
             movies = movieRepository.findAll(Sort.by(Sort.Direction.ASC, "title"));
