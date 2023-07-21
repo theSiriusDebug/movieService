@@ -10,15 +10,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(tags = "Home API")
 public class HomeController {
-    @Autowired
     private UserRepository userRepository;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    public HomeController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @ApiOperation("Get home page")
     @GetMapping("/")
-    public String homePage() {
+    public String getHomePage() {
         return "homePage";
     }
 }

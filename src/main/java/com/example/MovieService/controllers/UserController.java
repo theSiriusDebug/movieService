@@ -21,10 +21,14 @@ import java.util.Optional;
 @RestController
 @Api(tags = "UserController")
 public class UserController {
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @ApiOperation("Edit user")
     @GetMapping("/edit")
