@@ -5,12 +5,12 @@ import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @Api(tags = "RegistrationController API")
 public class RegistrationController {
     private final UserService userService;
@@ -31,9 +31,11 @@ public class RegistrationController {
     public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto userRegistrationDto) {
         try {
             userService.save(userRegistrationDto, userRegistrationDto.getRole());
+
             return "redirect:/login";
         } catch (Exception e) {
             return "error";
         }
     }
+
 }
