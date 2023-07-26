@@ -1,41 +1,61 @@
 package com.example.MovieService.controllers;
 
+import com.example.MovieService.jwt.JwtTokenProvider;
+import com.example.MovieService.models.Role;
+import com.example.MovieService.models.User;
+import com.example.MovieService.models.dtos.AuthDto;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
-import com.example.MovieService.sevices.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.example.MovieService.repositories.RoleRepository;
+import com.example.MovieService.sevices.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+// AuthController.java
 @RestController
-@Api(tags = "RegistrationController API")
+@RequestMapping("/api/auth")
 public class RegistrationController {
-    private final UserService userService;
+    private AuthenticationManager authenticationManager;
+    private UserServiceImpl userService;
+    private JwtTokenProvider jwtTokenProvider;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public RegistrationController(UserService userService) {
+    public RegistrationController(AuthenticationManager authenticationManager, UserServiceImpl userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
+        this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.roleRepository = roleRepository;
     }
 
-    @ApiOperation("Show registration form")
-    @GetMapping("/registration")
-    public String showRegistrationForm() {
-        return "registration";
-    }
-
-    @ApiOperation("Register a user account")
-    @PostMapping("/registration")
-    public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto userRegistrationDto) {
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody UserRegistrationDto authRequest) {
         try {
-            userService.save(userRegistrationDto, userRegistrationDto.getRole());
-
-            return "redirect:/login";
+            String username = authRequest.getUsername();
+            String login = authRequest.getLogin();
+            if (userService.findByUsername(username) == null) {
+                User newUser = new User();
+                newUser.setUsername(username);
+                newUser.setLogin(login);
+                newUser.setPassword(new BCryptPasswordEncoder().encode(authRequest.getPassword()));
+                Role role = roleRepository.findByName("ROLE_USER");
+                newUser.setRoles(Collections.singleton(role));
+                userService.save(newUser);
+                return ResponseEntity.ok("Registration successful");
+            } else {
+                return ResponseEntity.badRequest().body("Username already exists");
+            }
         } catch (Exception e) {
-            return "error";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 }
