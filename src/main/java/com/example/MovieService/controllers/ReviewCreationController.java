@@ -36,10 +36,10 @@ public class ReviewCreationController {
             return ResponseEntity.badRequest().build();
         }
         String username = principal.getName();
-        Optional<User> user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         Review review = new Review();
         review.setMovie(movieRepository.findById(movieId).orElse(null));
-        review.setUser(user.orElse(null));
+        review.setUser(user);
         review.setReview(reviewText);
         reviewRepository.save(review);
         return ResponseEntity.ok(review);

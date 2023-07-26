@@ -36,13 +36,12 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
-        Optional<User> existingUserOptional = userRepository.findByUsername(currentUserName);
-        if (existingUserOptional.isPresent()) {
-            User existingUser = existingUserOptional.get();
+        User existingUser = userRepository.findByUsername(currentUserName);
+        if (existingUser != null) {
             return ResponseEntity.ok(existingUser);
         }
-        User existingUser = existingUserOptional.get();
-        return ResponseEntity.ok(existingUser);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
 
     @ApiOperation("Update user")
@@ -51,18 +50,16 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
-        Optional<User> existingUserOptional = userRepository.findByUsername(currentUserName);
-        if (!existingUserOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        User existingUser = userRepository.findByUsername(currentUserName);
+        if (existingUser != null) {
+            existingUser.setLogin(userRegistrationDto.getLogin());
+            existingUser.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
+
+            userRepository.save(existingUser);
+
+            return ResponseEntity.ok(existingUser);
         }
-        User existingUser = existingUserOptional.get();
 
-        existingUser.setLogin(userRegistrationDto.getLogin());
-        existingUser.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
-
-        userRepository.save(existingUser);
-
-        return ResponseEntity.ok(existingUser);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
     }
-
 }

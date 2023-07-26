@@ -1,36 +1,55 @@
 package com.example.MovieService.controllers;
 
+import com.example.MovieService.jwt.JwtTokenProvider;
+import com.example.MovieService.models.Role;
+import com.example.MovieService.models.User;
+import com.example.MovieService.models.dtos.AuthDto;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
-import com.example.MovieService.repositories.UserRepository;
-import com.example.MovieService.sevices.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import com.example.MovieService.repositories.RoleRepository;
+import com.example.MovieService.sevices.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
 
-@Controller
-@Api(tags = "Authentication API")
+// AuthController.java
+@RestController
+@RequestMapping("/api/auth")
 public class AuthController {
-    private final UserService userService;
+    private AuthenticationManager authenticationManager;
+    private UserServiceImpl userService;
+    private JwtTokenProvider jwtTokenProvider;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public AuthController(UserService userService) {
+    public AuthController(AuthenticationManager authenticationManager, UserServiceImpl userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
+        this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.roleRepository = roleRepository;
     }
 
-    @Autowired
-    private UserRepository userRepository;
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AuthDto authRequest) {
+        try {
+            String username = authRequest.getUsername();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, authRequest.getPassword()));
+            User user = userService.findByUsername(username);
+            String token = jwtTokenProvider.createToken(username, user.getRoles());
 
-    @ModelAttribute("user")
-    public UserRegistrationDto userRegistrationDto() {
-        return new UserRegistrationDto();
-    }
-
-    @ApiOperation("Render login page")
-    @GetMapping("/login")
-    public String login() {
-        return "login";
+            Map<Object, Object> response = new HashMap<>();
+            response.put("username", username);
+            response.put("token", token);
+            System.out.println("good!");
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException e) {
+            System.out.println("bad!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }
