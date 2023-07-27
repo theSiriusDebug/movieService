@@ -1,7 +1,6 @@
 package com.example.MovieService.sevices;
 
 import com.example.MovieService.models.Role;
-
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("Пользователь не найден");
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), getAuthorities((Set<Role>) user.getRoles()));

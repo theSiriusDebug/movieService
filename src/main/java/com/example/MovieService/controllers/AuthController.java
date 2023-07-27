@@ -1,12 +1,10 @@
 package com.example.MovieService.controllers;
 
 import com.example.MovieService.jwt.JwtTokenProvider;
-import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.AuthDto;
-import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.repositories.RoleRepository;
-import com.example.MovieService.sevices.UserServiceImpl;
+import com.example.MovieService.sevices.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.Map;
 
-// AuthController.java
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
     private AuthenticationManager authenticationManager;
-    private UserServiceImpl userService;
+    private UserService userService;
     private JwtTokenProvider jwtTokenProvider;
     private RoleRepository roleRepository;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserServiceImpl userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
