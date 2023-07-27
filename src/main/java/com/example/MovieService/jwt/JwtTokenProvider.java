@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     private final String secretKey = "QjSLlIwwQaCdw2jLZy/x9N5me0LyUUd9GsNFcGLCDlU=";
+
     private final UserService userService;
 
     @Autowired
