@@ -1,15 +1,16 @@
 package com.example.MovieService.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Getter @Setter
+@Data
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,17 +26,17 @@ public class User {
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
     private List<Review> reviews;
 
-    public User(String username, String login, String password, Collection<Role> roles) {
+    public User(String username, String login, String password, Set<Role> roles) {
         super();
         this.username = username;
         this.login = login;
         this.password = password;
         this.roles = roles;
     }
-    public User(){}
 }
