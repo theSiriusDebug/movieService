@@ -6,6 +6,7 @@ import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.repositories.RoleRepository;
 import com.example.MovieService.sevices.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,8 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/auth")
+@Api(tags = "RegistrationController API")
+@CrossOrigin
 public class RegistrationController {
     private AuthenticationManager authenticationManager;
     private UserService userService;

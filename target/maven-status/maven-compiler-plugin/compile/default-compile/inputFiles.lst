@@ -4,7 +4,6 @@ C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\co
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\controllers\SearchMovieController.java
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\controllers\RegistrationController.java
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\models\dtos\UserDto.java
-C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\sevices\UserServiceImpl.java
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\controllers\HomeController.java
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\models\Review.java
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\controllers\AuthController.java
@@ -25,6 +24,5 @@ C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\co
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\configurations\WebSecurityConfig.java
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\controllers\UserProfileController.java
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\models\dtos\UserRegistrationDto.java
-C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\configurations\AppConfig.java
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\controllers\UserController.java
 C:\Users\thero\OneDrive\Desktop\work\java\projects\MovieService\src\main\java\com\example\MovieService\MovieServiceApplication.java

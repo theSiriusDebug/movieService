@@ -5,6 +5,9 @@ import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.AuthDto;
 import com.example.MovieService.repositories.RoleRepository;
 import com.example.MovieService.sevices.UserService;
+import io.swagger.annotations.Api;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +20,15 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@Api(tags = "Login Controller")
+@CrossOrigin
 public class AuthController {
     private AuthenticationManager authenticationManager;
     private UserService userService;
     private JwtTokenProvider jwtTokenProvider;
     private RoleRepository roleRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
@@ -42,10 +49,11 @@ public class AuthController {
             Map<Object, Object> response = new HashMap<>();
             response.put("username", username);
             response.put("token", token);
-            System.out.println("good!");
+
+            logger.info("Login successful for user: {}", username);
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
-            System.out.println("bad!");
+            logger.error("Login failed for user: {}", authRequest.getUsername(), e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
