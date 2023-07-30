@@ -1,66 +1,60 @@
 package com.example.MovieService.controllers;
 
-import com.example.MovieService.models.dtos.UserRegistrationDto;
-import com.example.MovieService.repositories.UserRepository;
-import com.example.MovieService.repositories.UserService;
+import com.example.MovieService.jwt.JwtTokenProvider;
+import com.example.MovieService.models.User;
+import com.example.MovieService.models.dtos.AuthDto;
+import com.example.MovieService.repositories.RoleRepository;
+import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
+import java.util.Map;
 
-@Controller
-@Api(tags = "Authentication API")
+@RestController
+@RequestMapping("/api/auth")
+@Api(tags = "Login Controller")
+@CrossOrigin
 public class AuthController {
+    private AuthenticationManager authenticationManager;
+    private UserService userService;
+    private JwtTokenProvider jwtTokenProvider;
+    private RoleRepository roleRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    private final UserService userService;
-
-    private static final Logger logger = Logger.getLogger(AuthController.class);
 
     @Autowired
-    public AuthController(UserService userService) {
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
+        this.authenticationManager = authenticationManager;
         this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.roleRepository = roleRepository;
     }
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @ModelAttribute("user")
-    public UserRegistrationDto userRegistrationDto() {
-        return new UserRegistrationDto();
-    }
-
-    @ApiOperation("Render login page")
-    @GetMapping("/login")
-    public String login() {
-        logger.info("Rendering login page");
-
-        return "login";
-    }
-
-    @ApiOperation("Show registration form")
-    @GetMapping("/registration")
-    public String showRegistrationForm() {
-        logger.info("Showing registration form");
-
-        return "registration";
-    }
-
-    @ApiOperation("Register a user account")
-    @PostMapping("/registration")
-    public String registerUserAccount(@ModelAttribute("user") UserRegistrationDto userRegistrationDto) {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AuthDto authRequest) {
         try {
-            logger.info(String.format("Registering user: %s", userRegistrationDto.getUsername()));
+            String username = authRequest.getUsername();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, authRequest.getPassword()));
+            User user = userService.findByUsername(username);
+            String token = jwtTokenProvider.createToken(username, user.getRoles());
 
-            userService.save(userRegistrationDto, userRegistrationDto.getRole());
+            Map<Object, Object> response = new HashMap<>();
+            response.put("username", username);
+            response.put("token", token);
 
-            return "redirect:/login";
-        } catch (Exception e) {
-            logger.error(String.format("Error registering user: %s", userRegistrationDto.getUsername(), e));
-            return "error";
+            logger.info("Login successful for user: {}", username);
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException e) {
+            logger.error("Login failed for user: {}", authRequest.getUsername(), e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
 }
