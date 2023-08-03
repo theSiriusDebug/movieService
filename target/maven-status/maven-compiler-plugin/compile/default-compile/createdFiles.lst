@@ -25,4 +25,5 @@ com\example\MovieService\controllers\ReviewCreationController.class
 com\example\MovieService\repositories\UserRepository.class
 com\example\MovieService\controllers\UserController.class
 com\example\MovieService\controllers\RegistrationController.class
+com\example\MovieService\configurations\CorsConfig.class
 com\example\MovieService\jwt\JwtAuthorizationFilter.class
