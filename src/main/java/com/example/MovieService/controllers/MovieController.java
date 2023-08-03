@@ -33,11 +33,19 @@ public class MovieController {
     public ResponseEntity<List<Movie>> getAllMovies(@RequestParam(required = false) String sortType) {
         List<Movie> movies;
         if ("by date".equals(sortType)) {
+            movies = movieRepository.findAll(Sort.by(Sort.Direction.DESC, "title"));
+        } else if ("by date reverse".equals(sortType)) {
             movies = movieRepository.findAll(Sort.by(Sort.Direction.ASC, "title"));
+
         } else if ("by alphabet".equals(sortType)) {
+            movies = movieRepository.findAll(Sort.by(Sort.Direction.DESC, "title"));
+        } else if ("by alphabet reverse".equals(sortType)) {
             movies = movieRepository.findAll(Sort.by(Sort.Direction.ASC, "title"));
+
         } else if ("rating".equals(sortType)) {
             movies = movieRepository.findAll(Sort.by(Sort.Direction.DESC, "rating"));
+        } else if ("rating reverse".equals(sortType)) {
+            movies = movieRepository.findAll(Sort.by(Sort.Direction.ASC, "rating"));
         } else {
             movies = movieRepository.findAll();
         }
