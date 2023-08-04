@@ -16,7 +16,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String username;
-    private String login;
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -32,10 +31,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Review> reviews;
 
-    public User(String username, String login, String password, Set<Role> roles) {
+    public User(String username, String password, Set<Role> roles) {
         super();
         this.username = username;
-        this.login = login;
+
         this.password = password;
         this.roles = roles;
     }

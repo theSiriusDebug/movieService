@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
 @Api(tags = "UserController")
 public class UserController {
@@ -52,7 +50,6 @@ public class UserController {
 
         User existingUser = userRepository.findByUsername(currentUserName);
         if (existingUser != null) {
-            existingUser.setLogin(userRegistrationDto.getLogin());
             existingUser.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
 
             userRepository.save(existingUser);
