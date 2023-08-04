@@ -37,11 +37,9 @@ public class RegistrationController {
     public ResponseEntity<?> register(@RequestBody UserRegistrationDto authRequest) {
         try {
             String username = authRequest.getUsername();
-            String login = authRequest.getLogin();
             if (userService.findByUsername(username) == null) {
                 User newUser = new User();
                 newUser.setUsername(username);
-                newUser.setLogin(login);
                 newUser.setPassword(new BCryptPasswordEncoder().encode(authRequest.getPassword()));
                 Role role = roleRepository.findByName("ROLE_USER");
                 newUser.setRoles(Collections.singleton(role));

@@ -25,6 +25,8 @@ public class Movie {
     private double rating;
     @Column(name = "cover_image")
     private String coverImage;
+    @Column(name = "horizontal_image")
+    private String horizontal_image;
     @Column(name = "video")
     private String video;
     @Transient
