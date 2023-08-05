@@ -21,7 +21,7 @@ public class JwtTokenProvider {
         return validityInMilliseconds;
     }
 
-    private final long validityInMilliseconds = 30000;
+    private final long validityInMilliseconds = 360000;
     private final long refreshTokenValidityInMilliseconds = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
 
     private final UserService userService;
