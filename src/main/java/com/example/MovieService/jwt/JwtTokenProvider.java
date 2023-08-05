@@ -17,6 +17,13 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
     private final String secretKey = "QjSLlIwwQaCdw2jLZy/x9N5me0LyUUd9GsNFcGLCDlU=";
 
+    public long getValidityInMilliseconds() {
+        return validityInMilliseconds;
+    }
+
+    private final long validityInMilliseconds = 30000;
+    private final long refreshTokenValidityInMilliseconds = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
+
     private final UserService userService;
 
     @Autowired
@@ -24,14 +31,27 @@ public class JwtTokenProvider {
         this.userService = userService;
     }
 
-    private final long validityInMilliseconds = 3600000;
-
     public String createToken(String username, Collection<Role> roles) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getName())).collect(Collectors.toList()));
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
+    public String createRefreshToken(String username, Collection<Role> roles) {
+        Claims claims = Jwts.claims().setSubject(username);
+        claims.put("auth", roles.stream().map(s -> new SimpleGrantedAuthority(s.getName())).collect(Collectors.toList()));
+
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + refreshTokenValidityInMilliseconds);
 
         return Jwts.builder()
                 .setClaims(claims)
