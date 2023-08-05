@@ -1,9 +1,11 @@
 C:\Java\Project\MovieService\src\main\java\com\example\MovieService\controllers\HomeController.java
 C:\Java\Project\MovieService\src\main\java\com\example\MovieService\controllers\MovieController.java
 C:\Java\Project\MovieService\src\main\java\com\example\MovieService\models\dtos\AuthDto.java
+C:\Java\Project\MovieService\src\main\java\com\example\MovieService\models\Actor.java
 C:\Java\Project\MovieService\src\main\java\com\example\MovieService\jwt\JwtTokenProvider.java
 C:\Java\Project\MovieService\src\main\java\com\example\MovieService\configurations\CorsConfig.java
 C:\Java\Project\MovieService\src\main\java\com\example\MovieService\models\User.java
+C:\Java\Project\MovieService\src\main\java\com\example\MovieService\repositories\ActorRepository.java
 C:\Java\Project\MovieService\src\main\java\com\example\MovieService\repositories\ReviewRepository.java
 C:\Java\Project\MovieService\src\main\java\com\example\MovieService\sevices\UserService.java
 C:\Java\Project\MovieService\src\main\java\com\example\MovieService\TEST\Controller.java

@@ -14,6 +14,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -34,17 +36,23 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody UserRegistrationDto authRequest) {
+    public ResponseEntity<?> register(@RequestBody UserRegistrationDto registrationDto) {
         try {
-            String username = authRequest.getUsername();
+            String username = registrationDto.getUsername();
             if (userService.findByUsername(username) == null) {
                 User newUser = new User();
                 newUser.setUsername(username);
-                newUser.setPassword(new BCryptPasswordEncoder().encode(authRequest.getPassword()));
+                newUser.setPassword(new BCryptPasswordEncoder().encode(registrationDto.getPassword()));
                 Role role = roleRepository.findByName("ROLE_USER");
                 newUser.setRoles(Collections.singleton(role));
                 userService.save(newUser);
-                return ResponseEntity.ok("Registration successful");
+
+                String token = jwtTokenProvider.createToken(newUser.getUsername(), newUser.getRoles());
+
+                Map<Object, Object> response = new HashMap<>();
+                response.put("username", newUser.getUsername());
+                response.put("token", token);
+                return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.badRequest().body("Username already exists");
             }

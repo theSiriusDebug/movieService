@@ -15,6 +15,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,8 +31,9 @@ public class AuthController {
     private UserService userService;
     private JwtTokenProvider jwtTokenProvider;
     private RoleRepository roleRepository;
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private final long refreshTokenValidityInMilliseconds = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
@@ -39,19 +44,28 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthDto authRequest) {
+    public ResponseEntity<?> login(@RequestBody AuthDto authRequest, HttpServletResponse response) {
         try {
             String username = authRequest.getUsername();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, authRequest.getPassword()));
             User user = userService.findByUsername(username);
             String token = jwtTokenProvider.createToken(username, user.getRoles());
 
-            Map<Object, Object> response = new HashMap<>();
-            response.put("username", username);
-            response.put("token", token);
+            String refreshToken = jwtTokenProvider.createRefreshToken(username, user.getRoles());
+
+            // Save the refresh token in a cookie
+            Cookie cookie = new Cookie("refreshToken", refreshToken);
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge((int) (refreshTokenValidityInMilliseconds / 1000));
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
+            Map<Object, Object> responseBody = new HashMap<>();
+            responseBody.put("username", username);
+            responseBody.put("token", token);
 
             logger.info("Login successful for user: {}", username);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(responseBody);
         } catch (AuthenticationException e) {
             logger.error("Login failed for user: {}", authRequest.getUsername(), e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
