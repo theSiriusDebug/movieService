@@ -20,7 +20,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @Api(tags = "RegistrationController API")
-@CrossOrigin(origins = "http://localhost:3000") // Add the front-end URL here
 public class RegistrationController {
     private AuthenticationManager authenticationManager;
     private UserService userService;

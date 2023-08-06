@@ -16,7 +16,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/movies")
 @Api(tags = "ReviewCreationController API")
-@CrossOrigin
 public class ReviewCreationController {
     private MovieRepository movieRepository;
     private ReviewRepository reviewRepository;
