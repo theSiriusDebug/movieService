@@ -17,7 +17,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +24,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @Api(tags = "Login Controller")
-@CrossOrigin
 public class AuthController {
     private AuthenticationManager authenticationManager;
     private UserService userService;
@@ -53,7 +51,6 @@ public class AuthController {
 
             String refreshToken = jwtTokenProvider.createRefreshToken(username, user.getRoles());
 
-            // Save the refresh token in a cookie
             Cookie cookie = new Cookie("refreshToken", refreshToken);
             cookie.setHttpOnly(true);
             cookie.setMaxAge((int) (refreshTokenValidityInMilliseconds / 1000));

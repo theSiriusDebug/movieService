@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/movies")
 @Api(tags = "MovieCreationController API")
-@CrossOrigin
 public class MovieCreationController {
     @Autowired
     private MovieRepository movieRepository;

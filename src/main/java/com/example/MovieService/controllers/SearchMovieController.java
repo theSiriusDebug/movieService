@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/movies")
 @Api(tags = "SearchMovieController API")
-@CrossOrigin
 public class SearchMovieController {
     private MovieRepository movieRepository;
 
