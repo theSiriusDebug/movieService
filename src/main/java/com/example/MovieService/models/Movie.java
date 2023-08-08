@@ -19,8 +19,13 @@ public class Movie {
     private String description;
     private String release_year;
     private String director;
-    private String genre;
-    private String actors;
+
+    @ManyToMany
+    @JoinTable(name = "movie_genres",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "genres_id"))
+    private List<Genre> genres;
+
     private String duration;
     private double rating;
     @Column(name = "cover_image")
