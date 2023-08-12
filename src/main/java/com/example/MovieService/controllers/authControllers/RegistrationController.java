@@ -23,7 +23,6 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 @Api(tags = "RegistrationController API")
 public class RegistrationController {
-
     private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
     private AuthenticationManager authenticationManager;
     private UserService userService;
