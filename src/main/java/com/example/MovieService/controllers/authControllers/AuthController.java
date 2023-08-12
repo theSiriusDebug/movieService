@@ -25,10 +25,10 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 @Api(tags = "Login Controller")
 public class AuthController {
-    private AuthenticationManager authenticationManager;
-    private UserService userService;
-    private JwtTokenProvider jwtTokenProvider;
-    private RoleRepository roleRepository;
+    private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RoleRepository roleRepository;
     private final long refreshTokenValidityInMilliseconds = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -45,21 +45,15 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody AuthDto authRequest, HttpServletResponse response) {
         try {
             String username = authRequest.getUsername();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, authRequest.getPassword()));
+            authenticateUser(username, authRequest.getPassword());
+
             User user = userService.findByUsername(username);
             String token = jwtTokenProvider.createToken(username, user.getRoles());
 
             String refreshToken = jwtTokenProvider.createRefreshToken(username, user.getRoles());
+            setRefreshTokenCookie(response, refreshToken);
 
-            Cookie cookie = new Cookie("refreshToken", refreshToken);
-            cookie.setHttpOnly(true);
-            cookie.setMaxAge((int) (refreshTokenValidityInMilliseconds / 1000));
-            cookie.setPath("/");
-            response.addCookie(cookie);
-
-            Map<Object, Object> responseBody = new HashMap<>();
-            responseBody.put("username", username);
-            responseBody.put("token", token);
+            Map<Object, Object> responseBody = createResponse(username, token);
 
             logger.info("Login successful for user: {}", username);
             return ResponseEntity.ok(responseBody);
@@ -68,5 +62,23 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-}
 
+    private void authenticateUser(String username, String password) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+    }
+
+    private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge((int) (refreshTokenValidityInMilliseconds / 1000));
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
+
+    private Map<Object, Object> createResponse(String username, String token) {
+        Map<Object, Object> responseBody = new HashMap<>();
+        responseBody.put("username", username);
+        responseBody.put("token", token);
+        return responseBody;
+    }
+}
