@@ -60,6 +60,9 @@ public class AuthController {
         } catch (AuthenticationException e) {
             logger.error("Login failed for user: {}", authRequest.getUsername(), e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception e) {
+            logger.error("An error occurred during login for user: {}", authRequest.getUsername(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
