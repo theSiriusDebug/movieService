@@ -1,6 +1,7 @@
 package com.example.MovieService.controllers.authControllers;
 
 import com.example.MovieService.jwt.JwtTokenProvider;
+import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.AuthDto;
 import com.example.MovieService.repositories.RoleRepository;
@@ -9,17 +10,19 @@ import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,7 +32,8 @@ public class AuthController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final RoleRepository roleRepository;
-    private final long refreshTokenValidityInMilliseconds = 6 * 30 * 24 * 60 * 60 * 1000; // 6 months in milliseconds
+    @Value("${jwt.refreshTokenValidityInMilliseconds}")
+    private long refreshTokenValidityInMilliseconds;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -49,11 +53,12 @@ public class AuthController {
 
             User user = userService.findByUsername(username);
             String token = jwtTokenProvider.createToken(username, user.getRoles());
+            Set<Role>roles = user.getRoles();
 
             String refreshToken = jwtTokenProvider.createRefreshToken(username, user.getRoles());
             setRefreshTokenCookie(response, refreshToken);
 
-            Map<Object, Object> responseBody = createResponse(username, token);
+            Map<Object, Object> responseBody = createResponse(username, token, roles);
 
             logger.info("Login successful for user: {}", username);
             return ResponseEntity.ok(responseBody);
@@ -78,10 +83,11 @@ public class AuthController {
         response.addCookie(cookie);
     }
 
-    private Map<Object, Object> createResponse(String username, String token) {
+    private Map<Object, Object> createResponse(String username, String token, Set<Role> roles) {
         Map<Object, Object> responseBody = new HashMap<>();
         responseBody.put("username", username);
         responseBody.put("token", token);
+        responseBody.put("roles", roles);
         return responseBody;
     }
 }
