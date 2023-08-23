@@ -1,4 +1,4 @@
-package com.example.MovieService.controllers.MovieControllers.RoleControllers;
+package com.example.MovieService.controllers.UserControllers.RoleControllers;
 
 import com.example.MovieService.models.Role;
 import com.example.MovieService.repositories.RoleRepository;

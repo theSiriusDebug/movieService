@@ -117,20 +117,18 @@
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
-
-
-
-
-
-
-
 		<!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
 		<dependency>
 			<groupId>com.squareup.okhttp3</groupId>
 			<artifactId>okhttp</artifactId>
 			<version>4.11.0</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.16.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
