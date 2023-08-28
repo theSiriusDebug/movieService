@@ -53,12 +53,14 @@ public class AuthController {
 
             User user = userService.findByUsername(username);
             String token = jwtTokenProvider.createToken(username, user.getRoles());
+            setTokenCookie(response, token);
+
             Set<Role>roles = user.getRoles();
 
             String refreshToken = jwtTokenProvider.createRefreshToken(username, user.getRoles());
             setRefreshTokenCookie(response, refreshToken);
 
-            Map<Object, Object> responseBody = createResponse(username, token, roles);
+            Map<Object, Object> responseBody = createResponse(username, token, refreshToken, roles);
 
             logger.info("Login successful for user: {}", username);
             return ResponseEntity.ok(responseBody);
@@ -75,6 +77,15 @@ public class AuthController {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
 
+    private void setTokenCookie(HttpServletResponse response, String token) {
+        Cookie cookie = new Cookie("accessToken", token);
+        logger.warn(token);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge((int) (refreshTokenValidityInMilliseconds / 1000));
+        cookie.setPath("/");
+        response.addCookie(cookie);
+    }
+
     private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
@@ -83,10 +94,11 @@ public class AuthController {
         response.addCookie(cookie);
     }
 
-    private Map<Object, Object> createResponse(String username, String token, Set<Role> roles) {
+    private Map<Object, Object> createResponse(String username, String token, String refreshToken, Set<Role> roles) {
         Map<Object, Object> responseBody = new HashMap<>();
         responseBody.put("username", username);
-        responseBody.put("token", token);
+        responseBody.put("accessToken", token);
+        responseBody.put("refreshToken", refreshToken);
         responseBody.put("roles", roles);
         return responseBody;
     }
