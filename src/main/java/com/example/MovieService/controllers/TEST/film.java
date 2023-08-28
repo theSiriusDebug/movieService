@@ -22,7 +22,8 @@ public class film {
     private String language;
     private String duration;
     private String country;
-    private String genre;
+    @ElementCollection
+    private List<String> genres = new ArrayList<>();
     private double imdbRating;
     private double kinopoiskRating;
     private String director;
