@@ -62,7 +62,7 @@ public class parser {
                     setCountry(row, movie);
                     break;
                 case "Жанр:":
-                    setGenre(row, movie);
+                    setGenres(row, movie);
                     break;
                 case "Рейтинг:":
                     setRatings(row, movie);

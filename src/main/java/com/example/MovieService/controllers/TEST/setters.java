@@ -61,10 +61,13 @@ public class setters {
         logger.info("Country set: {}", country);
     }
 
-    public static void setGenre(Element row, film movie) {
-        String genre = String.valueOf(row.select(TD_SELECTOR).text());
-        movie.setGenre(genre);
-        logger.info("Genre set: {}", genre);
+    public static void setGenres(Element row, film movie) {
+        String genre = row.select(TD_SELECTOR).text();
+        String[] genreNames = genre.split(" ");
+        for (String genreName : genreNames) {
+            movie.getGenres().add(genreName);
+            logger.info("Genre added: {}", genreNames);
+        }
     }
 
     public static void setRatings(Element row, film movie) {
