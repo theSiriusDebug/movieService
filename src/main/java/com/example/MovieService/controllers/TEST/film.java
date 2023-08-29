@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "f")
+@Table(name = "")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,6 +30,4 @@ public class film {
     private String trailerLink;
     @ElementCollection
     private List<String> actors = new ArrayList<>();
-
-    // Other fields, constructors, getters, setters, and methods
 }
