@@ -1,3 +1,3 @@
 FROM openjdk:20
-ADD /target/MovieService-0.0.1-SNAPSHOT.jar backend.jar
+ADD /out/artifacts/MovieService_jar/MovieService.jar backend.jar
 ENTRYPOINT ["java", "-jar", "backend.jar"]
