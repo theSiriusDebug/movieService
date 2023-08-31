@@ -1,6 +1,6 @@
-package com.example.MovieService.controllers.TEST;
+package com.example.MovieService.controllers.MovieControllers.TEST;
 
-import com.example.MovieService.jwt.JwtAuthenticationFilter;
+import com.example.MovieService.models.Movie;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -25,43 +25,43 @@ public class setters {
     private static final String TD_SELECTOR = "td:nth-child(2)";
     private static final Logger logger = LoggerFactory.getLogger(setters.class);
 
-    public static void setOriginalTitle(Element row, film movie) {
+    public static void setOriginalTitle(Element row, Movie movie) {
         String originalTitle = row.select(TD_SELECTOR).text();
         movie.setOriginalTitle(originalTitle);
         logger.info("Original Title set: {}", originalTitle);
     }
 
-    public static void setYear(Element row, film movie) {
+    public static void setYear(Element row, Movie movie) {
         int year = Integer.parseInt(row.select(TD_SELECTOR).text());
         movie.setYear(year);
         logger.info("Year set: {}", year);
     }
 
-    public static void setQuality(Element row, film movie) {
+    public static void setQuality(Element row, Movie movie) {
         String quality = String.valueOf(row.select(TD_SELECTOR).text());
         movie.setQuality(quality);
         logger.info("Quality set: {}", quality);
     }
 
-    public static void setLanguage(Element row, film movie) {
+    public static void setLanguage(Element row, Movie movie) {
         String language = String.valueOf(row.select(TD_SELECTOR).text());
         movie.setLanguage(language);
         logger.info("Language set: {}", language);
     }
 
-    public static void setDuration(Element row, film movie) {
+    public static void setDuration(Element row, Movie movie) {
         String duration = String.valueOf(row.select(TD_SELECTOR).text());
         movie.setDuration(duration);
         logger.info("Duration set: {}", duration);
     }
 
-    public static void setCountry(Element row, film movie) {
+    public static void setCountry(Element row, Movie movie) {
         String country = String.valueOf(row.select(TD_SELECTOR).text());
         movie.setCountry(country);
         logger.info("Country set: {}", country);
     }
 
-    public static void setGenres(Element row, film movie) {
+    public static void setGenres(Element row, Movie movie) {
         String genre = row.select(TD_SELECTOR).text();
         String[] genreNames = genre.split(" ");
         for (String genreName : genreNames) {
@@ -70,7 +70,7 @@ public class setters {
         }
     }
 
-    public static void setRatings(Element row, film movie) {
+    public static void setRatings(Element row, Movie movie) {
         Elements ratingElements = row.select("span[style*=color]");
         String imdbRating = ratingElements.get(0).text();
         String kinopoiskRating = ratingElements.get(1).text();
@@ -80,13 +80,13 @@ public class setters {
         logger.info("Kinopoisk Rating set: {}", kinopoiskRating);
     }
 
-    public static void setDirector(Element row, film movie) {
+    public static void setDirector(Element row, Movie movie) {
         String director = row.select(TD_SELECTOR).text();
         movie.setDirector(director);
         logger.info("Director set: {}", director);
     }
 
-    public static void setTrailerLink(film movie) {
+    public static void setTrailerLink(Movie movie) {
         try {
             String trailerLink = findTrailer(movie.getOriginalTitle());
             logger.info("Trailer Link set: {}", trailerLink);
@@ -97,7 +97,7 @@ public class setters {
         }
     }
 
-    public static void setActors(Element row, film movie) {
+    public static void setActors(Element row, Movie movie) {
         String actors = row.select(TD_SELECTOR).text();
         String[] actorNames = actors.split(", ");
         for (String actorName : actorNames) {

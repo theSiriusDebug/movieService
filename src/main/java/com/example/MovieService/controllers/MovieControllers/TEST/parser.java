@@ -1,5 +1,7 @@
-package com.example.MovieService.controllers.TEST;
+package com.example.MovieService.controllers.MovieControllers.TEST;
 
+import com.example.MovieService.models.Movie;
+import com.example.MovieService.repositories.MovieRepository;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -10,17 +12,17 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
-import static com.example.MovieService.controllers.TEST.setters.*;
+import static com.example.MovieService.controllers.MovieControllers.TEST.setters.*;
 
 @RestController
 public class parser {
-    private static filmRepository filmRepository;
+    private static MovieRepository movieRepository;
     static OkHttpClient client = new OkHttpClient();
     private static setters setters;
 
     @Autowired
-    public parser(filmRepository filmRepository, setters setters) {
-        parser.filmRepository = filmRepository;
+    public parser(MovieRepository movieRepository, setters setters) {
+        parser.movieRepository = movieRepository;
         parser.setters = setters;
     }
 
@@ -38,7 +40,7 @@ public class parser {
         Document document = Jsoup.parse(html);
         Elements movieRows = document.select("tr");
 
-        film movie = new film();
+        Movie movie = new Movie();
 
         for (Element row : movieRows) {
             String fieldName = row.select("td:nth-child(1)").text();
@@ -78,7 +80,7 @@ public class parser {
         }
         setTrailerLink(movie);
 
-        filmRepository.save(movie);
+        movieRepository.save(movie);
         System.out.println("--------------------------------------------------------------------------------------------");
     }
 }

@@ -1,29 +1,31 @@
-package com.example.MovieService.controllers.TEST;
+package com.example.MovieService.controllers.MovieControllers;
 
+import com.example.MovieService.models.Movie;
+import com.example.MovieService.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
-import static com.example.MovieService.controllers.TEST.parser.parseMovieDetails;
-import static com.example.MovieService.controllers.TEST.parser.run;
+import static com.example.MovieService.controllers.MovieControllers.TEST.parser.parseMovieDetails;
+import static com.example.MovieService.controllers.MovieControllers.TEST.parser.run;
 
 @RestController
 public class MovieParserController {
-    private final filmRepository filmRepository;
+    private final MovieRepository movieRepository;
 
     @Autowired
-    public MovieParserController(com.example.MovieService.controllers.TEST.filmRepository filmRepository) {
-        this.filmRepository = filmRepository;
+    public MovieParserController(MovieRepository movieRepository) {
+        this.movieRepository = movieRepository;
     }
 
     @GetMapping("/findFilms")
-    public List<film> get() {
-        return filmRepository.findAll();
+    public List<Movie> get() {
+        return movieRepository.findAll();
     }
 
     @DeleteMapping("/removeFilms")
     public String del(){
-        filmRepository.deleteAll();
+        movieRepository.deleteAll();
         return "delete successfully!";
     }
     @PostMapping("/parserFilms")

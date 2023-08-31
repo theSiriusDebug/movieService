@@ -1,10 +1,10 @@
 package com.example.MovieService.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,31 +14,22 @@ import java.util.List;
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private String title;
-    private String description;
-    private String release_year;
-    private String director;
-
-    @ManyToMany
-    @JoinTable(name = "movie_genres",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genres_id"))
-    private List<Genre> genres;
-
+    private Long id;
+    private String originalTitle;
+    private int year;
+    private String quality;
+    private String language;
     private String duration;
-    private double rating;
-    @Column(name = "cover_image")
-    private String coverImage;
-    @Column(name = "horizontal_image")
-    private String horizontal_image;
-    @Column(name = "video")
-    private String video;
-    @Transient
-    private MultipartFile coverImageFile;
+    private String country;
+    @ElementCollection
+    private List<String> genres = new ArrayList<>();
+    private double imdbRating;
+    private double kinopoiskRating;
+    private String director;
+    private String trailerLink;
+    @ElementCollection
+    private List<String> actors = new ArrayList<>();
     @JsonIgnore
     @OneToMany(mappedBy = "movie")
     private List<Review> reviews;
-
-    private String trailer;
 }
