@@ -27,7 +27,7 @@ public class setters {
 
     public static void setOriginalTitle(Element row, Movie movie) {
         String originalTitle = row.select(TD_SELECTOR).text();
-        movie.setOriginalTitle(originalTitle);
+        movie.setTitle(originalTitle);
         logger.info("Original Title set: {}", originalTitle);
     }
 
@@ -88,12 +88,12 @@ public class setters {
 
     public static void setTrailerLink(Movie movie) {
         try {
-            String trailerLink = findTrailer(movie.getOriginalTitle());
+            String trailerLink = findTrailer(movie.getTitle());
             logger.info("Trailer Link set: {}", trailerLink);
             movie.setTrailerLink(trailerLink);
         } catch (GeneralSecurityException | IOException e) {
-            logger.error("Failed to set trailer link for movie: {}", movie.getOriginalTitle(), e);
-            throw new RuntimeException("Failed to set trailer link for movie: " + movie.getOriginalTitle(), e);
+            logger.error("Failed to set trailer link for movie: {}", movie.getTitle(), e);
+            throw new RuntimeException("Failed to set trailer link for movie: " + movie.getTitle(), e);
         }
     }
 
