@@ -10,20 +10,21 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import static com.example.MovieService.controllers.MovieControllers.TEST.setters.*;
 
-@RestController
+@Component
 public class parser {
     private static MovieRepository movieRepository;
     static OkHttpClient client = new OkHttpClient();
     private static setters setters;
 
     @Autowired
-    public parser(MovieRepository movieRepository, setters setters) {
+    public parser(MovieRepository movieRepository) {
         parser.movieRepository = movieRepository;
-        parser.setters = setters;
+
     }
 
     public static String run(String url) throws IOException {
@@ -80,7 +81,6 @@ public class parser {
         }
         setTrailerLink(movie);
 
-        movieRepository.save(movie);
         System.out.println("--------------------------------------------------------------------------------------------");
     }
 }

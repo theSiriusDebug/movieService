@@ -91,6 +91,7 @@ public class setters {
             String trailerLink = findTrailer(movie.getTitle());
             logger.info("Trailer Link set: {}", trailerLink);
             movie.setTrailerLink(trailerLink);
+            movie.setMovieLink(trailerLink);
         } catch (GeneralSecurityException | IOException e) {
             logger.error("Failed to set trailer link for movie: {}", movie.getTitle(), e);
             throw new RuntimeException("Failed to set trailer link for movie: " + movie.getTitle(), e);
@@ -121,7 +122,7 @@ public class setters {
         return new YouTube.Builder(httpTransport, JSON_FACTORY, null)
                 .setGoogleClientRequestInitializer(request -> request.setDisableGZipContent(true))
                 .setYouTubeRequestInitializer(new YouTubeRequestInitializer("AIzaSyB1ueY-KvwDKhs6tLqtrULVrZww7SYauIo"))
-                .setApplicationName("movieService") // Установите имя вашего приложения здесь
+                .setApplicationName("movieService")
                 .build();
     }
 

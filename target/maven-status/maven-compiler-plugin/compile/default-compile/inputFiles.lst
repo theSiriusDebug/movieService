@@ -10,8 +10,6 @@
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/models/Role.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/MovieServiceApplication.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/SearchMovieController.java
-/home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/controllers/TMDBControllers/PopularMoviesController.java
-/home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/models/Genre.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/TEST/setters.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/configurations/WebSecurityConfig.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/models/Movie.java
@@ -21,8 +19,6 @@
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/models/dtos/AuthDto.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/jwt/JwtTokenProvider.java
-/home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/controllers/ControllerWithTestMethods.java
-/home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/repositories/GenreRepository.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/jwt/JwtAuthenticationFilter.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/CreateMovieController.java
 /home/siriusm/Downloads/Projects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserProfileController.java

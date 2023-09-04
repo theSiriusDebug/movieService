@@ -23,11 +23,6 @@ public class MovieParserController {
         return movieRepository.findAll();
     }
 
-    @DeleteMapping("/removeFilms")
-    public String del(){
-        movieRepository.deleteAll();
-        return "delete successfully!";
-    }
     @PostMapping("/parserFilms")
     public void ds() {
         long latestPage = 10;

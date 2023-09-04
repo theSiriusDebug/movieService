@@ -1,6 +1,7 @@
 package com.example.MovieService.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "movies")
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class Movie {
     @Id
@@ -27,6 +29,7 @@ public class Movie {
     private double kinopoiskRating;
     private String director;
     private String trailerLink;
+    private String movieLink;
     @ElementCollection
     private List<String> actors = new ArrayList<>();
     @JsonIgnore

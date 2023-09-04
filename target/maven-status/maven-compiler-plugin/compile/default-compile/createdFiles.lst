@@ -11,18 +11,15 @@ com/example/MovieService/controllers/UserControllers/UserProfileController.class
 com/example/MovieService/repositories/RoleRepository.class
 com/example/MovieService/models/dtos/UserRegistrationDto.class
 com/example/MovieService/sevices/UserService.class
-com/example/MovieService/controllers/ControllerWithTestMethods.class
 com/example/MovieService/controllers/MovieControllers/TEST/setters.class
 com/example/MovieService/configurations/WebSecurityConfig.class
 com/example/MovieService/models/Role.class
 com/example/MovieService/models/dtos/AuthDto.class
 com/example/MovieService/controllers/MovieControllers/MovieParserController.class
-com/example/MovieService/repositories/GenreRepository.class
 com/example/MovieService/repositories/ReviewRepository.class
 com/example/MovieService/controllers/MovieControllers/TEST/parser.class
 com/example/MovieService/controllers/MovieControllers/SearchMovieController.class
 com/example/MovieService/jwt/JwtTokenProvider.class
-com/example/MovieService/models/Genre.class
 com/example/MovieService/controllers/UserControllers/UserController.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.class
 com/example/MovieService/jwt/JwtAuthenticationFilter.class
@@ -30,5 +27,6 @@ com/example/MovieService/models/Review.class
 com/example/MovieService/MovieServiceApplication.class
 com/example/MovieService/models/User.class
 com/example/MovieService/repositories/UserRepository.class
+com/example/MovieService/controllers/MovieControllers/StreamMovieController.class
 com/example/MovieService/controllers/UserControllers/RoleControllers/RoleController.class
 com/example/MovieService/models/Movie.class
