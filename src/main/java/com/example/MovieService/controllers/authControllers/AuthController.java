@@ -59,7 +59,7 @@ public class AuthController {
             String refreshToken = jwtTokenProvider.createRefreshToken(username, user.getRoles());
             setRefreshTokenCookie(response, refreshToken);
 
-            Map<Object, Object> responseBody = createResponse(username, token, refreshToken, roles);
+            Map<Object, Object> responseBody = createResponse(username, token, roles);
 
             logger.info("Login successful for user: {}", username);
             return ResponseEntity.ok(responseBody);
@@ -93,11 +93,10 @@ public class AuthController {
         response.addCookie(cookie);
     }
 
-    private Map<Object, Object> createResponse(String username, String token, String refreshToken, Set<Role> roles) {
+    private Map<Object, Object> createResponse(String username, String token, Set<Role> roles) {
         Map<Object, Object> responseBody = new HashMap<>();
         responseBody.put("username", username);
         responseBody.put("accessToken", token);
-        responseBody.put("refreshToken", refreshToken);
         responseBody.put("roles", roles);
         return responseBody;
     }
