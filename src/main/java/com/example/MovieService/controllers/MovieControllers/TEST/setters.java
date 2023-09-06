@@ -9,6 +9,7 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTubeRequestInitializer;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
@@ -146,5 +147,16 @@ public class setters {
             return "https://www.youtube.com/watch?v=" + videoId;
         }
         return "";
+    }
+    public static void setPosterLink(Document document, Movie movie) {
+        // Найдите элемент с постером фильма по его классу и получите значение атрибута "src"
+        Element posterElement = document.select("img.filmscreen").first();
+        if (posterElement != null) {
+            String posterLink = posterElement.attr("src");
+            movie.setPosterLink(posterLink);
+            logger.info("Poster Link set: {}", posterLink);
+        } else {
+            logger.warn("No poster found for the movie.");
+        }
     }
 }

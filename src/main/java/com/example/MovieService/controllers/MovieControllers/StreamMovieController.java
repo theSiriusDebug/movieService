@@ -24,7 +24,7 @@ public class StreamMovieController {
     public ResponseEntity<String> getMovieVideoByMovieId(@PathVariable long movieId) {
         Movie movieById = movieRepository.findById(movieId);
         if (movieById != null) {
-            String videoUrl = movieById.getTrailerLink();
+            String videoUrl = movieById.getMovieLink();
             return ResponseEntity.ok(videoUrl);
         } else {
             return ResponseEntity.notFound().build();

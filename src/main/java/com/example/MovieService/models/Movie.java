@@ -28,6 +28,7 @@ public class Movie {
     private double imdbRating;
     private double kinopoiskRating;
     private String director;
+    private String posterLink;
     private String trailerLink;
     private String movieLink;
     @ElementCollection

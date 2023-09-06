@@ -79,8 +79,10 @@ public class parser {
                 default:
             }
         }
+        setPosterLink(document, movie);
         setTrailerLink(movie);
 
+        movieRepository.save(movie);
         System.out.println("--------------------------------------------------------------------------------------------");
     }
 }
