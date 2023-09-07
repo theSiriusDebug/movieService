@@ -2,44 +2,43 @@ package com.example.MovieService.controllers.MovieControllers;
 
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.repositories.MovieRepository;
+import com.example.MovieService.controllers.MovieControllers.TEST.MovieParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.util.List;
-import static com.example.MovieService.controllers.MovieControllers.TEST.parser.parseMovieDetails;
-import static com.example.MovieService.controllers.MovieControllers.TEST.parser.run;
 
 @RestController
 public class MovieParserController {
     private final MovieRepository movieRepository;
+    private final MovieParser movieParser;
 
     @Autowired
-    public MovieParserController(MovieRepository movieRepository) {
+    public MovieParserController(MovieRepository movieRepository, MovieParser movieParser) {
         this.movieRepository = movieRepository;
+        this.movieParser = movieParser;
     }
 
-    @GetMapping("/findFilms")
-    public List<Movie> get() {
+    @GetMapping("/list")
+    public List<Movie> getAllMovies() {
         return movieRepository.findAll();
     }
 
-    @PostMapping("/parserFilms")
-    public void ds() {
+    @PostMapping("/parse")
+    public void parseMovies() {
         long latestPage = 10;
         long currentPage = 1;
-        boolean switcher = true;
 
-        while (switcher) {
+        while (currentPage <= latestPage) {
             try {
-                String html = run(String.format("https://mw.anwap.tube/films/%d", currentPage));
-                parseMovieDetails(html);
-                System.out.println("Successfully!");
+                String url = String.format("https://m.anwap.love/films/%d", currentPage);
+                String html = movieParser.fetchHtml(url);
+                movieParser.parseMovieDetails(html);
+                System.out.println("Successfully parsed page " + currentPage);
             } catch (IOException e) {
-                System.out.println("Error!");
+                System.out.println("Error parsing page " + currentPage);
                 throw new RuntimeException(e);
-            }
-            if (currentPage == latestPage) {
-                break;
             }
             currentPage++;
         }

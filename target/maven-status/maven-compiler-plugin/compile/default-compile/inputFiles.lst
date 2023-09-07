@@ -5,15 +5,14 @@
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/CreateMovieController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/repositories/ReviewRepository.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/configurations/WebSecurityConfig.java
-/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/TEST/setters.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/HomeController.java
-/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/TEST/parser.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/authControllers/AuthController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/repositories/RoleRepository.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/models/dtos/AuthDto.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserDto.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/repositories/MovieRepository.java
+/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/TEST/MovieParser.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/SearchMovieController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/jwt/JwtTokenProvider.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/models/Role.java
@@ -21,6 +20,7 @@
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/jwt/JwtAuthenticationFilter.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserRegistrationDto.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/authControllers/RegistrationController.java
+/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/TEST/MovieAttributesSetter.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/configurations/CorsConfig.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/StreamMovieController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/models/Movie.java
