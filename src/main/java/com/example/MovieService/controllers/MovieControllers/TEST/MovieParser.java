@@ -45,41 +45,41 @@ public class MovieParser {
             String fieldName = row.select("td:nth-child(1)").text();
             switch (fieldName) {
                 case "Оригинал:":
-                    MovieAttributesSetter.setOriginalTitle(row, movie);
+                    setter.setOriginalTitle(row, movie);
                     break;
                 case "Год:":
-                    MovieAttributesSetter.setYear(row, movie);
+                    setter.setYear(row, movie);
                     break;
                 case "Качество:":
-                    MovieAttributesSetter.setQuality(row, movie);
+                    setter.setQuality(row, movie);
                     break;
                 case "Перевод:":
-                    MovieAttributesSetter.setLanguage(row, movie);
+                    setter.setLanguage(row, movie);
                     break;
                 case "Время:":
-                    MovieAttributesSetter.setDuration(row, movie);
+                    setter.setDuration(row, movie);
                     break;
                 case "Страна:":
-                    MovieAttributesSetter.setCountry(row, movie);
+                    setter.setCountry(row, movie);
                     break;
                 case "Жанр:":
-                    MovieAttributesSetter.setGenres(row, movie);
+                    setter.setGenres(row, movie);
                     break;
                 case "Рейтинг:":
-                    MovieAttributesSetter.setRatings(row, movie);
+                    setter.setRatings(row, movie);
                     break;
                 case "Режиссер:":
-                    MovieAttributesSetter.setDirector(row, movie);
+                    setter.setDirector(row, movie);
                     break;
                 case "Актеры:":
-                    MovieAttributesSetter.setActors(row, movie);
+                    setter.setActors(row, movie);
                     break;
                 default:
             }
         }
 
-        MovieAttributesSetter.setPosterLink(document, movie);
-        MovieAttributesSetter.setTrailerLink(movie);
+        setter.setPosterLink(document, movie);
+        setter.setTrailerLink(movie);
 
         if (movie.getTitle()!=null) {
             movieRepository.save(movie);

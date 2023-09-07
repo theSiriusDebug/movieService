@@ -20,7 +20,7 @@
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/jwt/JwtAuthenticationFilter.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserRegistrationDto.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/authControllers/RegistrationController.java
-/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/TEST/MovieAttributesSetter.java
+/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/TEST/setter.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/configurations/CorsConfig.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/StreamMovieController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/models/Movie.java
