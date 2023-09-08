@@ -5,6 +5,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.Value;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTubeRequestInitializer;
 import com.google.api.services.youtube.model.SearchListResponse;
@@ -25,6 +26,9 @@ public class setter {
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TD_SELECTOR = "td:nth-child(2)";
     private static final Logger logger = LoggerFactory.getLogger(setter.class);
+    @Value("${youtube_api_key}")
+    private static String api_key;
+
 
     public static void setOriginalTitle(Element row, Movie movie) {
         String originalTitle = row.select(TD_SELECTOR).text();
@@ -120,6 +124,7 @@ public class setter {
     }
 
     private static YouTube buildYouTubeService(NetHttpTransport httpTransport) throws IOException {
+        String apiKey = api_key;
         return new YouTube.Builder(httpTransport, JSON_FACTORY, null)
                 .setGoogleClientRequestInitializer(request -> request.setDisableGZipContent(true))
                 .setYouTubeRequestInitializer(new YouTubeRequestInitializer("AIzaSyB1ueY-KvwDKhs6tLqtrULVrZww7SYauIo"))
