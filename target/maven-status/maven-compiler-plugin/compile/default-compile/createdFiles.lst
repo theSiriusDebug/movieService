@@ -18,7 +18,6 @@ com/example/MovieService/models/dtos/AuthDto.class
 com/example/MovieService/controllers/MovieControllers/MovieParserController.class
 com/example/MovieService/repositories/ReviewRepository.class
 com/example/MovieService/controllers/MovieControllers/TEST/MovieParser.class
-com/example/MovieService/controllers/MovieControllers/SearchMovieController.class
 com/example/MovieService/jwt/JwtTokenProvider.class
 com/example/MovieService/controllers/UserControllers/UserController.class
 com/example/MovieService/models/Review.class
