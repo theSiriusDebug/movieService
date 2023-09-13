@@ -27,7 +27,7 @@ public class MovieParserController {
 
     @PostMapping("/parse")
     public void parseMovies() {
-        long latestPage = 10;
+        long latestPage = 100;
         long currentPage = 1;
 
         while (currentPage <= latestPage) {
