@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
     @Value("${jwt.secretKey}")
     private String secretKey;
+    @Value("${jwt.refreshSecretKey}")
+    private String refreshSecretKey;
     @Value("${jwt.tokenValidityInMilliseconds}")
     private long tokenValidityInMilliseconds;
     @Value("${jwt.refreshTokenValidityInMilliseconds}")
@@ -61,7 +63,7 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, refreshSecretKey)
                 .compact();
     }
 
