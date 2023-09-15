@@ -44,35 +44,35 @@ public class MovieDetailsExtractor {
         for (Element row : movieRows) {
             String fieldName = row.select("td:nth-child(1)").text();
             switch (fieldName) {
-                case "Оригинал:":
+                case "Title:":
                     MovieDataParser.setOriginalTitle(row, movie);
                     break;
-                case "Год:":
+                case "Year:":
                     MovieDataParser.setYear(row, movie);
                     break;
-                case "Качество:":
+                case "Quality:":
                     MovieDataParser.setQuality(row, movie);
                     break;
-                case "Перевод:":
+                case "Language:":
                     MovieDataParser.setLanguage(row, movie);
                     break;
-                case "Время:":
+                case "Duration:":
                     MovieDataParser.setDuration(row, movie);
                     break;
-                case "Страна:":
+                case "Country:":
                     MovieDataParser.setCountry(row, movie);
                     break;
-                case "Жанр:":
+                case "Genre:":
                     MovieDataParser.setGenres(row, movie);
                     break;
-                case "Рейтинг:":
+                case "Rating:":
                     MovieDataParser.setRatings(row, movie);
-                    break;
-                case "Режиссер:":
-                    MovieDataParser.setDirector(row, movie);
                     break;
                 case "Актеры:":
                     MovieDataParser.setActors(row, movie);
+                    break;
+                case "Director:":
+                    MovieDataParser.setDirector(row, movie);
                     break;
                 default:
             }
