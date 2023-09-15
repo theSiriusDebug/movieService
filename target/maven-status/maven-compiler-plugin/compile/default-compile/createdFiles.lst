@@ -1,4 +1,4 @@
-com/example/MovieService/controllers/MovieControllers/TEST/setter.class
+com/example/MovieService/controllers/MovieControllers/Parser/setter.class
 com/example/MovieService/repositories/MovieRepository.class
 com/example/MovieService/models/dtos/UserDto.class
 com/example/MovieService/controllers/HomeController.class
@@ -15,17 +15,17 @@ com/example/MovieService/sevices/UserService.class
 com/example/MovieService/models/Role.class
 com/example/MovieService/configurations/WebSecurityConfig.class
 com/example/MovieService/models/dtos/AuthDto.class
-com/example/MovieService/controllers/MovieControllers/MovieParserController.class
 com/example/MovieService/repositories/ReviewRepository.class
-com/example/MovieService/controllers/MovieControllers/TEST/MovieParser.class
 com/example/MovieService/jwt/JwtTokenProvider.class
 com/example/MovieService/controllers/UserControllers/UserController.class
 com/example/MovieService/models/Review.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.class
 com/example/MovieService/jwt/JwtAuthenticationFilter.class
+com/example/MovieService/controllers/MovieControllers/Parser/MovieParser.class
 com/example/MovieService/MovieServiceApplication.class
 com/example/MovieService/models/User.class
 com/example/MovieService/repositories/UserRepository.class
 com/example/MovieService/controllers/MovieControllers/StreamMovieController.class
+com/example/MovieService/controllers/MovieControllers/Parser/MovieParserController.class
 com/example/MovieService/controllers/UserControllers/RoleControllers/RoleController.class
 com/example/MovieService/models/Movie.class

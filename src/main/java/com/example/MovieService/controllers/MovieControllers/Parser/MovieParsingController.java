@@ -1,0 +1,42 @@
+package com.example.MovieService.controllers.MovieControllers.Parser;
+
+import com.example.MovieService.repositories.MovieRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+
+@RestController
+@Api(tags = "ParserController API")
+public class MovieParsingController {
+    private final MovieRepository movieRepository;
+    private final MovieDetailsExtractor movieDetailsExtractor;
+
+    @Autowired
+    public MovieParsingController(MovieRepository movieRepository, MovieDetailsExtractor movieDetailsExtractor) {
+        this.movieRepository = movieRepository;
+        this.movieDetailsExtractor = movieDetailsExtractor;
+    }
+
+    @ApiOperation("Parse movie details")
+    @PostMapping("/parse")
+    public void parseMovies() {
+        long latestPage = 100;
+        long currentPage = 1;
+
+        while (currentPage <= latestPage) {
+            try {
+                String url = String.format("https://m.anwap.love/films/%d", currentPage);
+                String html = movieDetailsExtractor.fetchHtml(url);
+                movieDetailsExtractor.parseMovieDetails(html);
+                System.out.println("Successfully parsed page " + currentPage);
+            } catch (IOException e) {
+                System.out.println("Error parsing page " + currentPage);
+                throw new RuntimeException(e);
+            }
+            currentPage++;
+        }
+    }
+}
