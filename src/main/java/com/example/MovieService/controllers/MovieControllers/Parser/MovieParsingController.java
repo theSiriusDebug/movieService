@@ -1,5 +1,6 @@
 package com.example.MovieService.controllers.MovieControllers.Parser;
 
+import com.example.MovieService.parser.MovieDetailsExtractor;
 import com.example.MovieService.repositories.MovieRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +24,7 @@ public class MovieParsingController {
     @ApiOperation("Parse movie details")
     @PostMapping("/parse")
     public void parseMovies() {
-        long latestPage = 100;
+        long latestPage = 1;
         long currentPage = 1;
 
         while (currentPage <= latestPage) {

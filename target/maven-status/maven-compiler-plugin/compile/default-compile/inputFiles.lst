@@ -5,7 +5,6 @@
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/CreateMovieController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/repositories/ReviewRepository.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/configurations/WebSecurityConfig.java
-/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/Parser/MovieDataParser.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/HomeController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/authControllers/AuthController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/repositories/RoleRepository.java
@@ -22,10 +21,11 @@
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/configurations/CorsConfig.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/StreamMovieController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/models/Movie.java
+/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/parser/MovieDetailsExtractor.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/sevices/UserService.java
+/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/parser/MovieDataParser.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/MovieController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/models/User.java
-/home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/Parser/MovieDetailsExtractor.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/Parser/MovieParsingController.java
 /home/siriusm/Документы/Projects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserProfileController.java

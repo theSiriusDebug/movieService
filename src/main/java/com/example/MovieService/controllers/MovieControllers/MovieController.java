@@ -34,8 +34,8 @@ public class MovieController {
     @ApiOperation("Get all movies")
     @GetMapping
     public ResponseEntity<List<Movie>> getAllMovies(
-            @RequestParam(required = false) String sortType,
-            @RequestParam(required = false) String sortBy) {
+            @RequestParam(required = false, defaultValue = "by date") String sortType,
+            @RequestParam(required = false, defaultValue = "imdbRating") String sortBy) {
 
         Sort sorting = determineSorting(sortType, sortBy);
         List<Movie> movies = movieRepository.findAll(sorting);

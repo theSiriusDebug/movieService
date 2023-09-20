@@ -8,7 +8,6 @@ com/example/MovieService/jwt/JwtAuthorizationFilter.class
 com/example/MovieService/configurations/CorsConfig.class
 com/example/MovieService/controllers/MovieControllers/CreateMovieController.class
 com/example/MovieService/controllers/MovieControllers/MovieController.class
-com/example/MovieService/controllers/MovieControllers/Parser/MovieDataParser.class
 com/example/MovieService/controllers/UserControllers/UserProfileController.class
 com/example/MovieService/repositories/RoleRepository.class
 com/example/MovieService/models/dtos/UserRegistrationDto.class
@@ -17,8 +16,10 @@ com/example/MovieService/models/Role.class
 com/example/MovieService/configurations/WebSecurityConfig.class
 com/example/MovieService/models/dtos/AuthDto.class
 com/example/MovieService/repositories/ReviewRepository.class
+com/example/MovieService/parser/MovieDetailsExtractor.class
 com/example/MovieService/jwt/JwtTokenProvider.class
 com/example/MovieService/controllers/UserControllers/UserController.class
+com/example/MovieService/parser/MovieDataParser.class
 com/example/MovieService/models/Review.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.class
 com/example/MovieService/jwt/JwtAuthenticationFilter.class
@@ -28,4 +29,3 @@ com/example/MovieService/repositories/UserRepository.class
 com/example/MovieService/controllers/MovieControllers/StreamMovieController.class
 com/example/MovieService/controllers/UserControllers/RoleControllers/RoleController.class
 com/example/MovieService/models/Movie.class
-com/example/MovieService/controllers/MovieControllers/Parser/MovieDetailsExtractor.class
