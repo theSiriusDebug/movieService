@@ -12,14 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping("/movies")
 @Api(tags = "ReviewCreationController API")
 public class ReviewCreationController {
-    private MovieRepository movieRepository;
-    private ReviewRepository reviewRepository;
-    private UserRepository userRepository;
+    private final MovieRepository movieRepository;
+    private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public ReviewCreationController(MovieRepository movieRepository, ReviewRepository reviewRepository, UserRepository userRepository) {
@@ -29,8 +30,8 @@ public class ReviewCreationController {
     }
 
     @ApiOperation("Create a review for a movie")
-    @PostMapping("/{id}/reviews/create")
-    public ResponseEntity<Review> createReview(@PathVariable("id") Long movieId, @RequestParam("reviewText") String reviewText, Principal principal) {
+    @PostMapping("/{movieId}/reviews/create")
+    public ResponseEntity<Review> createReview(@PathVariable("movieId") Long movieId, @RequestParam("reviewText") String reviewText, Principal principal) {
         if (principal == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -42,5 +43,9 @@ public class ReviewCreationController {
         review.setReview(reviewText);
         reviewRepository.save(review);
         return ResponseEntity.ok(review);
+    }
+    @GetMapping("/reviews")
+    public ResponseEntity<List<Review>> getReviews(){
+        return ResponseEntity.ok(reviewRepository.findAll());
     }
 }
