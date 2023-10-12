@@ -107,24 +107,23 @@ public class MovieController {
         }
     }
 
+    private static final Map<String, Sort.Order> SORT_TYPE_TO_ORDER = new HashMap<>();
+    static {
+        SORT_TYPE_TO_ORDER.put("by date", Sort.Order.desc("year"));
+        SORT_TYPE_TO_ORDER.put("by date reverse", Sort.Order.asc("year"));
+        SORT_TYPE_TO_ORDER.put("by alphabet", Sort.Order.asc("title"));
+        SORT_TYPE_TO_ORDER.put("by alphabet reverse", Sort.Order.desc("title"));
+        SORT_TYPE_TO_ORDER.put("rating", Sort.Order.desc("imdbRating"));
+        SORT_TYPE_TO_ORDER.put("rating reverse", Sort.Order.asc("imdbRating"));
+        SORT_TYPE_TO_ORDER.put("by title", Sort.Order.asc("title"));
+        SORT_TYPE_TO_ORDER.put("by title reverse", Sort.Order.desc("title"));
+    }
+
     private Sort determineSorting(String sortType, String sortBy) {
         Sort sorting = Sort.unsorted();
-        if ("by date".equals(sortType)) {
-            sorting = Sort.by(Sort.Order.desc("year"));
-        } else if ("by date reverse".equals(sortType)) {
-            sorting = Sort.by(Sort.Order.asc("year"));
-        } else if ("by alphabet".equals(sortType)) {
-            sorting = Sort.by(Sort.Order.asc("title"));
-        } else if ("by alphabet reverse".equals(sortType)) {
-            sorting = Sort.by(Sort.Order.desc("title"));
-        } else if ("rating".equals(sortType)) {
-            sorting = Sort.by(Sort.Order.desc("imdbRating"));
-        } else if ("rating reverse".equals(sortType)) {
-            sorting = Sort.by(Sort.Order.asc("imdbRating"));
-        } else if ("by title".equals(sortType)) {
-            sorting = Sort.by(Sort.Order.asc("title"));
-        } else if ("by title reverse".equals(sortType)) {
-            sorting = Sort.by(Sort.Order.desc("title"));
+        Sort.Order order = SORT_TYPE_TO_ORDER.get(sortType);
+        if (order != null) {
+            sorting = Sort.by(order);
         }
         if (sortBy != null && !sortBy.isEmpty()) {
             sorting = sorting.and(Sort.by(sortBy));
