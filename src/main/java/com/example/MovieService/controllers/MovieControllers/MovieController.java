@@ -186,7 +186,7 @@ public class MovieController {
             Date max = sdf.parse(maxDuration);
             return movieDuration.compareTo(min) >= 0 && movieDuration.compareTo(max) <= 0;
         } catch (ParseException e) {
-            return false; // Обработка ошибки парсинга времени
+            return false;
         }
     }
 
