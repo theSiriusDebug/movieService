@@ -3,6 +3,7 @@ package com.example.MovieService.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -28,9 +29,8 @@ public class User {
 
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
-    private List<Review> reviews;
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
     public User(String username, String password, Set<Role> roles) {
         super();
         this.username = username;

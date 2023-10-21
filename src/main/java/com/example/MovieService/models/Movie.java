@@ -33,7 +33,6 @@ public class Movie {
     private String movieLink;
     @ElementCollection
     private List<String> actors = new ArrayList<>();
-    @JsonIgnore
-    @OneToMany(mappedBy = "movie")
-    private List<Review> reviews;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
 }
