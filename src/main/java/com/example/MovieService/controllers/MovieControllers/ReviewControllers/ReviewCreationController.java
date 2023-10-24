@@ -4,24 +4,16 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.MovieRepository;
-import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.repositories.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.http.HttpResponse;
-import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
+@Api(tags = "ReviewCreationController API")
 @RestController
 @RequestMapping("/reviews")
 public class ReviewCreationController {
@@ -34,9 +26,9 @@ public class ReviewCreationController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/{movieId}")
+    @ApiOperation("Create a review")
+    @PostMapping("/create/{movieId}")
     public ResponseEntity<String> createReview(@PathVariable Long movieId, @RequestBody String reviewText) {
-        // Получение текущего авторизованного пользователя (предполагается использование Spring Security)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
 
