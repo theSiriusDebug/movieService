@@ -35,4 +35,6 @@ public class Movie {
     private List<String> actors = new ArrayList<>();
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private List<Rating> ratings = new ArrayList<>();
 }

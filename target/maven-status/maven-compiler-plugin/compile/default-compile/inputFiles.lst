@@ -22,6 +22,7 @@
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/MovieServiceApplication.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/RoleRepository.java
+/home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/RatingCreationController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/UserService.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/RoleControllers/RoleController.java
@@ -29,5 +30,4 @@
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserProfileController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/StreamMovieController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/parser/MovieDetailsExtractor.java
-/home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/RatingController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/UserRepository.java

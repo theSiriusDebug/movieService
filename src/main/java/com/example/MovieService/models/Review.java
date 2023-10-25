@@ -1,13 +1,12 @@
 package com.example.MovieService.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "movie_reviews")
+@Table(name = "rating")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

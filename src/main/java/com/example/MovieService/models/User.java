@@ -31,6 +31,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Rating> rating = new ArrayList<>();
+
     public User(String username, String password, Set<Role> roles) {
         super();
         this.username = username;
