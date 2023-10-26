@@ -16,11 +16,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Api(tags = "ReviewCreationController API")
 @RestController
 @RequestMapping("/reviews")
 public class ReviewCreationController {
+    private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
@@ -35,11 +37,18 @@ public class ReviewCreationController {
     @ApiOperation("Create a review")
     @PostMapping("/create/{movieId}")
     public ResponseEntity<String> createReview(@PathVariable Long movieId, @RequestBody String reviewText) {
+        logger.info("Creating review for movie with ID: " + movieId);
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
 
         // Get a movie asset to which a review will be added
         Movie movie = movieRepository.findById(movieId).orElse(null);
+
+        if (movie == null) {
+            logger.warning("Movie not found with ID: " + movieId);
+            return ResponseEntity.badRequest().body("Movie not found.");
+        }
 
         Review review = new Review();
         review.setUser(currentUser);
@@ -49,16 +58,20 @@ public class ReviewCreationController {
         currentUser.getReviews().add(review);
         userRepository.save(currentUser);
 
+        logger.info("Review created successfully for movie with ID: " + movieId);
         return ResponseEntity.ok("Review created successfully.");
     }
 
     @ApiOperation("Delete a review")
     @DeleteMapping("/delete/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId) {
+        logger.info("Deleting review with ID: " + reviewId);
+
         // Find the review to be deleted
         Review review = reviewRepository.findById(reviewId).orElse(null);
 
         if (review == null) {
+            logger.warning("Review not found with ID: " + reviewId);
             return ResponseEntity.badRequest().body("Review not found.");
         }
 
@@ -67,6 +80,7 @@ public class ReviewCreationController {
         User currentUser = userRepository.findByUsername(authentication.getName());
 
         if (!review.getUser().equals(currentUser)) {
+            logger.warning("Unauthorized deletion attempt for review with ID: " + reviewId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to delete this review.");
         }
 
@@ -83,6 +97,7 @@ public class ReviewCreationController {
         // Delete the review
         reviewRepository.delete(review);
 
+        logger.info("Review deleted successfully with ID: " + reviewId);
         return ResponseEntity.ok("Review deleted successfully.");
     }
 }
