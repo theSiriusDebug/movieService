@@ -19,7 +19,7 @@ import java.util.Optional;
 @RestController
 @Api(tags = "UserController")
 public class UserController {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
