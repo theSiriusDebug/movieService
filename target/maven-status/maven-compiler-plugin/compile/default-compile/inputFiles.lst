@@ -7,6 +7,7 @@
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/AuthDto.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/jwt/JwtAuthorizationFilter.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/authControllers/RegistrationController.java
+/home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/WatchLaterMoviesController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserRegistrationDto.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/User.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserDto.java
@@ -29,5 +30,6 @@
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/HomeController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserProfileController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/StreamMovieController.java
+/home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/FavouriteMoviesController.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/parser/MovieDetailsExtractor.java
 /home/siriusm/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/UserRepository.java

@@ -6,6 +6,7 @@ com/example/MovieService/controllers/authControllers/RegistrationController.clas
 com/example/MovieService/controllers/authControllers/AuthController.class
 com/example/MovieService/controllers/HomeController.class
 com/example/MovieService/jwt/JwtAuthorizationFilter.class
+com/example/MovieService/controllers/MovieControllers/FavouriteMoviesController.class
 com/example/MovieService/controllers/MovieControllers/CreateMovieController.class
 com/example/MovieService/controllers/MovieControllers/MovieController.class
 com/example/MovieService/configurations/CorsConfig.class
@@ -29,5 +30,6 @@ com/example/MovieService/MovieServiceApplication.class
 com/example/MovieService/models/User.class
 com/example/MovieService/repositories/UserRepository.class
 com/example/MovieService/controllers/MovieControllers/StreamMovieController.class
+com/example/MovieService/controllers/MovieControllers/WatchLaterMoviesController.class
 com/example/MovieService/controllers/UserControllers/RoleControllers/RoleController.class
 com/example/MovieService/models/Movie.class
