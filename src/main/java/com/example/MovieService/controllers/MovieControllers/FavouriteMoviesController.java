@@ -4,6 +4,8 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.UserRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+@Api(tags = "FavouriteMoviesController API")
 @RestController
 @RequestMapping
 public class FavouriteMoviesController {
@@ -28,6 +31,7 @@ public class FavouriteMoviesController {
         this.movieRepository = movieRepository;
     }
 
+    @ApiOperation("add movie to favourite list")
     @PostMapping("/favoriteMovies/{movieId}")
     public ResponseEntity<String> addFavoriteMovie(@PathVariable("movieId") long movieId) {
 
@@ -50,6 +54,7 @@ public class FavouriteMoviesController {
         return ResponseEntity.ok("Movie added to favorites");
     }
 
+    @ApiOperation("remove movie from favourite list")
     @DeleteMapping("/favoriteMovies/{movieId}")
     public ResponseEntity<String> removeFavoriteMovie(@PathVariable("movieId") long movieId) {
 

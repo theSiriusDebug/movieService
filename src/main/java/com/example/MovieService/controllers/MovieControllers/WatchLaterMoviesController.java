@@ -4,6 +4,8 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.UserRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+@Api(tags = "WatchLaterMoviesController API")
 @RestController
 @RequestMapping
 public class WatchLaterMoviesController {
@@ -28,6 +31,7 @@ public class WatchLaterMoviesController {
         this.movieRepository = movieRepository;
     }
 
+    @ApiOperation("add movie to watch later list")
     @PostMapping("/watchLaterMovies/{movieId}")
     public ResponseEntity<String> addWatchLaterMovie(@PathVariable("movieId") long movieId) {
 
@@ -50,6 +54,7 @@ public class WatchLaterMoviesController {
         return ResponseEntity.ok("Movie added to watch later");
     }
 
+    @ApiOperation("remove movie from watch later list")
     @DeleteMapping("/watchLaterMovies/{movieId}")
     public ResponseEntity<String> removeWatchLaterMovie(@PathVariable("movieId") long movieId) {
 
