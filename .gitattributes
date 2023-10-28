@@ -1,0 +1,2 @@
+out/artifacts/MovieService_jar/MovieService.jar filter=lfs diff=lfs merge=lfs -text
+target/MovieService-0.0.1-SNAPSHOT.jar filter=lfs diff=lfs merge=lfs -text
