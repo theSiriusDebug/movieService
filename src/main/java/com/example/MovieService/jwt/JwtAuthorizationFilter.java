@@ -35,13 +35,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         String token = header.replace("Bearer ", "");
         System.out.println("JWT Token: " + token);
-
         if (jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            logger.info("JWT Token validated and authentication set.");
-        } else {
-            logger.warn("JWT Token validation failed.");
         }
 
         chain.doFilter(request, response);

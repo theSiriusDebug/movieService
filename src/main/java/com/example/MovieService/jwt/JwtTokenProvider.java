@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,11 +30,16 @@ public class JwtTokenProvider {
 
     private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
+    private final String secretKey = "QjSLlIwwQaCdw2jLZy/x9N5me0LyUUd9GsNFcGLCDlU=";
+
+    private final UserService userService;
 
     @Autowired
     public JwtTokenProvider(UserService userService) {
         this.userService = userService;
     }
+
+    private final long validityInMilliseconds = 3600000;
 
     public String createToken(String username, Collection<Role> roles) {
         Claims claims = Jwts.claims().setSubject(username);
@@ -43,6 +49,8 @@ public class JwtTokenProvider {
         Date validity = new Date(now.getTime() + tokenValidityInMilliseconds);
 
         logger.info("Created JWT Token for user: {}", username);
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
@@ -73,6 +81,9 @@ public class JwtTokenProvider {
 
         logger.info("Created authentication object for user: {}", username);
 
+    public Authentication getAuthentication(String token) {
+        String username = getUsername(token);
+        UserDetails userDetails = userService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -89,6 +100,7 @@ public class JwtTokenProvider {
         logger.info("Extracted authorities from JWT Token: {}", authorities);
 
         return authorities;
+        return roleClaims.stream().map(roleClaim -> new SimpleGrantedAuthority(roleClaim.get("authority"))).collect(Collectors.toSet());
     }
 
     public boolean validateToken(String token) {
@@ -108,4 +120,9 @@ public class JwtTokenProvider {
         }
     }
 
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
 }

@@ -37,6 +37,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(
                     name = "movie_id", referencedColumnName = "id"))
     private List<Movie> favoriteMovies = new ArrayList<>();
+    private Set<Role> roles;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -54,6 +55,7 @@ public class User {
     private List<Rating> rating = new ArrayList<>();
 
     public User(String username, String password, Set<Role> roles) {
+    public User(String username, String login, String password, Set<Role> roles) {
         super();
         this.username = username;
 

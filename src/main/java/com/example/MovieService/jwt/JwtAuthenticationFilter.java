@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -33,6 +34,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             AuthDto authRequest = new ObjectMapper().readValue(request.getInputStream(), AuthDto.class);
+            System.out.println("Username: " + authRequest.getUsername());
+            System.out.println("Password: " + authRequest.getPassword());
             logger.info("Attempting authentication for user: {}", authRequest.getUsername());
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
@@ -53,6 +56,17 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         logger.info("Successful authentication for user: {}", principal.getUsername());
 
+        response.addHeader("Authorization", "Bearer " + token);
+    }
+}
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
+        String token = jwtTokenProvider.createToken(((User) authResult.getPrincipal()).getUsername(), ((User) authResult.getPrincipal()).getRoles());
         response.addHeader("Authorization", "Bearer " + token);
     }
 }

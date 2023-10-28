@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +16,8 @@ import java.util.List;
 @Table(name = "movies")
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 @NoArgsConstructor
 public class Movie {
     @Id
@@ -37,4 +43,18 @@ public class Movie {
     private List<Review> reviews = new ArrayList<>();
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     private List<Rating> ratings = new ArrayList<>();
+}
+
+    private double rating;
+    @Column(name = "cover_image")
+    private String coverImage;
+    @Column(name = "video")
+    private String video;
+    @Transient
+    private MultipartFile coverImageFile;
+    @JsonIgnore
+    @OneToMany(mappedBy = "movie")
+    private List<Review> reviews;
+
+    private String trailer;
 }
