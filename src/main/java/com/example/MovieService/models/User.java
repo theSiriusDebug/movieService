@@ -3,6 +3,7 @@ package com.example.MovieService.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -28,8 +29,29 @@ public class User {
 
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
-    private List<Review> reviews;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_movies",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "movie_id", referencedColumnName = "id"))
+    private List<Movie> favoriteMovies = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_watch_later_movies",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "movie_id", referencedColumnName = "id"))
+    private List<Movie> watchLaterMovies = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Rating> rating = new ArrayList<>();
 
     public User(String username, String password, Set<Role> roles) {
         super();

@@ -25,9 +25,9 @@ import java.util.Map;
 public class RegistrationController {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
     private AuthenticationManager authenticationManager;
-    private UserService userService;
-    private JwtTokenProvider jwtTokenProvider;
-    private RoleRepository roleRepository;
+    private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public RegistrationController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
