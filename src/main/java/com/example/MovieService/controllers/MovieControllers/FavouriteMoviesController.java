@@ -6,6 +6,7 @@ import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ public class FavouriteMoviesController {
     private final MovieRepository movieRepository;
     private static final Logger logger = LoggerFactory.getLogger(FavouriteMoviesController.class);
 
+    @Autowired
     public FavouriteMoviesController(UserRepository userRepository, MovieRepository movieRepository) {
         this.userRepository = userRepository;
         this.movieRepository = movieRepository;

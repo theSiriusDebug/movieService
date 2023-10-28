@@ -6,6 +6,7 @@ import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,7 @@ public class WatchLaterMoviesController {
     private final MovieRepository movieRepository;
     private static final Logger logger = LoggerFactory.getLogger(WatchLaterMoviesController.class);
 
+    @Autowired
     public WatchLaterMoviesController(UserRepository userRepository, MovieRepository movieRepository) {
         this.userRepository = userRepository;
         this.movieRepository = movieRepository;
@@ -39,10 +41,10 @@ public class WatchLaterMoviesController {
         }
 
         List<Movie> watchLaterMovies = user.getWatchLaterMovies();
-        if (watchLaterMovies.contains(movie)) {
-            watchLaterMovies.remove(movie);
+        if (!watchLaterMovies.contains(movie)) {
+            watchLaterMovies.add(movie);
             userRepository.save(user);
-            logger.info("Movie with ID {} removed from watch later for user {}.", movieId, user.getUsername());
+            logger.info("Movie with ID {} added to watch later for user {}.", movieId, user.getUsername());
         }
 
         return ResponseEntity.ok("Movie added to watch later");
