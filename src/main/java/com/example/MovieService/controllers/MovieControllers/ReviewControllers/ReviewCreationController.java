@@ -14,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.logging.Logger;
 
 @Api(tags = "ReviewCreationController API")
@@ -36,7 +34,7 @@ public class ReviewCreationController {
 
     @ApiOperation("Create a review")
     @PostMapping("/create/{movieId}")
-    public ResponseEntity<String> createReview(@PathVariable Long movieId, @RequestBody String reviewText) {
+    public ResponseEntity<Review> createReview(@PathVariable Long movieId, @RequestBody String reviewText) {
         logger.info("Creating review for movie with ID: " + movieId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,7 +45,7 @@ public class ReviewCreationController {
 
         if (movie == null) {
             logger.warning("Movie not found with ID: " + movieId);
-            return ResponseEntity.badRequest().body("Movie not found.");
+            return ResponseEntity.notFound().build();
         }
 
         Review review = new Review();
@@ -59,7 +57,7 @@ public class ReviewCreationController {
         userRepository.save(currentUser);
 
         logger.info("Review created successfully for movie with ID: " + movieId);
-        return ResponseEntity.ok("Review created successfully.");
+        return ResponseEntity.ok(review);
     }
 
     @ApiOperation("Delete a review")
@@ -67,7 +65,6 @@ public class ReviewCreationController {
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId) {
         logger.info("Deleting review with ID: " + reviewId);
 
-        // Find the review to be deleted
         Review review = reviewRepository.findById(reviewId).orElse(null);
 
         if (review == null) {
@@ -94,7 +91,6 @@ public class ReviewCreationController {
         user.getReviews().remove(review);
         userRepository.save(user);
 
-        // Delete the review
         reviewRepository.delete(review);
 
         logger.info("Review deleted successfully with ID: " + reviewId);
