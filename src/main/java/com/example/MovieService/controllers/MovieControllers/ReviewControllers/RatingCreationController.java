@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "RatingCreationController API")
@@ -27,10 +29,12 @@ public class RatingCreationController {
     }
 
     @ApiOperation("Create a rating")
-    @PostMapping("/create/{movieId}/{userId}")
-    public ResponseEntity<String> createRating(@PathVariable Long movieId, @PathVariable Long userId, @RequestBody Rating rating) {
+    @PostMapping("/create/{movieId}")
+    public ResponseEntity<String> createRating(@PathVariable Long movieId, @RequestBody Rating rating) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(authentication.getName());
+
         Movie movie = movieRepository.findById(movieId).orElse(null);
-        User user = userRepository.findById(userId).orElse(null);
 
         if (movie == null || user == null) {
             return new ResponseEntity<>("Movie or User not found.", HttpStatus.NOT_FOUND);
@@ -44,6 +48,7 @@ public class RatingCreationController {
 
         rating.setMovie(movie);
         rating.setUser(user);
+        rating.setRatingValue(rating.getRatingValue());
         user.getRating().add(rating);
 
         userRepository.save(user);
