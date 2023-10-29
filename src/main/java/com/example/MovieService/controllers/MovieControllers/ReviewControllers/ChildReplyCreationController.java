@@ -33,8 +33,7 @@ public class ChildReplyCreationController {
     }
     @ApiOperation("Create a reply to a review or another reply")
     @PostMapping("/createChildReply/{parentId}")
-    public ResponseEntity<Reply> createReplyToReply(@PathVariable Long parentId, @RequestBody String replyText) {
-        // Find the parent reply to which a reply will be added
+    public ResponseEntity<Reply> createChildReply(@PathVariable Long parentId, @RequestBody String replyText) {
         Reply parentReply = replyRepository.findById(parentId).orElse(null);
 
         if (parentReply == null) {
@@ -59,7 +58,7 @@ public class ChildReplyCreationController {
 
     @ApiOperation("Delete a reply and its child replies")
     @DeleteMapping("/deleteChildReply/{replyId}")
-    public ResponseEntity<String> deleteReplyToReply(@PathVariable Long replyId) {
+    public ResponseEntity<String> deleteChildReply(@PathVariable Long replyId) {
         Reply childReply = replyRepository.findById(replyId).orElse(null);
 
         if (childReply == null) {
@@ -95,7 +94,6 @@ public class ChildReplyCreationController {
             replyRepository.save(reply.getParentReply());
         }
 
-        // Delete the reply
         replyRepository.delete(reply);
     }
 
