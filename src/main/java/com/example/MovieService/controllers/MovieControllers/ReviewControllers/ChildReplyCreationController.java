@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 @Api(tags = "ChildReplyCreationController API")
 @RestController
-@RequestMapping("/replies")
+@RequestMapping("/childReplies")
 public class ChildReplyCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
     private final MovieRepository movieRepository;
@@ -96,5 +96,4 @@ public class ChildReplyCreationController {
 
         replyRepository.delete(reply);
     }
-
 }
