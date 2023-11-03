@@ -76,7 +76,8 @@ public class ReviewCreationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
 
-        if (!review.getUser().equals(currentUser)) {
+        //The review is carried out by a user with good reviews or an administrator.
+        if (!review.getUser().equals(currentUser) && currentUser.getRoles().equals("ROLE_ADMIN")) {
             logger.warning("Unauthorized deletion attempt for review with ID: " + reviewId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to delete this review.");
         }
