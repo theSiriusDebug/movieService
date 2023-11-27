@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.logging.Logger;
 
 @Api(tags = "ReviewCreationController API")
@@ -77,7 +79,7 @@ public class ReviewCreationController {
         User currentUser = userRepository.findByUsername(authentication.getName());
 
         //The review is carried out by a user with good reviews or an administrator.
-        if (!review.getUser().equals(currentUser) && currentUser.getRoles().equals("ROLE_ADMIN")) {
+        if ((!currentUser.hasRole("ROLE_ADMIN") && !review.getUser().equals(currentUser))) {
             logger.warning("Unauthorized deletion attempt for review with ID: " + reviewId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to delete this review.");
         }
@@ -96,5 +98,9 @@ public class ReviewCreationController {
 
         logger.info("Review deleted successfully with ID: " + reviewId);
         return ResponseEntity.ok("Review deleted successfully.");
+    }
+    @GetMapping
+    public ResponseEntity<List<Review>> get_reviews(){
+        return ResponseEntity.ok(reviewRepository.findAll());
     }
 }

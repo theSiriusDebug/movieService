@@ -95,8 +95,4 @@ public class ReplyCreationController {
     public ResponseEntity<List<Reply>> get_replies(){
         return ResponseEntity.ok(replyRepository.findAll());
     }
-    @GetMapping("/1")
-    public ResponseEntity<List<Review>> get_reviews(){
-        return ResponseEntity.ok(reviewRepository.findAll());
-    }
 }
