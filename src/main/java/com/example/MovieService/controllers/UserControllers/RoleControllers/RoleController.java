@@ -5,11 +5,13 @@ import com.example.MovieService.repositories.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/roles")
 public class RoleController {
     private RoleRepository roleRepository;
 
@@ -18,7 +20,7 @@ public class RoleController {
         this.roleRepository = roleRepository;
     }
 
-    @GetMapping("/roles")
+    @GetMapping
     public String pasteRoles(){
         Role user = new Role("ROLE_USER");
         Role admin = new Role("ROLE_ADMIN");
