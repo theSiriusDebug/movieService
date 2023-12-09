@@ -37,4 +37,14 @@ public class Reply {
     private User user;
 
     private String replyText;
+
+    @Transient
+    private String replyOwner;
+
+    public String getReplyOwner() {
+        if (user != null) {
+            return user.getUsername();
+        }
+        return null;
+    }
 }
