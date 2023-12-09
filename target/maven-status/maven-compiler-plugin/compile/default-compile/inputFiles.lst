@@ -28,6 +28,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/parser/MovieDataParser.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/RoleRepository.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/parser/MovieDetailsExtractor.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewsController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/HomeController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/authControllers/RegistrationController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.java

@@ -18,6 +18,7 @@ com/example/MovieService/repositories/RoleRepository.class
 com/example/MovieService/sevices/UserService.class
 com/example/MovieService/configurations/WebSecurityConfig.class
 com/example/MovieService/models/Role.class
+com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewsController.class
 com/example/MovieService/models/dtos/AuthDto.class
 com/example/MovieService/repositories/ReviewRepository.class
 com/example/MovieService/parser/MovieDetailsExtractor.class
