@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "rating")
+@Table(name = "review")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,4 +30,14 @@ public class Review {
     private List<Reply> replies;
 
     private String reviewText;
+
+    @Transient
+    private String reviewOwner;
+
+    public String getReviewOwner() {
+        if (user != null) {
+            return user.getUsername();
+        }
+        return null;
+    }
 }

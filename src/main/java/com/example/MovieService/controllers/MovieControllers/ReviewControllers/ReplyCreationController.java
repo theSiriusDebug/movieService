@@ -38,7 +38,6 @@ public class ReplyCreationController {
     @ApiOperation("Create a reply to a review")
     @PostMapping("/createReply/{reviewId}")
     public ResponseEntity<Reply> createReply(@PathVariable Long reviewId, @RequestBody String replyText) {
-        // Find the parent review to which a reply will be added
         Review parentReview = reviewRepository.findById(reviewId).orElse(null);
 
         if (parentReview == null) {
