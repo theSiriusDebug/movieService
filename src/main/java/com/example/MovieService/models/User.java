@@ -60,4 +60,8 @@ public class User {
         this.password = password;
         this.roles = roles;
     }
+
+    public boolean hasRole(String role) {
+        return roles.stream().anyMatch(r -> r.getName().equals(role));
+    }
 }

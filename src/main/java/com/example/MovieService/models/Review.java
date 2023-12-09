@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "rating")
@@ -25,5 +26,18 @@ public class Review {
     @JsonIgnore
     private Movie movie;
 
+    @OneToMany(mappedBy = "parentReview", cascade = CascadeType.ALL)
+    private List<Reply> replies;
+
     private String reviewText;
+
+    @Transient
+    private String reviewOwner;
+
+    public String getReviewOwner() {
+        if (user != null) {
+            return user.getUsername();
+        }
+        return null;
+    }
 }

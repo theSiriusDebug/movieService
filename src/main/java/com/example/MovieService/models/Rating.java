@@ -26,5 +26,6 @@ public class Rating {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    private int ratingValue;
+    @Column(name = "rating_value") // Add this column mapping
+    private Integer ratingValue; // Add this field
 }

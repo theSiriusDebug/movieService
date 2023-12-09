@@ -47,8 +47,14 @@ public class RegistrationController {
                 User newUser = new User();
                 newUser.setUsername(username);
                 newUser.setPassword(new BCryptPasswordEncoder().encode(registrationDto.getPassword()));
-                Role role = roleRepository.findByName("ROLE_USER");
-                newUser.setRoles(Collections.singleton(role));
+                if (registrationDto.getRole() != null && !registrationDto.getRole().isEmpty()) {
+                    Role role = roleRepository.findByName(registrationDto.getRole());
+                    newUser.setRoles(Collections.singleton(role));
+                } else {
+                    // Set a default role if no role is provided
+                    Role defaultRole = roleRepository.findByName("ROLE_USER");
+                    newUser.setRoles(Collections.singleton(defaultRole));
+                }
                 userService.save(newUser);
 
                 String token = jwtTokenProvider.createToken(newUser.getUsername(), newUser.getRoles());

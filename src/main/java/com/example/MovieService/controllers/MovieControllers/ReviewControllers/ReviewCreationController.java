@@ -36,7 +36,7 @@ public class ReviewCreationController {
 
     @ApiOperation("Create a review")
     @PostMapping("/create/{movieId}")
-    public ResponseEntity<String> createReview(@PathVariable Long movieId, @RequestBody String reviewText) {
+    public ResponseEntity<Review> createReview(@PathVariable Long movieId, @RequestBody String reviewText) {
         logger.info("Creating review for movie with ID: " + movieId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,7 +47,7 @@ public class ReviewCreationController {
 
         if (movie == null) {
             logger.warning("Movie not found with ID: " + movieId);
-            return ResponseEntity.badRequest().body("Movie not found.");
+            return ResponseEntity.notFound().build();
         }
 
         Review review = new Review();
@@ -59,7 +59,7 @@ public class ReviewCreationController {
         userRepository.save(currentUser);
 
         logger.info("Review created successfully for movie with ID: " + movieId);
-        return ResponseEntity.ok("Review created successfully.");
+        return ResponseEntity.ok(review);
     }
 
     @ApiOperation("Delete a review")
@@ -67,7 +67,6 @@ public class ReviewCreationController {
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId) {
         logger.info("Deleting review with ID: " + reviewId);
 
-        // Find the review to be deleted
         Review review = reviewRepository.findById(reviewId).orElse(null);
 
         if (review == null) {
@@ -79,7 +78,8 @@ public class ReviewCreationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
 
-        if (!review.getUser().equals(currentUser)) {
+        //The review is carried out by a user with good reviews or an administrator.
+        if ((!currentUser.hasRole("ROLE_ADMIN") && !review.getUser().equals(currentUser))) {
             logger.warning("Unauthorized deletion attempt for review with ID: " + reviewId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to delete this review.");
         }
@@ -94,10 +94,13 @@ public class ReviewCreationController {
         user.getReviews().remove(review);
         userRepository.save(user);
 
-        // Delete the review
         reviewRepository.delete(review);
 
         logger.info("Review deleted successfully with ID: " + reviewId);
         return ResponseEntity.ok("Review deleted successfully.");
+    }
+    @GetMapping
+    public ResponseEntity<List<Review>> get_reviews(){
+        return ResponseEntity.ok(reviewRepository.findAll());
     }
 }
