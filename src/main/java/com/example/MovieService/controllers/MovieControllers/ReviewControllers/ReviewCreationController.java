@@ -99,8 +99,4 @@ public class ReviewCreationController {
         logger.info("Review deleted successfully with ID: " + reviewId);
         return ResponseEntity.ok("Review deleted successfully.");
     }
-    @GetMapping
-    public ResponseEntity<List<Review>> get_reviews(){
-        return ResponseEntity.ok(reviewRepository.findAll());
-    }
 }
