@@ -3,10 +3,9 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 import com.example.MovieService.models.Reply;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.ReplyRepository;
-import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.repositories.UserRepository;
+import com.example.MovieService.sevices.ReviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -23,22 +22,20 @@ import java.util.logging.Logger;
 @RequestMapping("/replies")
 public class ReplyCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
-    private final MovieRepository movieRepository;
     private final UserRepository userRepository;
-    private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
     private final ReplyRepository replyRepository;
 
-    public ReplyCreationController(MovieRepository movieRepository, UserRepository userRepository, ReviewRepository reviewRepository, ReplyRepository replyRepository) {
-        this.movieRepository = movieRepository;
+    public ReplyCreationController(UserRepository userRepository, ReviewService reviewService, ReplyRepository replyRepository) {
         this.userRepository = userRepository;
-        this.reviewRepository = reviewRepository;
+        this.reviewService = reviewService;
         this.replyRepository = replyRepository;
     }
 
     @ApiOperation("Create a reply to a review")
     @PostMapping("/createReply/{reviewId}")
     public ResponseEntity<Reply> createReply(@PathVariable Long reviewId, @RequestBody String replyText) {
-        Review parentReview = reviewRepository.findById(reviewId).orElse(null);
+        Review parentReview = reviewService.findReviewById(reviewId);
 
         if (parentReview == null) {
             logger.warning("Parent review not found with ID: " + reviewId);
@@ -54,7 +51,7 @@ public class ReplyCreationController {
         reply.setReplyText(replyText);
 
         parentReview.getReplies().add(reply);
-        reviewRepository.save(parentReview);
+        reviewService.saveReview(parentReview);
 
         logger.info("Reply created successfully for parent review with ID: " + reviewId);
         return ResponseEntity.ok(reply);
@@ -82,7 +79,7 @@ public class ReplyCreationController {
         // Remove the reply from the parent review's reply list
         Review parentReview = reply.getParentReview();
         parentReview.getReplies().remove(reply);
-        reviewRepository.save(parentReview);
+        reviewService.saveReview(parentReview);
 
         replyRepository.delete(reply);
 

@@ -1,18 +1,18 @@
 package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 
 import com.example.MovieService.models.Reply;
-import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.ReplyRepository;
-import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.repositories.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.logging.Logger;
 
 @Api(tags = "ChildReplyCreationController API")
@@ -20,15 +20,12 @@ import java.util.logging.Logger;
 @RequestMapping("/childReplies")
 public class ChildReplyCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
-    private final MovieRepository movieRepository;
     private final UserRepository userRepository;
-    private final ReviewRepository reviewRepository;
     private final ReplyRepository replyRepository;
 
-    public ChildReplyCreationController(MovieRepository movieRepository, UserRepository userRepository, ReviewRepository reviewRepository, ReplyRepository replyRepository) {
-        this.movieRepository = movieRepository;
+    @Autowired
+    public ChildReplyCreationController(UserRepository userRepository, ReplyRepository replyRepository) {
         this.userRepository = userRepository;
-        this.reviewRepository = reviewRepository;
         this.replyRepository = replyRepository;
     }
     @ApiOperation("Create a reply to a review or another reply")
@@ -95,5 +92,10 @@ public class ChildReplyCreationController {
         }
 
         replyRepository.delete(reply);
+    }
+
+    @GetMapping
+    public List<Reply> get_child_replies(){
+        return replyRepository.findAll();
     }
 }

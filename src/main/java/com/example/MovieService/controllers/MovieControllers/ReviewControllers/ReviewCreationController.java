@@ -4,8 +4,8 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.MovieRepository;
-import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.repositories.UserRepository;
+import com.example.MovieService.sevices.ReviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 @Api(tags = "ReviewCreationController API")
@@ -25,13 +24,13 @@ public class ReviewCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
-    private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
 
     @Autowired
-    public ReviewCreationController(MovieRepository movieRepository, UserRepository userRepository, ReviewRepository reviewRepository) {
+    public ReviewCreationController(MovieRepository movieRepository, UserRepository userRepository, ReviewService reviewService) {
         this.movieRepository = movieRepository;
         this.userRepository = userRepository;
-        this.reviewRepository = reviewRepository;
+        this.reviewService = reviewService;
     }
 
     @ApiOperation("Create a review")
@@ -42,7 +41,6 @@ public class ReviewCreationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
 
-        // Get a movie asset to which a review will be added
         Movie movie = movieRepository.findById(movieId).orElse(null);
 
         if (movie == null) {
@@ -67,7 +65,7 @@ public class ReviewCreationController {
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId) {
         logger.info("Deleting review with ID: " + reviewId);
 
-        Review review = reviewRepository.findById(reviewId).orElse(null);
+        Review review = reviewService.findReviewById(reviewId);
 
         if (review == null) {
             logger.warning("Review not found with ID: " + reviewId);
@@ -94,7 +92,7 @@ public class ReviewCreationController {
         user.getReviews().remove(review);
         userRepository.save(user);
 
-        reviewRepository.delete(review);
+        reviewService.deleteReview(review);
 
         logger.info("Review deleted successfully with ID: " + reviewId);
         return ResponseEntity.ok("Review deleted successfully.");
