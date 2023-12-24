@@ -6,6 +6,7 @@ import com.example.MovieService.repositories.ReplyRepository;
 import com.example.MovieService.repositories.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -55,20 +56,21 @@ public class ChildReplyCreationController {
 
     @ApiOperation("Delete a reply and its child replies")
     @DeleteMapping("/deleteChildReply/{replyId}")
-    public ResponseEntity<String> deleteChildReply(@PathVariable Long replyId) {
-        Reply childReply = replyRepository.findById(replyId).orElse(null);
-
-        if (childReply == null) {
-            logger.warning("Reply not found with ID: " + replyId);
-            return ResponseEntity.badRequest().body("Reply not found.");
-        }
+    public ResponseEntity<String> deleteChildReply(@PathVariable Long replyId) throws NotFoundException {
+        Reply childReply = replyRepository.findById(replyId)
+                .orElseThrow(() -> new NotFoundException("Child reply not found with ID: " + replyId));
 
         // Check if the current user is the owner of the reply
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
 
-        if (!childReply.getUser().equals(currentUser)) {
-            logger.warning("Unauthorized deletion attempt for reply with ID: " + replyId);
+        if(currentUser == null) {
+            logger.warning("User null");
+            return ResponseEntity.notFound().build();
+        }
+
+        if(childReply.getUser() == null) {
+            logger.warning("ChildUser null");
             return ResponseEntity.notFound().build();
         }
 
@@ -87,15 +89,23 @@ public class ChildReplyCreationController {
 
         // Remove the reply from its parent reply's child reply list
         if (reply.getParentReply() != null) {
+            logger.warning("Child_reply not null!");
             reply.getParentReply().getChildReplies().remove(reply);
             replyRepository.save(reply.getParentReply());
         }
 
+        logger.info("child_reply deleted successful!");
         replyRepository.delete(reply);
     }
 
     @GetMapping
     public List<Reply> get_child_replies(){
+        logger.info("get all child_replies!");
         return replyRepository.findAll();
+    }
+
+    @DeleteMapping("/del")
+    public void delete_all_replies(){
+        replyRepository.deleteAll();
     }
 }

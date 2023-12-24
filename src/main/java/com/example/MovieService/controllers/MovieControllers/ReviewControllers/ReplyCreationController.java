@@ -8,6 +8,7 @@ import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.ReviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -44,6 +45,15 @@ public class ReplyCreationController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
+        if(currentUser == null) {
+            logger.warning("User null");
+            return ResponseEntity.notFound().build();
+        }
+
+        if(parentReview.getUser() == null) {
+            logger.warning("parentReview null");
+            return ResponseEntity.notFound().build();
+        }
 
         Reply reply = new Reply();
         reply.setParentReview(parentReview);
@@ -59,8 +69,9 @@ public class ReplyCreationController {
 
     @ApiOperation("Delete a reply")
     @DeleteMapping("/deleteReply/{replyId}")
-    public ResponseEntity<String> deleteReply(@PathVariable Long replyId) {
-        Reply reply = replyRepository.findById(replyId).orElse(null);
+    public ResponseEntity<String> deleteReply(@PathVariable Long replyId) throws NotFoundException {
+        Reply reply = replyRepository.findById(replyId)
+                .orElseThrow(() -> new NotFoundException("not found reply"));
 
         if (reply == null) {
             logger.warning("Reply not found with ID: " + replyId);
