@@ -29,6 +29,7 @@ com/example/MovieService/parser/MovieDataParser.class
 com/example/MovieService/models/Review.class
 com/example/MovieService/jwt/JwtAuthenticationFilter.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.class
+com/example/MovieService/sevices/ReplyService.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/RatingCreationController.class
 com/example/MovieService/models/User.class
 com/example/MovieService/MovieServiceApplication.class

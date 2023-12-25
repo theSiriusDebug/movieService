@@ -3,12 +3,11 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 import com.example.MovieService.models.Reply;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.ReplyRepository;
 import com.example.MovieService.repositories.UserRepository;
+import com.example.MovieService.sevices.ReplyService;
 import com.example.MovieService.sevices.ReviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,12 +24,12 @@ public class ReplyCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
     private final UserRepository userRepository;
     private final ReviewService reviewService;
-    private final ReplyRepository replyRepository;
+    private final ReplyService replyService;
 
-    public ReplyCreationController(UserRepository userRepository, ReviewService reviewService, ReplyRepository replyRepository) {
+    public ReplyCreationController(UserRepository userRepository, ReviewService reviewService, ReplyService replyService) {
         this.userRepository = userRepository;
         this.reviewService = reviewService;
-        this.replyRepository = replyRepository;
+        this.replyService = replyService;
     }
 
     @ApiOperation("Create a reply to a review")
@@ -45,13 +44,9 @@ public class ReplyCreationController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
-        if(currentUser == null) {
-            logger.warning("User null");
-            return ResponseEntity.notFound().build();
-        }
 
-        if(parentReview.getUser() == null) {
-            logger.warning("parentReview null");
+        if(currentUser == null) {
+            logger.warning("You're not logged in.");
             return ResponseEntity.notFound().build();
         }
 
@@ -69,9 +64,8 @@ public class ReplyCreationController {
 
     @ApiOperation("Delete a reply")
     @DeleteMapping("/deleteReply/{replyId}")
-    public ResponseEntity<String> deleteReply(@PathVariable Long replyId) throws NotFoundException {
-        Reply reply = replyRepository.findById(replyId)
-                .orElseThrow(() -> new NotFoundException("not found reply"));
+    public ResponseEntity<String> deleteReply(@PathVariable Long replyId) {
+        Reply reply = replyService.findReplyById(replyId);
 
         if (reply == null) {
             logger.warning("Reply not found with ID: " + replyId);
@@ -92,7 +86,7 @@ public class ReplyCreationController {
         parentReview.getReplies().remove(reply);
         reviewService.saveReview(parentReview);
 
-        replyRepository.delete(reply);
+        replyService.deleteReply(reply);
 
         logger.info("Reply deleted successfully with ID: " + replyId);
         return ResponseEntity.ok("Reply deleted successfully.");
@@ -100,6 +94,6 @@ public class ReplyCreationController {
 
     @GetMapping
     public ResponseEntity<List<Reply>> get_replies(){
-        return ResponseEntity.ok(replyRepository.findAll());
+        return ResponseEntity.ok(replyService.findAllReplies());
     }
 }

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-    private static final Logger logger = Logger.getLogger(MovieService.class.getName());
+    private static final Logger logger = Logger.getLogger(ReviewService.class.getName());
 
     @Autowired
     public ReviewService(ReviewRepository reviewRepository) {

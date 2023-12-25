@@ -2,11 +2,10 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 
 import com.example.MovieService.models.Reply;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.ReplyRepository;
 import com.example.MovieService.repositories.UserRepository;
+import com.example.MovieService.sevices.ReplyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -20,27 +19,27 @@ import java.util.logging.Logger;
 @RestController
 @RequestMapping("/childReplies")
 public class ChildReplyCreationController {
-    private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
+    private static final Logger logger = Logger.getLogger(ChildReplyCreationController.class.getName());
     private final UserRepository userRepository;
-    private final ReplyRepository replyRepository;
+    private final ReplyService childReplyService;
 
     @Autowired
-    public ChildReplyCreationController(UserRepository userRepository, ReplyRepository replyRepository) {
+    public ChildReplyCreationController(UserRepository userRepository, ReplyService childReplyService) {
         this.userRepository = userRepository;
-        this.replyRepository = replyRepository;
+        this.childReplyService = childReplyService;
     }
     @ApiOperation("Create a reply to a review or another reply")
     @PostMapping("/createChildReply/{parentId}")
     public ResponseEntity<Reply> createChildReply(@PathVariable Long parentId, @RequestBody String replyText) {
-        Reply parentReply = replyRepository.findById(parentId).orElse(null);
-
-        if (parentReply == null) {
-            logger.warning("Parent reply not found with ID: " + parentId);
-            return ResponseEntity.notFound().build();
-        }
+        Reply parentReply = childReplyService.findReplyById(parentId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
+
+        if(currentUser == null) {
+            logger.warning("You're not logged in.");
+            return ResponseEntity.notFound().build();
+        }
 
         Reply childReply = new Reply();
         childReply.setParentReply(parentReply);
@@ -48,36 +47,29 @@ public class ChildReplyCreationController {
         childReply.setReplyText(replyText);
 
         parentReply.getChildReplies().add(childReply);
-        replyRepository.save(parentReply);
+        childReplyService.saveReply(parentReply);
 
-        logger.info("Reply created successfully for parent reply with ID: " + parentId);
+        logger.info("Child reply created successfully for parent reply with ID: " + parentId);
         return ResponseEntity.ok(childReply);
     }
 
-    @ApiOperation("Delete a reply and its child replies")
-    @DeleteMapping("/deleteChildReply/{replyId}")
-    public ResponseEntity<String> deleteChildReply(@PathVariable Long replyId) throws NotFoundException {
-        Reply childReply = replyRepository.findById(replyId)
-                .orElseThrow(() -> new NotFoundException("Child reply not found with ID: " + replyId));
-
+    @ApiOperation("Delete a child reply and its child replies")
+    @DeleteMapping("/deleteChildReply/{childReplyId}")
+    public ResponseEntity<String> deleteChildReply(@PathVariable Long childReplyId) {
+        Reply childReply = childReplyService.findReplyById(childReplyId);
         // Check if the current user is the owner of the reply
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByUsername(authentication.getName());
 
         if(currentUser == null) {
-            logger.warning("User null");
-            return ResponseEntity.notFound().build();
-        }
-
-        if(childReply.getUser() == null) {
-            logger.warning("ChildUser null");
+            logger.warning("You're not logged in.");
             return ResponseEntity.notFound().build();
         }
 
         // Delete the reply and its child replies recursively
         deleteReplyRecursive(childReply);
 
-        logger.info("Reply and its child replies deleted successfully with ID: " + replyId);
+        logger.info("Reply and its child replies deleted successfully with ID: " + childReplyId);
         return ResponseEntity.ok("Reply and its child replies deleted successfully.");
     }
 
@@ -89,23 +81,18 @@ public class ChildReplyCreationController {
 
         // Remove the reply from its parent reply's child reply list
         if (reply.getParentReply() != null) {
-            logger.warning("Child_reply not null!");
+            logger.warning("Child reply not null!");
             reply.getParentReply().getChildReplies().remove(reply);
-            replyRepository.save(reply.getParentReply());
+            childReplyService.saveReply(reply.getParentReply());
         }
 
         logger.info("child_reply deleted successful!");
-        replyRepository.delete(reply);
+        childReplyService.deleteReply(reply);
     }
 
     @GetMapping
     public List<Reply> get_child_replies(){
         logger.info("get all child_replies!");
-        return replyRepository.findAll();
-    }
-
-    @DeleteMapping("/del")
-    public void delete_all_replies(){
-        replyRepository.deleteAll();
+        return childReplyService.findAllReplies();
     }
 }
