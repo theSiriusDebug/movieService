@@ -54,7 +54,7 @@ public class ReviewService {
         return reviews;
     }
 
-    public Review saveReview(Review review){
-        return reviewRepository.save(review);
+    public void saveReview(Review review){
+        reviewRepository.save(review);
     }
 }

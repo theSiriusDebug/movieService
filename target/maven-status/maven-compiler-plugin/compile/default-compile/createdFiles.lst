@@ -3,6 +3,7 @@ com/example/MovieService/repositories/MovieRepository.class
 com/example/MovieService/models/dtos/UserDto.class
 com/example/MovieService/models/Reply.class
 com/example/MovieService/controllers/MovieControllers/Parser/MovieParsingController.class
+com/example/MovieService/sevices/RoleService.class
 com/example/MovieService/controllers/authControllers/RegistrationController.class
 com/example/MovieService/controllers/authControllers/AuthController.class
 com/example/MovieService/controllers/HomeController.class

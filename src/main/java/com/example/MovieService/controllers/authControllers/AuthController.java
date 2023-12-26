@@ -4,7 +4,6 @@ import com.example.MovieService.jwt.JwtTokenProvider;
 import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.AuthDto;
-import com.example.MovieService.repositories.RoleRepository;
 import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
@@ -30,18 +29,18 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RoleRepository roleRepository;
     @Value("${jwt.refreshTokenValidityInMilliseconds}")
     private long refreshTokenValidityInMilliseconds;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
+    public AuthController(
+            AuthenticationManager authenticationManager,
+            UserService userService, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.roleRepository = roleRepository;
     }
 
     @PostMapping("/login")

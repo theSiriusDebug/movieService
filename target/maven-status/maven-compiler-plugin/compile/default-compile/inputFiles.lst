@@ -18,6 +18,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/UserRepository.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReplyCreationController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/UserService.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/RoleService.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/jwt/JwtAuthorizationFilter.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/FavouriteMoviesController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserController.java
