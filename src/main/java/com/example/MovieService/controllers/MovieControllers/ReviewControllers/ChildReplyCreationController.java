@@ -2,8 +2,8 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 
 import com.example.MovieService.models.Reply;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.ReplyService;
+import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,12 @@ import java.util.logging.Logger;
 @RequestMapping("/childReplies")
 public class ChildReplyCreationController {
     private static final Logger logger = Logger.getLogger(ChildReplyCreationController.class.getName());
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final ReplyService childReplyService;
 
     @Autowired
-    public ChildReplyCreationController(UserRepository userRepository, ReplyService childReplyService) {
-        this.userRepository = userRepository;
+    public ChildReplyCreationController(UserService userService, ReplyService childReplyService) {
+        this.userService = userService;
         this.childReplyService = childReplyService;
     }
     @ApiOperation("Create a reply to a review or another reply")
@@ -34,7 +34,7 @@ public class ChildReplyCreationController {
         Reply parentReply = childReplyService.findReplyById(parentId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(authentication.getName());
+        User currentUser = userService.findByOptionalUsername(authentication.getName());
 
         if(currentUser == null) {
             logger.warning("You're not logged in.");
@@ -59,7 +59,7 @@ public class ChildReplyCreationController {
         Reply childReply = childReplyService.findReplyById(childReplyId);
         // Check if the current user is the owner of the reply
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(authentication.getName());
+        User currentUser = userService.findByOptionalUsername(authentication.getName());
 
         if(currentUser == null) {
             logger.warning("You're not logged in.");
