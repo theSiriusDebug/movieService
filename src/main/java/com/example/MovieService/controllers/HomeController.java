@@ -1,22 +1,19 @@
 package com.example.MovieService.controllers;
 
-import com.example.MovieService.repositories.UserRepository;
+import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Api(tags = "Home API")
 public class HomeController {
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private final UserService userService;
 
     @Autowired
-    public HomeController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public HomeController(UserService userService) {
+        this.userService = userService;
     }
 
     @ApiOperation("Get home page")
