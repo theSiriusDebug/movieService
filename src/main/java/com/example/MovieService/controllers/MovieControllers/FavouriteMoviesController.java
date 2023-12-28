@@ -3,7 +3,7 @@ package com.example.MovieService.controllers.MovieControllers;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.MovieRepository;
-import com.example.MovieService.repositories.UserRepository;
+import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -21,13 +21,13 @@ import java.util.List;
 @RestController
 @RequestMapping
 public class FavouriteMoviesController {
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final MovieRepository movieRepository;
     private static final Logger logger = LoggerFactory.getLogger(FavouriteMoviesController.class);
 
     @Autowired
-    public FavouriteMoviesController(UserRepository userRepository, MovieRepository movieRepository) {
-        this.userRepository = userRepository;
+    public FavouriteMoviesController(UserService userService, MovieRepository movieRepository) {
+        this.userService = userService;
         this.movieRepository = movieRepository;
     }
 
@@ -36,7 +36,7 @@ public class FavouriteMoviesController {
     public ResponseEntity<String> addFavoriteMovie(@PathVariable("movieId") long movieId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUsername(authentication.getName());
+        User user = userService.findByUsername(authentication.getName());
 
         Movie movie = movieRepository.findById(movieId);
         if (movie == null) {
@@ -47,7 +47,7 @@ public class FavouriteMoviesController {
         List<Movie> favoriteMovies = user.getFavoriteMovies();
         if (!favoriteMovies.contains(movie)) {
             favoriteMovies.add(movie);
-            userRepository.save(user);
+            userService.save(user);
             logger.info("Movie with ID {} added to favorites for user {}.", movieId, user.getUsername());
         }
 
@@ -59,7 +59,7 @@ public class FavouriteMoviesController {
     public ResponseEntity<String> removeFavoriteMovie(@PathVariable("movieId") long movieId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUsername(authentication.getName());
+        User user = userService.findByUsername(authentication.getName());
 
         Movie movie = movieRepository.findById(movieId);
         if (movie == null) {
@@ -70,7 +70,7 @@ public class FavouriteMoviesController {
         List<Movie> favoriteMovies = user.getFavoriteMovies();
         if (favoriteMovies.contains(movie)) {
             favoriteMovies.remove(movie);
-            userRepository.save(user);
+            userService.save(user);
             logger.info("Movie with ID {} removed from favorites for user {}.", movieId, user.getUsername());
         }
 
