@@ -1,7 +1,7 @@
 package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 
 import com.example.MovieService.models.Review;
-import com.example.MovieService.sevices.ReviewService;
+import com.example.MovieService.sevices.ReviewServiceImpl;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +16,19 @@ import java.util.List;
 @RequestMapping("/reviews")
 public class ReviewsController {
 
-    private final ReviewService reviewService;
+    private final ReviewServiceImpl reviewServiceImpl;
 
     @Autowired
-    public ReviewsController(ReviewService reviewService) {
-        this.reviewService = reviewService;
+    public ReviewsController(ReviewServiceImpl reviewServiceImpl) {
+        this.reviewServiceImpl = reviewServiceImpl;
     }
 
     @GetMapping
     public ResponseEntity<List<Review>> getReviews(){
-        return ResponseEntity.ok(reviewService.findAllReviews());
+        return ResponseEntity.ok(reviewServiceImpl.findAllReviews());
     }
     @GetMapping("/{id}")
     public ResponseEntity<Review> getReview(@PathVariable("id") long id) throws NotFoundException {
-        return ResponseEntity.ok(reviewService.findReviewById(id));
+        return ResponseEntity.ok(reviewServiceImpl.findReviewById(id));
     }
 }

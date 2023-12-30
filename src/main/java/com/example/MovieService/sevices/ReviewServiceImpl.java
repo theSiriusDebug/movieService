@@ -3,6 +3,7 @@ package com.example.MovieService.sevices;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.repositories.ReviewRepository;
+import com.example.MovieService.sevices.interfaces.ReviewService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,20 +12,21 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service
-public class ReviewService {
+public class ReviewServiceImpl implements com.example.MovieService.sevices.interfaces.ReviewService {
     private final ReviewRepository reviewRepository;
-    private static final Logger logger = Logger.getLogger(ReviewService.class.getName());
+    private static final Logger logger = Logger.getLogger(ReviewServiceImpl.class.getName());
 
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
-
+    @Override
     public List<Review> findAllReviews() {
         logger.info("Retrieving all reviews");
         return reviewRepository.findAll();
     }
 
+    @Override
     public Review findReviewById(long id) {
         try {
             logger.info(String.format("Retrieving review with ID: %d", id));
@@ -36,12 +38,14 @@ public class ReviewService {
         }
     }
 
+    @Override
     public void deleteReview(Review review) {
         logger.info(String.format("Deleting review with ID: %d", review.getId()));
         reviewRepository.delete(review);
         logger.info("Review deleted successfully");
     }
 
+    @Override
     public List<Review> findReviewByMovie(Movie movie) {
         List<Review> reviews = reviewRepository.findByMovie(movie);
 
@@ -54,6 +58,7 @@ public class ReviewService {
         return reviews;
     }
 
+    @Override
     public void saveReview(Review review){
         reviewRepository.save(review);
     }

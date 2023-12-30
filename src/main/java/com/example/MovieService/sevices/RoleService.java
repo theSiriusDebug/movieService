@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 @Service
 public class RoleService {
     private final RoleRepository roleRepository;
-    private static final Logger logger = Logger.getLogger(ReviewService.class.getName());
+    private static final Logger logger = Logger.getLogger(ReviewServiceImpl.class.getName());
 
     @Autowired
     public RoleService(RoleRepository roleRepository) {

@@ -4,7 +4,7 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
 import com.example.MovieService.sevices.MovieService;
-import com.example.MovieService.sevices.ReviewService;
+import com.example.MovieService.sevices.ReviewServiceImpl;
 import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,13 +24,13 @@ public class ReviewCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
     private final MovieService movieService;
     private final UserService userService;
-    private final ReviewService reviewService;
+    private final ReviewServiceImpl reviewServiceImpl;
 
     @Autowired
-    public ReviewCreationController(MovieService movieService, UserService userService, ReviewService reviewService) {
+    public ReviewCreationController(MovieService movieService, UserService userService, ReviewServiceImpl reviewServiceImpl) {
         this.movieService = movieService;
         this.userService = userService;
-        this.reviewService = reviewService;
+        this.reviewServiceImpl = reviewServiceImpl;
     }
 
     @ApiOperation("Create a review")
@@ -65,7 +65,7 @@ public class ReviewCreationController {
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId) {
         logger.info("Deleting review with ID: " + reviewId);
 
-        Review review = reviewService.findReviewById(reviewId);
+        Review review = reviewServiceImpl.findReviewById(reviewId);
 
         if (review == null) {
             logger.warning("Review not found with ID: " + reviewId);
@@ -92,7 +92,7 @@ public class ReviewCreationController {
         user.getReviews().remove(review);
         userService.save(user);
 
-        reviewService.deleteReview(review);
+        reviewServiceImpl.deleteReview(review);
 
         logger.info("Review deleted successfully with ID: " + reviewId);
         return ResponseEntity.ok("Review deleted successfully.");
