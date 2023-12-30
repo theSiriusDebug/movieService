@@ -4,7 +4,7 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.MovieRepository;
-import com.example.MovieService.sevices.ReviewService;
+import com.example.MovieService.sevices.ReviewServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,13 @@ import java.util.*;
 @CrossOrigin
 public class MovieController {
     private final MovieRepository movieRepository;
-    private final ReviewService reviewService;
+    private final ReviewServiceImpl reviewServiceImpl;
 
     @Autowired
-    public MovieController(MovieRepository movieRepository, ReviewService reviewService) {
+    public MovieController(MovieRepository movieRepository, ReviewServiceImpl reviewServiceImpl) {
         this.movieRepository = movieRepository;
 
-        this.reviewService = reviewService;
+        this.reviewServiceImpl = reviewServiceImpl;
     }
 
     @ApiOperation("Get all movies")
@@ -95,7 +95,7 @@ public class MovieController {
     public ResponseEntity<Movie> getMovieDetails(@PathVariable("id") Long id) {
         Optional<Movie> movie = movieRepository.findById(id);
         if (movie.isPresent()) {
-            List<Review> comments = reviewService.findReviewByMovie(movie.get());
+            List<Review> comments = reviewServiceImpl.findReviewByMovie(movie.get());
             for (Review comment : comments) {
                 User user = comment.getUser();
                 comment.setUser(user);

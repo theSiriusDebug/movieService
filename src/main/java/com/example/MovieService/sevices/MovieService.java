@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -42,7 +43,7 @@ public class MovieService {
     }
 
     public void deleteMovie(Movie movie) {
-        movieRepository.delete(movie);
+        movieRepository.delete(Objects.requireNonNull(movie, "Movie cannot be null."));
     }
 
     public void saveMovie(Movie movie) {
