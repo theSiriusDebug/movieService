@@ -1,4 +1,6 @@
 com/example/MovieService/models/Rating.class
+com/example/MovieService/sevices/ReplyServiceImpl.class
+com/example/MovieService/sevices/interfaces/ReplyService.class
 com/example/MovieService/repositories/MovieRepository.class
 com/example/MovieService/models/dtos/UserDto.class
 com/example/MovieService/models/Reply.class
@@ -31,7 +33,6 @@ com/example/MovieService/parser/MovieDataParser.class
 com/example/MovieService/models/Review.class
 com/example/MovieService/jwt/JwtAuthenticationFilter.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.class
-com/example/MovieService/sevices/ReplyService.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/RatingCreationController.class
 com/example/MovieService/models/User.class
 com/example/MovieService/MovieServiceApplication.class

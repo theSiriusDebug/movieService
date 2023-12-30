@@ -2,7 +2,7 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 
 import com.example.MovieService.models.Reply;
 import com.example.MovieService.models.User;
-import com.example.MovieService.sevices.ReplyService;
+import com.example.MovieService.sevices.ReplyServiceImpl;
 import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,17 +21,17 @@ import java.util.logging.Logger;
 public class ChildReplyCreationController {
     private static final Logger logger = Logger.getLogger(ChildReplyCreationController.class.getName());
     private final UserService userService;
-    private final ReplyService childReplyService;
+    private final ReplyServiceImpl childReplyServiceImpl;
 
     @Autowired
-    public ChildReplyCreationController(UserService userService, ReplyService childReplyService) {
+    public ChildReplyCreationController(UserService userService, ReplyServiceImpl childReplyServiceImpl) {
         this.userService = userService;
-        this.childReplyService = childReplyService;
+        this.childReplyServiceImpl = childReplyServiceImpl;
     }
     @ApiOperation("Create a reply to a review or another reply")
     @PostMapping("/createChildReply/{parentId}")
     public ResponseEntity<Reply> createChildReply(@PathVariable Long parentId, @RequestBody String replyText) {
-        Reply parentReply = childReplyService.findReplyById(parentId);
+        Reply parentReply = childReplyServiceImpl.findReplyById(parentId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userService.findByOptionalUsername(authentication.getName());
@@ -47,7 +47,7 @@ public class ChildReplyCreationController {
         childReply.setReplyText(replyText);
 
         parentReply.getChildReplies().add(childReply);
-        childReplyService.saveReply(parentReply);
+        childReplyServiceImpl.saveReply(parentReply);
 
         logger.info("Child reply created successfully for parent reply with ID: " + parentId);
         return ResponseEntity.ok(childReply);
@@ -56,7 +56,7 @@ public class ChildReplyCreationController {
     @ApiOperation("Delete a child reply and its child replies")
     @DeleteMapping("/deleteChildReply/{childReplyId}")
     public ResponseEntity<String> deleteChildReply(@PathVariable Long childReplyId) {
-        Reply childReply = childReplyService.findReplyById(childReplyId);
+        Reply childReply = childReplyServiceImpl.findReplyById(childReplyId);
         // Check if the current user is the owner of the reply
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userService.findByOptionalUsername(authentication.getName());
@@ -83,16 +83,16 @@ public class ChildReplyCreationController {
         if (reply.getParentReply() != null) {
             logger.warning("Child reply not null!");
             reply.getParentReply().getChildReplies().remove(reply);
-            childReplyService.saveReply(reply.getParentReply());
+            childReplyServiceImpl.saveReply(reply.getParentReply());
         }
 
         logger.info("child_reply deleted successful!");
-        childReplyService.deleteReply(reply);
+        childReplyServiceImpl.deleteReply(reply);
     }
 
     @GetMapping
     public List<Reply> get_child_replies(){
         logger.info("get all child_replies!");
-        return childReplyService.findAllReplies();
+        return childReplyServiceImpl.findAllReplies();
     }
 }

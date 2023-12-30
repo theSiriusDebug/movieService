@@ -4,7 +4,7 @@ import com.example.MovieService.models.Reply;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.UserRepository;
-import com.example.MovieService.sevices.ReplyService;
+import com.example.MovieService.sevices.ReplyServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,12 +24,12 @@ public class ReplyCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
     private final UserRepository userRepository;
     private final ReviewServiceImpl reviewServiceImpl;
-    private final ReplyService replyService;
+    private final ReplyServiceImpl replyServiceImpl;
 
-    public ReplyCreationController(UserRepository userRepository, ReviewServiceImpl reviewServiceImpl, ReplyService replyService) {
+    public ReplyCreationController(UserRepository userRepository, ReviewServiceImpl reviewServiceImpl, ReplyServiceImpl replyServiceImpl) {
         this.userRepository = userRepository;
         this.reviewServiceImpl = reviewServiceImpl;
-        this.replyService = replyService;
+        this.replyServiceImpl = replyServiceImpl;
     }
 
     @ApiOperation("Create a reply to a review")
@@ -65,7 +65,7 @@ public class ReplyCreationController {
     @ApiOperation("Delete a reply")
     @DeleteMapping("/deleteReply/{replyId}")
     public ResponseEntity<String> deleteReply(@PathVariable Long replyId) {
-        Reply reply = replyService.findReplyById(replyId);
+        Reply reply = replyServiceImpl.findReplyById(replyId);
 
         if (reply == null) {
             logger.warning("Reply not found with ID: " + replyId);
@@ -86,7 +86,7 @@ public class ReplyCreationController {
         parentReview.getReplies().remove(reply);
         reviewServiceImpl.saveReview(parentReview);
 
-        replyService.deleteReply(reply);
+        replyServiceImpl.deleteReply(reply);
 
         logger.info("Reply deleted successfully with ID: " + replyId);
         return ResponseEntity.ok("Reply deleted successfully.");
@@ -94,6 +94,6 @@ public class ReplyCreationController {
 
     @GetMapping
     public ResponseEntity<List<Reply>> get_replies(){
-        return ResponseEntity.ok(replyService.findAllReplies());
+        return ResponseEntity.ok(replyServiceImpl.findAllReplies());
     }
 }

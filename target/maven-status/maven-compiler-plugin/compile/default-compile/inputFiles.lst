@@ -4,6 +4,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/CreateMovieController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/Parser/MovieParsingController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/ChildReplyCreationController.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/interfaces/ReplyService.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/configurations/WebSecurityConfig.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/Review.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserRegistrationDto.java
@@ -39,7 +40,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/WatchLaterMoviesController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/AuthDto.java
-/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/ReplyService.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/User.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/ReplyServiceImpl.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/Role.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/authControllers/AuthController.java
