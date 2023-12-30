@@ -1,7 +1,6 @@
 package com.example.MovieService.controllers.MovieControllers.Parser;
 
 import com.example.MovieService.parser.MovieDetailsExtractor;
-import com.example.MovieService.repositories.MovieRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +11,11 @@ import java.io.IOException;
 @RestController
 @Api(tags = "ParserController API")
 public class MovieParsingController {
-    private final MovieRepository movieRepository;
     private final MovieDetailsExtractor movieDetailsExtractor;
 
     @Autowired
-    public MovieParsingController(MovieRepository movieRepository, MovieDetailsExtractor movieDetailsExtractor) {
-        this.movieRepository = movieRepository;
+    public MovieParsingController(MovieDetailsExtractor movieDetailsExtractor) {
+
         this.movieDetailsExtractor = movieDetailsExtractor;
     }
 
