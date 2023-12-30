@@ -2,7 +2,7 @@ package com.example.MovieService.controllers.MovieControllers;
 
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.MovieRepository;
+import com.example.MovieService.sevices.MovieService;
 import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,13 +22,13 @@ import java.util.List;
 @RequestMapping
 public class FavouriteMoviesController {
     private final UserService userService;
-    private final MovieRepository movieRepository;
+    private final MovieService movieService;
     private static final Logger logger = LoggerFactory.getLogger(FavouriteMoviesController.class);
 
     @Autowired
-    public FavouriteMoviesController(UserService userService, MovieRepository movieRepository) {
+    public FavouriteMoviesController(UserService userService, MovieService movieService) {
         this.userService = userService;
-        this.movieRepository = movieRepository;
+        this.movieService = movieService;
     }
 
     @ApiOperation("add movie to favourite list")
@@ -38,7 +38,7 @@ public class FavouriteMoviesController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(authentication.getName());
 
-        Movie movie = movieRepository.findById(movieId);
+        Movie movie = movieService.findOptionalMovieById(movieId);
         if (movie == null) {
             logger.error("Movie with ID {} not found.", movieId);
             throw new EntityNotFoundException("Movie not found");
@@ -61,7 +61,7 @@ public class FavouriteMoviesController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(authentication.getName());
 
-        Movie movie = movieRepository.findById(movieId);
+        Movie movie = movieService.findOptionalMovieById(movieId);
         if (movie == null) {
             logger.error("Movie with ID {} not found.", movieId);
             throw new EntityNotFoundException("Movie not found");
