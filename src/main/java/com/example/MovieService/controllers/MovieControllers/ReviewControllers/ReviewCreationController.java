@@ -3,9 +3,9 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.MovieRepository;
-import com.example.MovieService.repositories.UserRepository;
+import com.example.MovieService.sevices.MovieService;
 import com.example.MovieService.sevices.ReviewService;
+import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,14 @@ import java.util.logging.Logger;
 @RequestMapping("/reviews")
 public class ReviewCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
-    private final MovieRepository movieRepository;
-    private final UserRepository userRepository;
+    private final MovieService movieService;
+    private final UserService userService;
     private final ReviewService reviewService;
 
     @Autowired
-    public ReviewCreationController(MovieRepository movieRepository, UserRepository userRepository, ReviewService reviewService) {
-        this.movieRepository = movieRepository;
-        this.userRepository = userRepository;
+    public ReviewCreationController(MovieService movieService, UserService userService, ReviewService reviewService) {
+        this.movieService = movieService;
+        this.userService = userService;
         this.reviewService = reviewService;
     }
 
@@ -39,9 +39,9 @@ public class ReviewCreationController {
         logger.info("Creating review for movie with ID: " + movieId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(authentication.getName());
+        User currentUser = userService.findByOptionalUsername(authentication.getName());
 
-        Movie movie = movieRepository.findById(movieId).orElse(null);
+        Movie movie = movieService.findOptionalMovieById(movieId);
 
         if (movie == null) {
             logger.warning("Movie not found with ID: " + movieId);
@@ -54,7 +54,7 @@ public class ReviewCreationController {
         review.setReviewText(reviewText);
 
         currentUser.getReviews().add(review);
-        userRepository.save(currentUser);
+        userService.save(currentUser);
 
         logger.info("Review created successfully for movie with ID: " + movieId);
         return ResponseEntity.ok(review);
@@ -74,7 +74,7 @@ public class ReviewCreationController {
 
         // Check if the current user is the owner of the review
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(authentication.getName());
+        User currentUser = userService.findByUsername(authentication.getName());
 
         //The review is carried out by a user with good reviews or an administrator.
         if ((!currentUser.hasRole("ROLE_ADMIN") && !review.getUser().equals(currentUser))) {
@@ -85,12 +85,12 @@ public class ReviewCreationController {
         // Remove the review from the movie's review list
         Movie movie = review.getMovie();
         movie.getReviews().remove(review);
-        movieRepository.save(movie);
+        movieService.saveMovie(movie);
 
         // Remove the review from the user's review list
         User user = review.getUser();
         user.getReviews().remove(review);
-        userRepository.save(user);
+        userService.save(user);
 
         reviewService.deleteReview(review);
 
