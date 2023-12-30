@@ -23,11 +23,12 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
-    private List<Movie> findAllMovies(){
+    public List<Movie> findAllMovies(){
         return movieRepository.findAll();
     }
 
     public Movie findMovieById(long id) {
+        logger.info("Find movie by id " + id);
         return movieRepository.findById(id);
     }
 
@@ -42,5 +43,10 @@ public class MovieService {
 
     public void deleteMovie(Movie movie) {
         movieRepository.delete(movie);
+    }
+
+    public void saveMovie(Movie movie) {
+        logger.info("Movie saved.");
+        movieRepository.save(movie);
     }
 }
