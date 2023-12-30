@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Service
-public class ReviewServiceImpl implements com.example.MovieService.sevices.interfaces.ReviewService {
+public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private static final Logger logger = Logger.getLogger(ReviewServiceImpl.class.getName());
 
