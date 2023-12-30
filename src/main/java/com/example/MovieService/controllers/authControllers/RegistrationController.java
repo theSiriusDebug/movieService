@@ -4,7 +4,7 @@ import com.example.MovieService.jwt.JwtTokenProvider;
 import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
-import com.example.MovieService.sevices.RoleService;
+import com.example.MovieService.sevices.RoleServiceImpl;
 import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
@@ -26,15 +26,15 @@ public class RegistrationController {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RoleService roleService;
+    private final RoleServiceImpl roleServiceImpl;
 
     @Autowired
     public RegistrationController(
             AuthenticationManager authenticationManager, UserService userService,
-            JwtTokenProvider jwtTokenProvider, RoleService roleService) {
+            JwtTokenProvider jwtTokenProvider, RoleServiceImpl roleServiceImpl) {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.roleService = roleService;
+        this.roleServiceImpl = roleServiceImpl;
     }
 
     @PostMapping("/register")
@@ -48,11 +48,11 @@ public class RegistrationController {
                 newUser.setUsername(username);
                 newUser.setPassword(new BCryptPasswordEncoder().encode(registrationDto.getPassword()));
                 if (registrationDto.getRole() != null && !registrationDto.getRole().isEmpty()) {
-                    Role role = roleService.findRoleByName(registrationDto.getRole());
+                    Role role = roleServiceImpl.findRoleByName(registrationDto.getRole());
                     newUser.setRoles(Collections.singleton(role));
                 } else {
                     // Set a default role if no role is provided
-                    Role defaultRole = roleService.findRoleByName("ROLE_USER");
+                    Role defaultRole = roleServiceImpl.findRoleByName("ROLE_USER");
                     newUser.setRoles(Collections.singleton(defaultRole));
                 }
                 userService.save(newUser);
