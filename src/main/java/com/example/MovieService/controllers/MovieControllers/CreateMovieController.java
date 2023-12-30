@@ -1,7 +1,7 @@
 package com.example.MovieService.controllers.MovieControllers;
 
 import com.example.MovieService.models.Movie;
-import com.example.MovieService.sevices.MovieService;
+import com.example.MovieService.sevices.MovieServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/movies")
 @Api(tags = "MovieCreationController API")
 public class CreateMovieController {
-    private final MovieService movieService;
+    private final MovieServiceImpl movieServiceImpl;
 
     @Autowired
-    public CreateMovieController(MovieService movieService) {
-        this.movieService = movieService;
+    public CreateMovieController(MovieServiceImpl movieServiceImpl) {
+        this.movieServiceImpl = movieServiceImpl;
 
     }
 
     @ApiOperation("Create a movie")
     @PostMapping("/create")
     public ResponseEntity<Movie> createMovie(@RequestBody Movie movie) {
-        movieService.saveMovie(movie);
+        movieServiceImpl.saveMovie(movie);
         return ResponseEntity.ok(movie);
     }
 }

@@ -1,4 +1,5 @@
 com/example/MovieService/sevices/interfaces/ReplyService.class
+com/example/MovieService/sevices/MovieServiceImpl.class
 com/example/MovieService/models/dtos/UserDto.class
 com/example/MovieService/models/Reply.class
 com/example/MovieService/sevices/ReviewServiceImpl.class
@@ -15,7 +16,6 @@ com/example/MovieService/sevices/RoleServiceImpl.class
 com/example/MovieService/controllers/MovieControllers/WatchLaterMoviesController.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReplyCreationController.class
 com/example/MovieService/controllers/UserControllers/RoleControllers/RoleController.class
-com/example/MovieService/sevices/MovieService.class
 com/example/MovieService/models/Movie.class
 com/example/MovieService/models/Rating.class
 com/example/MovieService/sevices/ReplyServiceImpl.class
@@ -41,6 +41,7 @@ com/example/MovieService/jwt/JwtAuthenticationFilter.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/RatingCreationController.class
 com/example/MovieService/models/User.class
+com/example/MovieService/sevices/interfaces/MovieService.class
 com/example/MovieService/MovieServiceApplication.class
 com/example/MovieService/repositories/UserRepository.class
 com/example/MovieService/controllers/MovieControllers/StreamMovieController.class

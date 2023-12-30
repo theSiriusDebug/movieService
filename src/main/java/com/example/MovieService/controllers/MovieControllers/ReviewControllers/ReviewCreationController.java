@@ -3,7 +3,7 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
-import com.example.MovieService.sevices.MovieService;
+import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
 import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
@@ -22,13 +22,13 @@ import java.util.logging.Logger;
 @RequestMapping("/reviews")
 public class ReviewCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
-    private final MovieService movieService;
+    private final MovieServiceImpl movieServiceImpl;
     private final UserService userService;
     private final ReviewServiceImpl reviewServiceImpl;
 
     @Autowired
-    public ReviewCreationController(MovieService movieService, UserService userService, ReviewServiceImpl reviewServiceImpl) {
-        this.movieService = movieService;
+    public ReviewCreationController(MovieServiceImpl movieServiceImpl, UserService userService, ReviewServiceImpl reviewServiceImpl) {
+        this.movieServiceImpl = movieServiceImpl;
         this.userService = userService;
         this.reviewServiceImpl = reviewServiceImpl;
     }
@@ -41,7 +41,7 @@ public class ReviewCreationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userService.findByOptionalUsername(authentication.getName());
 
-        Movie movie = movieService.findOptionalMovieById(movieId);
+        Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
 
         if (movie == null) {
             logger.warning("Movie not found with ID: " + movieId);
@@ -85,7 +85,7 @@ public class ReviewCreationController {
         // Remove the review from the movie's review list
         Movie movie = review.getMovie();
         movie.getReviews().remove(review);
-        movieService.saveMovie(movie);
+        movieServiceImpl.saveMovie(movie);
 
         // Remove the review from the user's review list
         User user = review.getUser();

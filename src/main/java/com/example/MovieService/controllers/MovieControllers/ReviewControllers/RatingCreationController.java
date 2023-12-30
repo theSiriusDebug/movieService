@@ -3,7 +3,7 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Rating;
 import com.example.MovieService.models.User;
-import com.example.MovieService.sevices.MovieService;
+import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/rating")
 public class RatingCreationController {
 
-    private final MovieService movieService;
+    private final MovieServiceImpl movieServiceImpl;
     private final UserService userService;
 
     @Autowired
-    public RatingCreationController(MovieService movieService, UserService userService) {
-        this.movieService = movieService;
+    public RatingCreationController(MovieServiceImpl movieServiceImpl, UserService userService) {
+        this.movieServiceImpl = movieServiceImpl;
         this.userService = userService;
     }
 
@@ -34,7 +34,7 @@ public class RatingCreationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByOptionalUsername(authentication.getName());
 
-        Movie movie = movieService.findOptionalMovieById(movieId);
+        Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
 
         for (Rating existingRating : user.getRating()) {
             if (existingRating.getMovie().getId().equals(movieId)) {
