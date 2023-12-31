@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Service
@@ -52,7 +53,7 @@ public class ReplyServiceImpl implements ReplyService {
 
         try {
             logger.info(String.format("Deleting reply with ID: %d", reply.getId()));
-            replyRepository.delete(reply);
+            replyRepository.delete(Objects.requireNonNull(reply, "Reply cannot be null."));
             logger.info("Reply deleted successfully");
         } catch (Exception e) {
             logger.info("Failed to delete reply: " + reply);
@@ -68,7 +69,7 @@ public class ReplyServiceImpl implements ReplyService {
         }
 
         try {
-            replyRepository.save(reply);
+            replyRepository.save(Objects.requireNonNull(reply, "Reply cannot be null."));
             logger.info("Reply saved successfully.");
         } catch (Exception e) {
             logger.info("Failed to save reply: " + reply);
