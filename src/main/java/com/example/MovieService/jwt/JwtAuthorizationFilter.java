@@ -1,6 +1,6 @@
 package com.example.MovieService.jwt;
 
-import com.example.MovieService.sevices.UserService;
+import com.example.MovieService.sevices.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,12 +17,12 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthorizationFilter.class);
     private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserService userService) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider, UserServiceImpl userServiceImpl) {
         super(authenticationManager);
         this.jwtTokenProvider = jwtTokenProvider;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Override

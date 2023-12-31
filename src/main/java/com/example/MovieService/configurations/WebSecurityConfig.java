@@ -3,7 +3,7 @@ package com.example.MovieService.configurations;
 import com.example.MovieService.jwt.JwtAuthenticationFilter;
 import com.example.MovieService.jwt.JwtAuthorizationFilter;
 import com.example.MovieService.jwt.JwtTokenProvider;
-import com.example.MovieService.sevices.UserService;
+import com.example.MovieService.sevices.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,12 +23,12 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public WebSecurityConfig(UserService userService, JwtTokenProvider jwtTokenProvider) {
-        this.userService = userService;
+    public WebSecurityConfig(UserServiceImpl userServiceImpl, JwtTokenProvider jwtTokenProvider) {
+        this.userServiceImpl = userServiceImpl;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), jwtTokenProvider))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtTokenProvider, userService))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtTokenProvider, userServiceImpl))
                 .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     }
 
@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(userServiceImpl).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Bean

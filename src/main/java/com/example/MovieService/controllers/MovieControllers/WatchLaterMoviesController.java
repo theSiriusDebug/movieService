@@ -3,7 +3,7 @@ package com.example.MovieService.controllers.MovieControllers;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.User;
 import com.example.MovieService.sevices.MovieServiceImpl;
-import com.example.MovieService.sevices.UserService;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -21,13 +21,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/watchLaterMovies")
 public class WatchLaterMoviesController {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final MovieServiceImpl movieServiceImpl;
     private static final Logger logger = LoggerFactory.getLogger(WatchLaterMoviesController.class);
 
     @Autowired
-    public WatchLaterMoviesController(UserService userService, MovieServiceImpl movieServiceImpl) {
-        this.userService = userService;
+    public WatchLaterMoviesController(UserServiceImpl userServiceImpl, MovieServiceImpl movieServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
         this.movieServiceImpl = movieServiceImpl;
     }
 
@@ -36,7 +36,7 @@ public class WatchLaterMoviesController {
     public ResponseEntity<String> addWatchLaterMovie(@PathVariable("movieId") long movieId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByOptionalUsername(authentication.getName());
+        User user = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
         if (movie == null) {
@@ -47,7 +47,7 @@ public class WatchLaterMoviesController {
         List<Movie> watchLaterMovies = user.getWatchLaterMovies();
         if (!watchLaterMovies.contains(movie)) {
             watchLaterMovies.add(movie);
-            userService.save(user);
+            userServiceImpl.save(user);
             logger.info("Movie with ID {} added to watch later for user {}.", movieId, user.getUsername());
         }
 
@@ -59,7 +59,7 @@ public class WatchLaterMoviesController {
     public ResponseEntity<String> removeWatchLaterMovie(@PathVariable("movieId") long movieId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByUsername(authentication.getName());
+        User user = userServiceImpl.findByUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
         if (movie == null) {
@@ -70,7 +70,7 @@ public class WatchLaterMoviesController {
         List<Movie> watchLater = user.getWatchLaterMovies();
         if (watchLater.contains(movie)) {
             watchLater.remove(movie);
-            userService.save(user);
+            userServiceImpl.save(user);
             logger.info("Movie with ID {} removed from watch later for user {}.", movieId, user.getUsername());
         }
 

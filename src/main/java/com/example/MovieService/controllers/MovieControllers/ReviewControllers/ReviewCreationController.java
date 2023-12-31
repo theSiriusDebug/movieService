@@ -5,7 +5,7 @@ import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
 import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
-import com.example.MovieService.sevices.UserService;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +23,13 @@ import java.util.logging.Logger;
 public class ReviewCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
     private final MovieServiceImpl movieServiceImpl;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final ReviewServiceImpl reviewServiceImpl;
 
     @Autowired
-    public ReviewCreationController(MovieServiceImpl movieServiceImpl, UserService userService, ReviewServiceImpl reviewServiceImpl) {
+    public ReviewCreationController(MovieServiceImpl movieServiceImpl, UserServiceImpl userServiceImpl, ReviewServiceImpl reviewServiceImpl) {
         this.movieServiceImpl = movieServiceImpl;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
         this.reviewServiceImpl = reviewServiceImpl;
     }
 
@@ -39,7 +39,7 @@ public class ReviewCreationController {
         logger.info("Creating review for movie with ID: " + movieId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userService.findByOptionalUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
 
@@ -54,7 +54,7 @@ public class ReviewCreationController {
         review.setReviewText(reviewText);
 
         currentUser.getReviews().add(review);
-        userService.save(currentUser);
+        userServiceImpl.save(currentUser);
 
         logger.info("Review created successfully for movie with ID: " + movieId);
         return ResponseEntity.ok(review);
@@ -74,7 +74,7 @@ public class ReviewCreationController {
 
         // Check if the current user is the owner of the review
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userService.findByUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByUsername(authentication.getName());
 
         //The review is carried out by a user with good reviews or an administrator.
         if ((!currentUser.hasRole("ROLE_ADMIN") && !review.getUser().equals(currentUser))) {
@@ -90,7 +90,7 @@ public class ReviewCreationController {
         // Remove the review from the user's review list
         User user = review.getUser();
         user.getReviews().remove(review);
-        userService.save(user);
+        userServiceImpl.save(user);
 
         reviewServiceImpl.deleteReview(review);
 

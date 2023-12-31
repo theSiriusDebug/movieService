@@ -4,7 +4,7 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Rating;
 import com.example.MovieService.models.User;
 import com.example.MovieService.sevices.MovieServiceImpl;
-import com.example.MovieService.sevices.UserService;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,19 +20,19 @@ import org.springframework.web.bind.annotation.*;
 public class RatingCreationController {
 
     private final MovieServiceImpl movieServiceImpl;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public RatingCreationController(MovieServiceImpl movieServiceImpl, UserService userService) {
+    public RatingCreationController(MovieServiceImpl movieServiceImpl, UserServiceImpl userServiceImpl) {
         this.movieServiceImpl = movieServiceImpl;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
     }
 
     @ApiOperation("Create a rating")
     @PostMapping("/create/{movieId}")
     public ResponseEntity<String> createRating(@PathVariable Long movieId, @RequestBody Rating rating) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findByOptionalUsername(authentication.getName());
+        User user = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
 
@@ -47,7 +47,7 @@ public class RatingCreationController {
         rating.setRatingValue(rating.getRatingValue());
         user.getRating().add(rating);
 
-        userService.save(user);
+        userServiceImpl.save(user);
 
         return new ResponseEntity<>("Rating created successfully.", HttpStatus.CREATED);
     }

@@ -5,7 +5,7 @@ import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.sevices.RoleServiceImpl;
-import com.example.MovieService.sevices.UserService;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,15 +24,15 @@ import java.util.Map;
 @Api(tags = "RegistrationController API")
 public class RegistrationController {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final JwtTokenProvider jwtTokenProvider;
     private final RoleServiceImpl roleServiceImpl;
 
     @Autowired
     public RegistrationController(
-            AuthenticationManager authenticationManager, UserService userService,
+            AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl,
             JwtTokenProvider jwtTokenProvider, RoleServiceImpl roleServiceImpl) {
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
         this.jwtTokenProvider = jwtTokenProvider;
         this.roleServiceImpl = roleServiceImpl;
     }
@@ -42,7 +42,7 @@ public class RegistrationController {
         try {
             String username = registrationDto.getUsername();
             logger.info("Registration attempt for username: {}", username);
-            if (userService.findByUsername(username) == null) {
+            if (userServiceImpl.findByUsername(username) == null) {
                 logger.info("Username '{}' is available for registration", username);
                 User newUser = new User();
                 newUser.setUsername(username);
@@ -55,7 +55,7 @@ public class RegistrationController {
                     Role defaultRole = roleServiceImpl.findRoleByName("ROLE_USER");
                     newUser.setRoles(Collections.singleton(defaultRole));
                 }
-                userService.save(newUser);
+                userServiceImpl.save(newUser);
 
                 String token = jwtTokenProvider.createToken(newUser.getUsername(), newUser.getRoles());
 
