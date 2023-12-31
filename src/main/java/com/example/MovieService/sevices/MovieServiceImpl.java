@@ -1,6 +1,5 @@
 package com.example.MovieService.sevices;
 
-import com.example.MovieService.MovieServiceApplication;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.sevices.interfaces.MovieService;
@@ -51,6 +50,6 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void saveMovie(Movie movie) {
         logger.info("Movie saved.");
-        movieRepository.save(movie);
+        movieRepository.save(Objects.requireNonNull(movie, "Movie cannot be null."));
     }
 }
