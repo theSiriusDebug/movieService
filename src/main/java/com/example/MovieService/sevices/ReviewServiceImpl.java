@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Service
@@ -41,13 +42,13 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void deleteReview(Review review) {
         logger.info(String.format("Deleting review with ID: %d", review.getId()));
-        reviewRepository.delete(review);
+        reviewRepository.delete(Objects.requireNonNull(review, "Review cannot be null."));
         logger.info("Review deleted successfully");
     }
 
     @Override
     public List<Review> findReviewByMovie(Movie movie) {
-        List<Review> reviews = reviewRepository.findByMovie(movie);
+        List<Review> reviews = reviewRepository.findByMovie(Objects.requireNonNull(movie, "Movie cannot be null."));
 
         if (reviews == null) {
             logger.warning("No reviews found for movie with ID: " + movie.getId());
@@ -60,6 +61,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void saveReview(Review review){
-        reviewRepository.save(review);
+        reviewRepository.save(Objects.requireNonNull(review, "Review cannot be null."));
     }
 }
