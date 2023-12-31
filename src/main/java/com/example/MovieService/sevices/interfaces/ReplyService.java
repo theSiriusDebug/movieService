@@ -1,8 +1,6 @@
 package com.example.MovieService.sevices.interfaces;
 
-import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Reply;
-import com.example.MovieService.models.Review;
 
 import java.util.List;
 

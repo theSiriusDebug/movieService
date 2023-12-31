@@ -62,7 +62,7 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
 
-    @Autowired
+    @Override
     public void saveReply(Reply reply) {
         if (reply == null) {
             throw new IllegalArgumentException("Reply cannot be null");
