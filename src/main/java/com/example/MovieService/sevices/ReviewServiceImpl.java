@@ -23,18 +23,17 @@ public class ReviewServiceImpl implements ReviewService {
     }
     @Override
     public List<Review> findAllReviews() {
-        logger.info("Retrieving all reviews");
+        logger.info("Return all replies");
         return reviewRepository.findAll();
     }
 
     @Override
     public Review findReviewById(long id) {
         try {
-            logger.info(String.format("Retrieving review with ID: %d", id));
             return reviewRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Review not found with ID: " + id));
         } catch (NotFoundException e) {
-            logger.warning(String.format("Review not found with ID: %d", id));
+            logger.info(String.format("Review not found with ID: %d", id));
             throw new RuntimeException(e);
         }
     }
@@ -62,5 +61,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void saveReview(Review review){
         reviewRepository.save(Objects.requireNonNull(review, "Review cannot be null."));
+        logger.info("Review saved successfully.");
     }
 }
