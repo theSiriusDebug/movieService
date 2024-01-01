@@ -23,20 +23,13 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public List<Reply> findAllReplies() {
-        logger.info("Retrieving all replies");
-
-        try {
-            return replyRepository.findAll();
-        } catch (Exception e) {
-            logger.info("Failed to retrieve replies");
-            throw new RuntimeException("Failed to retrieve replies", e);
-        }
+        logger.info("Return all replies");
+        return replyRepository.findAll();
     }
 
     @Override
     public Reply findReplyById(Long id) {
         try {
-            logger.info(String.format("Retrieving reply with ID: %d", id));
             return replyRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Reply not found with ID: " + id));
         } catch (NotFoundException e) {
@@ -47,33 +40,15 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public void deleteReply(Reply reply) {
-        if (reply == null) {
-            throw new IllegalArgumentException("Reply cannot be null");
-        }
-
-        try {
-            logger.info(String.format("Deleting reply with ID: %d", reply.getId()));
-            replyRepository.delete(Objects.requireNonNull(reply, "Reply cannot be null."));
-            logger.info("Reply deleted successfully");
-        } catch (Exception e) {
-            logger.info("Failed to delete reply: " + reply);
-            throw new RuntimeException("Failed to delete reply", e);
-        }
+        logger.info(String.format("Deleting reply with ID: %d", reply.getId()));
+        replyRepository.delete(Objects.requireNonNull(reply, "Reply cannot be null."));
+        logger.info("Reply deleted successfully");
     }
 
 
     @Override
     public void saveReply(Reply reply) {
-        if (reply == null) {
-            throw new IllegalArgumentException("Reply cannot be null");
-        }
-
-        try {
-            replyRepository.save(Objects.requireNonNull(reply, "Reply cannot be null."));
-            logger.info("Reply saved successfully.");
-        } catch (Exception e) {
-            logger.info("Failed to save reply: " + reply);
-            throw new RuntimeException("Failed to save reply", e);
-        }
+        replyRepository.save(Objects.requireNonNull(reply, "Reply cannot be null."));
+        logger.info("Reply saved successfully.");
     }
 }
