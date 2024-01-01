@@ -23,6 +23,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public List<Movie> findAllMovies(){
+        logger.info("Return all movies");
         return movieRepository.findAll();
     }
 
@@ -34,22 +35,29 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie findOptionalMovieById(long id) {
+        logger.info(String.format("Searching for movie with ID: %s", id));
+
         try {
-            return Optional.ofNullable(movieRepository.findById(id))
+            Movie movie = Optional.ofNullable(movieRepository.findById(id))
                     .orElseThrow(() -> new NotFoundException("Movie not found"));
+            logger.info(String.format("Movie found: %s", movie));
+            return movie;
         } catch (NotFoundException e) {
+            logger.info(String.format("Movie not found for ID: %s", id));
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void deleteMovie(Movie movie) {
+        logger.info(String.format("Deleting movie with ID: %d", movie.getId()));
         movieRepository.delete(Objects.requireNonNull(movie, "Movie cannot be null."));
+        logger.info("Movie deleted successfully");
     }
 
     @Override
     public void saveMovie(Movie movie) {
-        logger.info("Movie saved.");
         movieRepository.save(Objects.requireNonNull(movie, "Movie cannot be null."));
+        logger.info("Movie saved.");
     }
 }
