@@ -27,12 +27,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void saveRole(Role role){
+    public void saveRole(Role role) {
         roleRepository.save(Objects.requireNonNull(role, "Role cannot be null."));
+        logger.info("Role saved successfully.");
     }
 
     @Override
     public Role findRoleByName(String roleName) {
-        return roleRepository.findByName(roleName);
+        return Objects.requireNonNull(roleRepository.findByName(roleName));
     }
 }
