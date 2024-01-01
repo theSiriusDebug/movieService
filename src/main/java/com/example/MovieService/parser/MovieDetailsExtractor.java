@@ -1,7 +1,7 @@
 package com.example.MovieService.parser;
 
 import com.example.MovieService.models.Movie;
-import com.example.MovieService.repositories.MovieRepository;
+import com.example.MovieService.sevices.MovieServiceImpl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -16,12 +16,12 @@ import java.io.IOException;
 
 @Component
 public class MovieDetailsExtractor {
-    private final MovieRepository movieRepository;
+    private final MovieServiceImpl movieService;
     private final OkHttpClient client;
 
     @Autowired
-    public MovieDetailsExtractor(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
+    public MovieDetailsExtractor(MovieServiceImpl movieService) {
+        this.movieService = movieService;
         this.client = new OkHttpClient();
     }
 
@@ -82,7 +82,7 @@ public class MovieDetailsExtractor {
         MovieDataParser.setTrailerLink(movie);
 
         if (movie.getTitle()!=null) {
-            movieRepository.save(movie);
+            movieService.saveMovie(movie);
         }
         System.out.println("--------------------------------------------------------------------------------------------");
     }
