@@ -5,6 +5,7 @@ import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.interfaces.UserService;
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository userRepository;
 
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
+            log.info("User is not found.");
             throw new UsernameNotFoundException("User is not found");
         }
         return new org.springframework.security.core.userdetails.User(
@@ -45,12 +48,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User findByUsername(String username) {
+        log.info("Retrieved user with username {} ", username);
         return userRepository.findByUsername(username);
     }
 
     @Override
     public User findByOptionalUsername(String username) {
         try {
+            log.info("Retrieved optional user with username {} ", username);
             return Optional.ofNullable(userRepository.findByUsername(username))
                     .orElseThrow(() -> new NotFoundException("User not found"));
         } catch (NotFoundException e) {
@@ -60,6 +65,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User save(User user) {
+        log.info("Save user with username {} ", user.getUsername());
         return userRepository.save(Objects.requireNonNull(user, "User cannot be null."));
     }
 }
