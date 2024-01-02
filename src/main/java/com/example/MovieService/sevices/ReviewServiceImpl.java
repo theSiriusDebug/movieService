@@ -5,17 +5,17 @@ import com.example.MovieService.models.Review;
 import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.sevices.interfaces.ReviewService;
 import javassist.NotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
-    private static final Logger logger = Logger.getLogger(ReviewServiceImpl.class.getName());
 
     @Autowired
     public ReviewServiceImpl(ReviewRepository reviewRepository) {
@@ -23,7 +23,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
     @Override
     public List<Review> findAllReviews() {
-        logger.info("Return all replies");
+        log.info("Return all replies");
         return reviewRepository.findAll();
     }
 
@@ -33,16 +33,16 @@ public class ReviewServiceImpl implements ReviewService {
             return reviewRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Review not found with ID: " + id));
         } catch (NotFoundException e) {
-            logger.info(String.format("Review not found with ID: %d", id));
+            log.info(String.format("Review not found with ID: %d", id));
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void deleteReview(Review review) {
-        logger.info(String.format("Deleting review with ID: %d", review.getId()));
+        log.info(String.format("Deleting review with ID: %d", review.getId()));
         reviewRepository.delete(Objects.requireNonNull(review, "Review cannot be null."));
-        logger.info("Review deleted successfully");
+        log.info("Review deleted successfully");
     }
 
     @Override
@@ -50,9 +50,9 @@ public class ReviewServiceImpl implements ReviewService {
         List<Review> reviews = reviewRepository.findByMovie(Objects.requireNonNull(movie, "Movie cannot be null."));
 
         if (reviews == null) {
-            logger.warning("No reviews found for movie with ID: " + movie.getId());
+            log.error("No reviews found for movie with ID: " + movie.getId());
         } else {
-            logger.info("Found " + reviews.size() + " reviews for movie with ID: " + movie.getId());
+            log.info("Found " + reviews.size() + " reviews for movie with ID: " + movie.getId());
         }
 
         return reviews;
@@ -61,6 +61,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void saveReview(Review review){
         reviewRepository.save(Objects.requireNonNull(review, "Review cannot be null."));
-        logger.info("Review saved successfully.");
+        log.info("Review saved successfully.");
     }
 }
