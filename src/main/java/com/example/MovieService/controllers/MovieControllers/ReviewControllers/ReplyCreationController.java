@@ -8,6 +8,7 @@ import com.example.MovieService.sevices.ReplyServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,7 @@ public class ReplyCreationController {
     private final ReviewServiceImpl reviewServiceImpl;
     private final ReplyServiceImpl replyServiceImpl;
 
+    @Autowired
     public ReplyCreationController(UserRepository userRepository, ReviewServiceImpl reviewServiceImpl, ReplyServiceImpl replyServiceImpl) {
         this.userRepository = userRepository;
         this.reviewServiceImpl = reviewServiceImpl;
