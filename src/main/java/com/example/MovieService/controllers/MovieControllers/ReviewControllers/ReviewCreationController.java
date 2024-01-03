@@ -8,7 +8,6 @@ import com.example.MovieService.sevices.ReviewServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,13 +34,15 @@ public class ReviewCreationController {
         this.reviewServiceImpl = reviewServiceImpl;
     }
 
+    @ApiOperation("Get all reviews")
     @GetMapping
     public ResponseEntity<List<Review>> getReviews(){
         return ResponseEntity.ok(reviewServiceImpl.findAllReviews());
     }
 
+    @ApiOperation("Get review by id")
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getReview(@PathVariable("id") long id) throws NotFoundException {
+    public ResponseEntity<Review> getReview(@PathVariable("id") long id) {
         return ResponseEntity.ok(reviewServiceImpl.findReviewById(id));
     }
 
@@ -54,11 +55,6 @@ public class ReviewCreationController {
         User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
-
-        if (movie == null) {
-            log.warn("Movie not found with ID: " + movieId);
-            return ResponseEntity.notFound().build();
-        }
 
         Review review = new Review();
         review.setUser(currentUser);
