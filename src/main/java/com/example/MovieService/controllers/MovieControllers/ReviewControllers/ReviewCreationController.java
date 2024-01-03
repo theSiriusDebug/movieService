@@ -8,6 +8,7 @@ import com.example.MovieService.sevices.ReviewServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.logging.Logger;
+import java.util.List;
 
 @Api(tags = "ReviewCreationController API")
 @RestController
@@ -32,6 +33,16 @@ public class ReviewCreationController {
         this.movieServiceImpl = movieServiceImpl;
         this.userServiceImpl = userServiceImpl;
         this.reviewServiceImpl = reviewServiceImpl;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Review>> getReviews(){
+        return ResponseEntity.ok(reviewServiceImpl.findAllReviews());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Review> getReview(@PathVariable("id") long id) throws NotFoundException {
+        return ResponseEntity.ok(reviewServiceImpl.findReviewById(id));
     }
 
     @ApiOperation("Create a review")
