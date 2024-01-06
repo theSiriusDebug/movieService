@@ -6,6 +6,7 @@ import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.ReplyServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,13 @@ import java.util.logging.Logger;
 @RequestMapping("/replies")
 public class ReplyCreationController {
     private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
-    private final UserRepository userRepository;
+    private final UserServiceImpl userServiceImpl;
     private final ReviewServiceImpl reviewServiceImpl;
     private final ReplyServiceImpl replyServiceImpl;
 
     @Autowired
-    public ReplyCreationController(UserRepository userRepository, ReviewServiceImpl reviewServiceImpl, ReplyServiceImpl replyServiceImpl) {
-        this.userRepository = userRepository;
+    public ReplyCreationController(UserServiceImpl userServiceImpl, ReviewServiceImpl reviewServiceImpl, ReplyServiceImpl replyServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
         this.reviewServiceImpl = reviewServiceImpl;
         this.replyServiceImpl = replyServiceImpl;
     }
@@ -39,18 +40,8 @@ public class ReplyCreationController {
     public ResponseEntity<Reply> createReply(@PathVariable Long reviewId, @RequestBody String replyText) {
         Review parentReview = reviewServiceImpl.findReviewById(reviewId);
 
-        if (parentReview == null) {
-            logger.warning("Parent review not found with ID: " + reviewId);
-            return ResponseEntity.notFound().build();
-        }
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(authentication.getName());
-
-        if(currentUser == null) {
-            logger.warning("You're not logged in.");
-            return ResponseEntity.notFound().build();
-        }
+        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         Reply reply = new Reply();
         reply.setParentReview(parentReview);
@@ -69,14 +60,9 @@ public class ReplyCreationController {
     public ResponseEntity<String> deleteReply(@PathVariable Long replyId) {
         Reply reply = replyServiceImpl.findReplyById(replyId);
 
-        if (reply == null) {
-            logger.warning("Reply not found with ID: " + replyId);
-            return ResponseEntity.badRequest().body("Reply not found.");
-        }
-
         // Check if the current user is the owner of the reply
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         if (!reply.getUser().equals(currentUser)) {
             logger.warning("Unauthorized deletion attempt for reply with ID: " + replyId);
