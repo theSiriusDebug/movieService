@@ -82,6 +82,7 @@ public class ReplyCreationController {
 
     @GetMapping
     public ResponseEntity<List<Reply>> get_replies(){
+        logger.info("get all replies.");
         return ResponseEntity.ok(replyServiceImpl.findAllReplies());
     }
 }
