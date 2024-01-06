@@ -4,6 +4,8 @@ import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.interfaces.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +49,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User findByUsername(@Valid @NotBlank String username) {
+        User user = userRepository.findByUsername(username);
         log.info("Retrieved user with username {} ", username);
-        return userRepository.findByUsername(username);
+
+        return user;
     }
 
     @Override
-    public User findByOptionalUsername(String username) {
+    public User findByOptionalUsername(@Valid @NotBlank String username) {
         try {
             log.info("Retrieved optional user with username {} ", username);
             return Optional.ofNullable(userRepository.findByUsername(username))
