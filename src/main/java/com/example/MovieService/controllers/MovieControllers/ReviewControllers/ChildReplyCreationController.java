@@ -7,6 +7,7 @@ import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -61,9 +62,9 @@ public class ChildReplyCreationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
 
-        if(currentUser == null) {
-            logger.warning("You're not logged in.");
-            return ResponseEntity.notFound().build();
+        if (!childReply.getUser().equals(currentUser)) {
+            logger.warning("Unauthorized deletion attempt for child reply with ID: " + childReplyId);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to delete this child reply.");
         }
 
         // Delete the reply and its child replies recursively
@@ -92,7 +93,7 @@ public class ChildReplyCreationController {
 
     @GetMapping
     public List<Reply> get_child_replies(){
-        logger.info("get all child_replies!");
+        logger.info("get all child_replies.");
         return childReplyServiceImpl.findAllReplies();
     }
 }
