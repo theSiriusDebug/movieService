@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -71,5 +72,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public User save(User user) {
         log.info("Save user with username {} ", user.getUsername());
         return userRepository.save(Objects.requireNonNull(user, "User cannot be null."));
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.getById(id);
     }
 }
