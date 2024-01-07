@@ -35,12 +35,9 @@ public class StreamMovieController {
     @GetMapping("/trailer/{id}")
     public ResponseEntity<String> getTrailerByMovieId(@PathVariable long movieId) {
         Movie movieById = movieServiceImpl.findOptionalMovieById(movieId);
-        if (movieById != null) {
-            String videoUrl = movieById.getTrailerLink();
-            return ResponseEntity.ok(videoUrl);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+
+        String videoUrl = movieById.getTrailerLink();
+        return ResponseEntity.ok(videoUrl);
     }
 
 }
