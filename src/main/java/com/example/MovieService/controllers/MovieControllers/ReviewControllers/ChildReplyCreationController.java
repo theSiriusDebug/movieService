@@ -37,11 +37,6 @@ public class ChildReplyCreationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
 
-        if(currentUser == null) {
-            logger.warning("You're not logged in.");
-            return ResponseEntity.notFound().build();
-        }
-
         Reply childReply = new Reply();
         childReply.setParentReply(parentReply);
         childReply.setUser(currentUser);

@@ -3,7 +3,6 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 import com.example.MovieService.models.Reply;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.ReplyServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;
