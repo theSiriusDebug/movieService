@@ -4,6 +4,7 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.sevices.interfaces.ReviewService;
+import jakarta.validation.constraints.Min;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewServiceImpl(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
+
     @Override
     public List<Review> findAllReviews() {
         log.info("Return all replies");
@@ -28,19 +30,21 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review findReviewById(long id) {
+    public Review findReviewById(@Min(1) long id) {
         try {
-            return reviewRepository.findById(id)
+            Review review = reviewRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Review not found with ID: " + id));
+            log.info("Review found: {}", review);
+            return review;
         } catch (NotFoundException e) {
-            log.info(String.format("Review not found with ID: %d", id));
+            log.info("Review not found with ID: {}", id);
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public void deleteReview(Review review) {
-        log.info(String.format("Deleting review with ID: %d", review.getId()));
+        log.info("Deleting review with ID: {}", review.getId());
         reviewRepository.delete(Objects.requireNonNull(review, "Review cannot be null."));
         log.info("Review deleted successfully");
     }
