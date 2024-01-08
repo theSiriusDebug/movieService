@@ -1,6 +1,9 @@
 package com.example.MovieService.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,6 +32,9 @@ public class Review {
     @OneToMany(mappedBy = "parentReview", cascade = CascadeType.ALL)
     private List<Reply> replies;
 
+    @NotBlank
+    @NotNull
+    @Size(min = 1)
     private String reviewText;
 
     @Transient
