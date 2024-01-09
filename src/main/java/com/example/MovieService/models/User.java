@@ -1,8 +1,6 @@
 package com.example.MovieService.models;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -17,12 +15,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotBlank
-    @NotNull
+
+    @NotBlank(message = "username must not be blank")
     @Size(min = 1, max = 30)
     private String username;
-    @NotBlank
-    @NotNull
+
+    @NotBlank(message = "password must not be blank")
     @Size(min = 1, max = 50)
     private String password;
 

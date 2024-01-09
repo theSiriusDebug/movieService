@@ -2,7 +2,6 @@ package com.example.MovieService.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,8 +38,7 @@ public class Reply {
     @JsonIgnore
     private User user;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "replyText must not be blank")
     @Size(min = 1)
     private String replyText;
 
