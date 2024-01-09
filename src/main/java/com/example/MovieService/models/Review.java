@@ -1,6 +1,7 @@
 package com.example.MovieService.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,9 +33,8 @@ public class Review {
     @OneToMany(mappedBy = "parentReview", cascade = CascadeType.ALL)
     private List<Reply> replies;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 1)
+    @NotBlank(message = "reviewText must not be blank")
+    @Min(value = 1)
     private String reviewText;
 
     @Transient
