@@ -3,6 +3,8 @@ package com.example.MovieService.sevices;
 import com.example.MovieService.models.Reply;
 import com.example.MovieService.repositories.ReplyRepository;
 import com.example.MovieService.sevices.interfaces.ReplyService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,7 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public Reply findReplyById(Long id) {
+    public Reply findReplyById(@Min(0) Long id) {
         try {
             Reply reply = replyRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Reply not found with ID: " + id));
@@ -41,15 +43,14 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public void deleteReply(Reply reply) {
+    public void deleteReply(@Valid Reply reply) {
         log.info(String.format("Deleting reply with ID: %d", reply.getId()));
         replyRepository.delete(Objects.requireNonNull(reply, "Reply cannot be null."));
         log.info("Reply deleted successfully");
     }
 
-
     @Override
-    public void saveReply(Reply reply) {
+    public void saveReply(@Valid Reply reply) {
         replyRepository.save(Objects.requireNonNull(reply, "Reply cannot be null."));
         log.info("Reply saved successfully.");
     }
