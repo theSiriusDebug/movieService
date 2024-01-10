@@ -4,6 +4,7 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.sevices.interfaces.ReviewService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -43,14 +44,14 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview(Review review) {
+    public void deleteReview(@Valid Review review) {
         log.info("Deleting review with ID: {}", review.getId());
         reviewRepository.delete(Objects.requireNonNull(review, "Review cannot be null."));
         log.info("Review deleted successfully");
     }
 
     @Override
-    public List<Review> findReviewByMovie(Movie movie) {
+    public List<Review> findReviewByMovie(@Valid Movie movie) {
         List<Review> reviews = reviewRepository.findByMovie(Objects.requireNonNull(movie, "Movie cannot be null."));
 
         if (reviews == null) {
@@ -63,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void saveReview(Review review){
+    public void saveReview(@Valid Review review){
         reviewRepository.save(Objects.requireNonNull(review, "Review cannot be null."));
         log.info("Review saved successfully.");
     }
