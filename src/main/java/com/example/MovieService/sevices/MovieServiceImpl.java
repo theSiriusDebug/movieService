@@ -3,6 +3,8 @@ package com.example.MovieService.sevices;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.sevices.interfaces.MovieService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +24,14 @@ public class MovieServiceImpl implements MovieService {
         this.movieRepository = movieRepository;
     }
 
+    @Override
     public List<Movie> findAllMovies(){
         log.info("Return all movies");
         return movieRepository.findAll();
     }
 
     @Override
-    public Movie findMovieById(long id) {
-        log.info("Find movie by id " + id);
-        return movieRepository.findById(id);
-    }
-
-    @Override
-    public Movie findOptionalMovieById(long id) {
+    public Movie findOptionalMovieById(@NotBlank long id) {
         log.info(String.format("Searching for movie with ID: %s", id));
 
         try {
@@ -49,14 +46,14 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void deleteMovie(Movie movie) {
+    public void deleteMovie(@Valid Movie movie) {
         log.info(String.format("Deleting movie with ID: %d", movie.getId()));
         movieRepository.delete(Objects.requireNonNull(movie, "Movie cannot be null."));
         log.info("Movie deleted successfully");
     }
 
     @Override
-    public void saveMovie(Movie movie) {
+    public void saveMovie(@Valid Movie movie) {
         movieRepository.save(Objects.requireNonNull(movie, "Movie cannot be null."));
         log.info("Movie saved.");
     }
