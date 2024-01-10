@@ -2,8 +2,10 @@ package com.example.MovieService.sevices.interfaces;
 
 import com.example.MovieService.models.Movie;
 
+import java.util.List;
+
 public interface MovieService {
-    Movie findMovieById(long id);
+    List<Movie> findAllMovies();
 
     Movie findOptionalMovieById(long id);
 
