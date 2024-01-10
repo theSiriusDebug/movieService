@@ -3,6 +3,8 @@ package com.example.MovieService.sevices;
 import com.example.MovieService.models.Role;
 import com.example.MovieService.repositories.RoleRepository;
 import com.example.MovieService.sevices.interfaces.RoleService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,13 +29,13 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void saveRole(Role role) {
+    public void saveRole(@Valid Role role) {
         roleRepository.save(Objects.requireNonNull(role, "Role cannot be null."));
         log.info("Role saved successfully.");
     }
 
     @Override
-    public Role findRoleByName(String roleName) {
+    public Role findRoleByName(@NotBlank String roleName) {
         return Objects.requireNonNull(roleRepository.findByName(roleName));
     }
 }
