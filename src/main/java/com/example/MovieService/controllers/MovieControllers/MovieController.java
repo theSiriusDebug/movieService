@@ -27,7 +27,6 @@ public class MovieController {
     @Autowired
     public MovieController(MovieRepository movieRepository, ReviewServiceImpl reviewServiceImpl) {
         this.movieRepository = movieRepository;
-
         this.reviewServiceImpl = reviewServiceImpl;
     }
 
