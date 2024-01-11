@@ -13,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Api(tags = "FavouriteMoviesController API")
@@ -39,10 +37,6 @@ public class FavouriteMoviesController {
         User user = userServiceImpl.findByUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
-        if (movie == null) {
-            logger.error("Movie with ID {} not found.", movieId);
-            throw new EntityNotFoundException("Movie not found");
-        }
 
         List<Movie> favoriteMovies = user.getFavoriteMovies();
         if (!favoriteMovies.contains(movie)) {
@@ -62,10 +56,6 @@ public class FavouriteMoviesController {
         User user = userServiceImpl.findByUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
-        if (movie == null) {
-            logger.error("Movie with ID {} not found.", movieId);
-            throw new EntityNotFoundException("Movie not found");
-        }
 
         List<Movie> favoriteMovies = user.getFavoriteMovies();
         if (favoriteMovies.contains(movie)) {
