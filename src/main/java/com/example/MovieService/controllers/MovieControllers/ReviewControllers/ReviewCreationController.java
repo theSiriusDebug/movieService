@@ -8,6 +8,7 @@ import com.example.MovieService.sevices.ReviewServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,7 +49,7 @@ public class ReviewCreationController {
 
     @ApiOperation("Create a review")
     @PostMapping("/create/{movieId}")
-    public ResponseEntity<Review> createReview(@PathVariable Long movieId, @RequestBody String reviewText) {
+    public ResponseEntity<Review> createReview(@PathVariable Long movieId, @NotBlank @RequestBody String reviewText) {
         log.info("Creating review for movie with ID: " + movieId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -75,18 +76,11 @@ public class ReviewCreationController {
 
         Review review = reviewServiceImpl.findReviewById(reviewId);
 
-        if (review == null) {
-            log.warn("Review not found with ID: " + reviewId);
-            return ResponseEntity.badRequest().body("Review not found.");
-        }
-
-        // Check if the current user is the owner of the review
+        // Authorization check
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userServiceImpl.findByUsername(authentication.getName());
-
-        //The review is carried out by a user with good reviews or an administrator.
         if ((!currentUser.hasRole("ROLE_ADMIN") && !review.getUser().equals(currentUser))) {
-            log.warn("Unauthorized deletion attempt for review with ID: " + reviewId);
+            log.error("Unauthorized deletion attempt for review with ID: " + reviewId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to delete this review.");
         }
 
@@ -104,5 +98,27 @@ public class ReviewCreationController {
 
         log.info("Review deleted successfully with ID: " + reviewId);
         return ResponseEntity.ok("Review deleted successfully.");
+    }
+
+    @ApiOperation("Update a review")
+    @PutMapping("/edit/{reviewId}")
+    public ResponseEntity<String> editReview(@PathVariable Long reviewId, @NotBlank @RequestBody String updatedReviewText) {
+        log.info("Editing review with ID: " + reviewId);
+        Review review = reviewServiceImpl.findReviewById(reviewId);
+
+        // Authorization check
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userServiceImpl.findByUsername(authentication.getName());
+        if (!review.getUser().equals(currentUser)) {
+            log.error("Unauthorized edit attempt for review with ID: " + reviewId);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to edit this review.");
+        }
+
+        // Update the review text
+        review.setReviewText(updatedReviewText);
+        reviewServiceImpl.saveReview(review);
+
+        log.info("Review edited successfully with ID: " + reviewId);
+        return ResponseEntity.ok("Review updated successfully");
     }
 }
