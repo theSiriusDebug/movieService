@@ -35,7 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
         try {
             Review review = reviewRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Review not found with ID: " + id));
-            log.info("Review found: {}", review);
+            log.info("Review found: {}", review.getId());
             return review;
         } catch (NotFoundException e) {
             log.info("Review not found with ID: {}", id);
