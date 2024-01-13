@@ -3,7 +3,7 @@ package com.example.MovieService.controllers.MovieControllers;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.MovieRepository;
+import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,12 +21,12 @@ import java.util.*;
 @Api(tags = "MovieController API")
 @CrossOrigin
 public class MovieController {
-    private final MovieRepository movieRepository;
+    private final MovieServiceImpl movieServiceImpl;
     private final ReviewServiceImpl reviewServiceImpl;
 
     @Autowired
-    public MovieController(MovieRepository movieRepository, ReviewServiceImpl reviewServiceImpl) {
-        this.movieRepository = movieRepository;
+    public MovieController(MovieServiceImpl movieServiceImpl, ReviewServiceImpl reviewServiceImpl) {
+        this.movieServiceImpl = movieServiceImpl;
         this.reviewServiceImpl = reviewServiceImpl;
     }
 
@@ -37,7 +37,7 @@ public class MovieController {
             @RequestParam(required = false, defaultValue = "imdbRating") String sortBy) {
 
         Sort sorting = determineSorting(sortType, sortBy);
-        List<Movie> movies = movieRepository.findAll(sorting);
+        List<Movie> movies = movieServiceImpl.findAllMoviesSorted(sorting);
 
         return ResponseEntity.ok(movies);
     }
@@ -53,9 +53,9 @@ public class MovieController {
         List<Movie> movies;
 
         if (title != null && !title.isEmpty()) {
-            movies = movieRepository.findByTitleContainingIgnoreCase(title, sorting);
+            movies = movieServiceImpl.findMovieByTitle(title, sorting);
         } else {
-            movies = movieRepository.findAll(sorting);
+            movies = movieServiceImpl.findAllMoviesSorted(sorting);
         }
 
         return ResponseEntity.ok(movies);
@@ -79,7 +79,7 @@ public class MovieController {
             @RequestParam(name = "orderBy", defaultValue = "title") String orderBy,
             @RequestParam(name = "order", defaultValue = "asc") String order
     ) {
-        List<Movie> filteredMovies = movieRepository.findAll();
+        List<Movie> filteredMovies = movieServiceImpl.findAllMovies();
 
         applyFilters(filteredMovies, yearMin, yearMax, durationMin, durationMax, imdbRatingMin, imdbRatingMax, kinopoiskRatingMin, kinopoiskRatingMax, language, country, genres, director);
         Comparator<Movie> comparator = determineComparator(orderBy, order);
@@ -92,7 +92,7 @@ public class MovieController {
     @ApiOperation("Get movie details by movie ID")
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieDetails(@PathVariable("id") Long id) {
-        Optional<Movie> movie = movieRepository.findById(id);
+        Optional<Movie> movie = movieServiceImpl.findMovieById(id);
         if (movie.isPresent()) {
             List<Review> comments = reviewServiceImpl.findReviewByMovie(movie.get());
             for (Review comment : comments) {
