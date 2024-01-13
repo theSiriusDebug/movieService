@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,7 +55,32 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void saveMovie(@Valid Movie movie) {
+        log.info("Saving movie: {}", movie.getTitle());
         movieRepository.save(Objects.requireNonNull(movie, "Movie cannot be null."));
-        log.info("Movie saved.");
+        log.info("Movie saved successfully: {}", movie.getTitle());
+    }
+
+    @Override
+    public List<Movie> findMovieByTitle(String title, Sort sorting) {
+        log.debug("Searching movies by title containing: {}", title);
+        return movieRepository.findByTitleContainingIgnoreCase(title, sorting);
+    }
+
+    @Override
+    public List<Movie> findByMovieTitle(String title) {
+        log.debug("Searching movies by title starting with: {}", title);
+        return movieRepository.findByTitleStartingWithIgnoreCase(title);
+    }
+
+    @Override
+    public Optional<Movie> findMovieById(Long id) {
+        log.debug("Retrieving movie with ID: {}", id);
+        return movieRepository.findById(id);
+    }
+
+    @Override
+    public List<Movie> findAllMoviesSorted(Sort sorting) {
+        log.debug("Return all sorted movies");
+        return movieRepository.findAll(sorting);
     }
 }
