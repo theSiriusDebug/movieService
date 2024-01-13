@@ -4,7 +4,7 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
 import com.example.MovieService.repositories.MovieRepository;
-import com.example.MovieService.repositories.ReviewRepository;
+import com.example.MovieService.sevices.ReviewServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/movies")
@@ -23,12 +22,12 @@ import java.util.stream.Collectors;
 @CrossOrigin
 public class MovieController {
     private final MovieRepository movieRepository;
-    private final ReviewRepository reviewRepository;
+    private final ReviewServiceImpl reviewServiceImpl;
 
     @Autowired
-    public MovieController(MovieRepository movieRepository, ReviewRepository reviewRepository) {
+    public MovieController(MovieRepository movieRepository, ReviewServiceImpl reviewServiceImpl) {
         this.movieRepository = movieRepository;
-        this.reviewRepository = reviewRepository;
+        this.reviewServiceImpl = reviewServiceImpl;
     }
 
     @ApiOperation("Get all movies")
@@ -95,7 +94,7 @@ public class MovieController {
     public ResponseEntity<Movie> getMovieDetails(@PathVariable("id") Long id) {
         Optional<Movie> movie = movieRepository.findById(id);
         if (movie.isPresent()) {
-            List<Review> comments = reviewRepository.findByMovie(movie.get());
+            List<Review> comments = reviewServiceImpl.findReviewByMovie(movie.get());
             for (Review comment : comments) {
                 User user = comment.getUser();
                 comment.setUser(user);

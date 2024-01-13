@@ -3,12 +3,14 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 import com.example.MovieService.models.Reply;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
-import com.example.MovieService.repositories.MovieRepository;
-import com.example.MovieService.repositories.ReplyRepository;
-import com.example.MovieService.repositories.ReviewRepository;
-import com.example.MovieService.repositories.UserRepository;
+import com.example.MovieService.sevices.ReplyServiceImpl;
+import com.example.MovieService.sevices.ReviewServiceImpl;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jakarta.validation.constraints.NotBlank;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -16,37 +18,36 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
+@Slf4j
 @Api(tags = "ReviewCreationController API")
 @RestController
 @RequestMapping("/replies")
 public class ReplyCreationController {
-    private static final Logger logger = Logger.getLogger(ReviewCreationController.class.getName());
-    private final MovieRepository movieRepository;
-    private final UserRepository userRepository;
-    private final ReviewRepository reviewRepository;
-    private final ReplyRepository replyRepository;
+    private final UserServiceImpl userServiceImpl;
+    private final ReviewServiceImpl reviewServiceImpl;
+    private final ReplyServiceImpl replyServiceImpl;
 
-    public ReplyCreationController(MovieRepository movieRepository, UserRepository userRepository, ReviewRepository reviewRepository, ReplyRepository replyRepository) {
-        this.movieRepository = movieRepository;
-        this.userRepository = userRepository;
-        this.reviewRepository = reviewRepository;
-        this.replyRepository = replyRepository;
+    @Autowired
+    public ReplyCreationController(UserServiceImpl userServiceImpl, ReviewServiceImpl reviewServiceImpl, ReplyServiceImpl replyServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
+        this.reviewServiceImpl = reviewServiceImpl;
+        this.replyServiceImpl = replyServiceImpl;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Reply>> get_replies(){
+        log.info("get all replies.");
+        return ResponseEntity.ok(replyServiceImpl.findAllReplies());
     }
 
     @ApiOperation("Create a reply to a review")
     @PostMapping("/createReply/{reviewId}")
     public ResponseEntity<Reply> createReply(@PathVariable Long reviewId, @RequestBody String replyText) {
-        Review parentReview = reviewRepository.findById(reviewId).orElse(null);
-
-        if (parentReview == null) {
-            logger.warning("Parent review not found with ID: " + reviewId);
-            return ResponseEntity.notFound().build();
-        }
+        Review parentReview = reviewServiceImpl.findReviewById(reviewId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         Reply reply = new Reply();
         reply.setParentReview(parentReview);
@@ -54,44 +55,55 @@ public class ReplyCreationController {
         reply.setReplyText(replyText);
 
         parentReview.getReplies().add(reply);
-        reviewRepository.save(parentReview);
+        reviewServiceImpl.saveReview(parentReview);
 
-        logger.info("Reply created successfully for parent review with ID: " + reviewId);
+        log.info("Reply created successfully for parent review with ID: " + reviewId);
         return ResponseEntity.ok(reply);
     }
 
     @ApiOperation("Delete a reply")
     @DeleteMapping("/deleteReply/{replyId}")
     public ResponseEntity<String> deleteReply(@PathVariable Long replyId) {
-        Reply reply = replyRepository.findById(replyId).orElse(null);
-
-        if (reply == null) {
-            logger.warning("Reply not found with ID: " + replyId);
-            return ResponseEntity.badRequest().body("Reply not found.");
-        }
+        Reply reply = replyServiceImpl.findReplyById(replyId);
 
         // Check if the current user is the owner of the reply
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userRepository.findByUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         if (!reply.getUser().equals(currentUser)) {
-            logger.warning("Unauthorized deletion attempt for reply with ID: " + replyId);
+            log.error("Unauthorized deletion attempt for reply with ID: " + replyId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to delete this reply.");
         }
 
         // Remove the reply from the parent review's reply list
         Review parentReview = reply.getParentReview();
         parentReview.getReplies().remove(reply);
-        reviewRepository.save(parentReview);
+        reviewServiceImpl.saveReview(parentReview);
 
-        replyRepository.delete(reply);
+        replyServiceImpl.deleteReply(reply);
 
-        logger.info("Reply deleted successfully with ID: " + replyId);
+        log.info("Reply deleted successfully with ID: " + replyId);
         return ResponseEntity.ok("Reply deleted successfully.");
     }
+    @ApiOperation("Update a reply")
+    @PutMapping("/edit/{replyId}")
+    public ResponseEntity<String> editReply(@PathVariable Long replyId, @NotBlank @RequestBody String updatedReplyText) {
+        log.info("Editing reply with ID: " + replyId);
+        Reply reply = replyServiceImpl.findReplyById(replyId);
 
-    @GetMapping
-    public ResponseEntity<List<Reply>> get_replies(){
-        return ResponseEntity.ok(replyRepository.findAll());
+        // Authorization check
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userServiceImpl.findByUsername(authentication.getName());
+        if (!reply.getUser().equals(currentUser)) {
+            log.error("Unauthorized edit attempt for reply with ID: " + replyId);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to edit this reply.");
+        }
+
+        // Update the reply text
+        reply.setReplyText(updatedReplyText);
+        replyServiceImpl.saveReply(reply);
+
+        log.info("Reply edited successfully with ID: " + replyId);
+        return ResponseEntity.ok("Reply updated successfully");
     }
 }

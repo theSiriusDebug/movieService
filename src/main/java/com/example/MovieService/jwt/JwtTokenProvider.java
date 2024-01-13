@@ -1,7 +1,7 @@
 package com.example.MovieService.jwt;
 
 import com.example.MovieService.models.Role;
-import com.example.MovieService.sevices.UserService;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +27,12 @@ public class JwtTokenProvider {
     @Value("${jwt.refreshTokenValidityInMilliseconds}")
     private long refreshTokenValidityInMilliseconds;
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     @Autowired
-    public JwtTokenProvider(UserService userService) {
-        this.userService = userService;
+    public JwtTokenProvider(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     public String createToken(String username, Collection<Role> roles) {
@@ -69,7 +69,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         String username = getUsername(token);
-        UserDetails userDetails = userService.loadUserByUsername(username);
+        UserDetails userDetails = userServiceImpl.loadUserByUsername(username);
 
         logger.info("Created authentication object for user: {}", username);
 

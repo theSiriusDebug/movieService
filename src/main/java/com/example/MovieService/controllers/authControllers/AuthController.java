@@ -4,8 +4,7 @@ import com.example.MovieService.jwt.JwtTokenProvider;
 import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.AuthDto;
-import com.example.MovieService.repositories.RoleRepository;
-import com.example.MovieService.sevices.UserService;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,20 +27,20 @@ import java.util.Set;
 @Api(tags = "Login Controller")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RoleRepository roleRepository;
     @Value("${jwt.refreshTokenValidityInMilliseconds}")
     private long refreshTokenValidityInMilliseconds;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
+    public AuthController(
+            AuthenticationManager authenticationManager,
+            UserServiceImpl userServiceImpl, JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
+        this.userServiceImpl = userServiceImpl;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.roleRepository = roleRepository;
     }
 
     @PostMapping("/login")
@@ -50,7 +49,7 @@ public class AuthController {
             String username = authRequest.getUsername();
             authenticateUser(username, authRequest.getPassword());
 
-            User user = userService.findByUsername(username);
+            User user = userServiceImpl.findByUsername(username);
             String token = jwtTokenProvider.createToken(username, user.getRoles());
             setTokenCookie(response, token);
 

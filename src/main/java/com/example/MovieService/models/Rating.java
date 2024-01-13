@@ -1,6 +1,9 @@
 package com.example.MovieService.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,6 +29,9 @@ public class Rating {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @Column(name = "rating_value") // Add this column mapping
-    private Integer ratingValue; // Add this field
+    @Column(name = "rating_value")
+    @NotNull
+    @Min(1)
+    @Max(10)
+    private Integer ratingValue;
 }

@@ -4,8 +4,8 @@ import com.example.MovieService.jwt.JwtTokenProvider;
 import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
-import com.example.MovieService.repositories.RoleRepository;
-import com.example.MovieService.sevices.UserService;
+import com.example.MovieService.sevices.RoleServiceImpl;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,17 +24,17 @@ import java.util.Map;
 @Api(tags = "RegistrationController API")
 public class RegistrationController {
     private static final Logger logger = LoggerFactory.getLogger(RegistrationController.class);
-    private AuthenticationManager authenticationManager;
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RoleRepository roleRepository;
+    private final RoleServiceImpl roleServiceImpl;
 
     @Autowired
-    public RegistrationController(AuthenticationManager authenticationManager, UserService userService, JwtTokenProvider jwtTokenProvider, RoleRepository roleRepository) {
-        this.authenticationManager = authenticationManager;
-        this.userService = userService;
+    public RegistrationController(
+            AuthenticationManager authenticationManager, UserServiceImpl userServiceImpl,
+            JwtTokenProvider jwtTokenProvider, RoleServiceImpl roleServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
         this.jwtTokenProvider = jwtTokenProvider;
-        this.roleRepository = roleRepository;
+        this.roleServiceImpl = roleServiceImpl;
     }
 
     @PostMapping("/register")
@@ -42,20 +42,20 @@ public class RegistrationController {
         try {
             String username = registrationDto.getUsername();
             logger.info("Registration attempt for username: {}", username);
-            if (userService.findByUsername(username) == null) {
+            if (userServiceImpl.findByUsername(username) == null) {
                 logger.info("Username '{}' is available for registration", username);
                 User newUser = new User();
                 newUser.setUsername(username);
                 newUser.setPassword(new BCryptPasswordEncoder().encode(registrationDto.getPassword()));
                 if (registrationDto.getRole() != null && !registrationDto.getRole().isEmpty()) {
-                    Role role = roleRepository.findByName(registrationDto.getRole());
+                    Role role = roleServiceImpl.findRoleByName(registrationDto.getRole());
                     newUser.setRoles(Collections.singleton(role));
                 } else {
                     // Set a default role if no role is provided
-                    Role defaultRole = roleRepository.findByName("ROLE_USER");
+                    Role defaultRole = roleServiceImpl.findRoleByName("ROLE_USER");
                     newUser.setRoles(Collections.singleton(defaultRole));
                 }
-                userService.save(newUser);
+                userServiceImpl.save(newUser);
 
                 String token = jwtTokenProvider.createToken(newUser.getUsername(), newUser.getRoles());
 

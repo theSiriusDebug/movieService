@@ -1,10 +1,9 @@
 package com.example.MovieService.models;
 
+import jakarta.validation.constraints.*;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -16,7 +15,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotBlank(message = "username must not be blank")
+    @Size(min = 1, max = 30)
     private String username;
+
+    @NotBlank(message = "password must not be blank")
+    @Size(min = 1, max = 50)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -56,7 +61,6 @@ public class User {
     public User(String username, String password, Set<Role> roles) {
         super();
         this.username = username;
-
         this.password = password;
         this.roles = roles;
     }

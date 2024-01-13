@@ -2,7 +2,7 @@ package com.example.MovieService.controllers.UserControllers;
 
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
-import com.example.MovieService.repositories.UserRepository;
+import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ import java.util.Optional;
 @RestController
 @Api(tags = "UserController")
 public class UserController {
-    private final UserRepository userRepository;
-    private BCryptPasswordEncoder passwordEncoder;
+    private final UserServiceImpl userServiceImpl;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserController(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+    public UserController(UserServiceImpl userServiceImpl, BCryptPasswordEncoder passwordEncoder) {
+        this.userServiceImpl = userServiceImpl;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -34,7 +34,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
-        User existingUser = userRepository.findByUsername(currentUserName);
+        User existingUser = userServiceImpl.findByOptionalUsername(currentUserName);
         if (existingUser != null) {
             return ResponseEntity.ok(existingUser);
         }
@@ -48,11 +48,11 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserName = authentication.getName();
 
-        User existingUser = userRepository.findByUsername(currentUserName);
+        User existingUser = userServiceImpl.findByOptionalUsername(currentUserName);
         if (existingUser != null) {
             existingUser.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
 
-            userRepository.save(existingUser);
+            userServiceImpl.save(existingUser);
 
             return ResponseEntity.ok(existingUser);
         }
@@ -62,11 +62,11 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> get(){
-        return ResponseEntity.ok(userRepository.findAll());
+        return ResponseEntity.ok(userServiceImpl.getAllUsers());
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<Optional<User>> get(@PathVariable("id") long id){
-        return ResponseEntity.ok(userRepository.findById(id));
+        return ResponseEntity.ok(Optional.ofNullable(userServiceImpl.getUserById(id)));
     }
 }
