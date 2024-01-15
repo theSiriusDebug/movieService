@@ -25,9 +25,7 @@ public class UserProfileController {
     @GetMapping("/profile")
     public ResponseEntity<User> getUserProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-
-        User currentUser = userService.findByOptionalUsername(username);
+        User currentUser = userService.findByOptionalUsername(authentication.getName());
 
         return ResponseEntity.ok(currentUser);
     }
