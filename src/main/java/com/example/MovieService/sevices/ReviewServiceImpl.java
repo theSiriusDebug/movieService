@@ -2,10 +2,11 @@ package com.example.MovieService.sevices;
 
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
+import com.example.MovieService.models.dtos.ReviewDto;
 import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.sevices.interfaces.ReviewService;
+import com.example.MovieService.utils.validator.ReviewMapper;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,18 +27,34 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> findAllReviews() {
+    public List<ReviewDto> findAllReviews() {
         log.info("Return all replies");
-        return reviewRepository.findAll();
+        List<Review> reviews = reviewRepository.findAll();
+        return reviews.stream()
+                .map(ReviewMapper::mapToReviewDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Review findReviewById(@Min(1) long id) {
+    public Review findReviewById(long id) {
         try {
             Review review = reviewRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Review not found with ID: " + id));
             log.info("Review found: {}", review.getId());
             return review;
+        } catch (NotFoundException e) {
+            log.info("Review not found with ID: {}", id);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ReviewDto findReviewDtoById(long id) {
+        try {
+            Review review = reviewRepository.findById(id)
+                    .orElseThrow(() -> new NotFoundException("Review not found with ID: " + id));
+            log.info("Review found: {}", review.getId());
+            return ReviewMapper.mapToReviewDto(review);
         } catch (NotFoundException e) {
             log.info("Review not found with ID: {}", id);
             throw new RuntimeException(e);
