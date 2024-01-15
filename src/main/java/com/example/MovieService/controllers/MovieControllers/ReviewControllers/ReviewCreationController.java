@@ -3,6 +3,7 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
+import com.example.MovieService.models.dtos.ReviewDto;
 import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;
@@ -37,14 +38,14 @@ public class ReviewCreationController {
 
     @ApiOperation("Get all reviews")
     @GetMapping
-    public ResponseEntity<List<Review>> getReviews(){
+    public ResponseEntity<List<ReviewDto>> getReviews(){
         return ResponseEntity.ok(reviewServiceImpl.findAllReviews());
     }
 
     @ApiOperation("Get review by id")
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getReview(@PathVariable("id") long id) {
-        return ResponseEntity.ok(reviewServiceImpl.findReviewById(id));
+    public ResponseEntity<ReviewDto> getReview(@PathVariable("id") long id) {
+        return ResponseEntity.ok(reviewServiceImpl.findReviewDtoById(id));
     }
 
     @ApiOperation("Create a review")
