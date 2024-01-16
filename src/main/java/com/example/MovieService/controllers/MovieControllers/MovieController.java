@@ -92,18 +92,8 @@ public class MovieController {
     @ApiOperation("Get movie details by movie ID")
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieDetails(@PathVariable("id") Long id) {
-        Optional<Movie> movie = movieServiceImpl.findMovieById(id);
-        if (movie.isPresent()) {
-            List<Review> comments = reviewServiceImpl.findReviewByMovie(movie.get());
-            for (Review comment : comments) {
-                User user = comment.getUser();
-                comment.setUser(user);
-            }
-            movie.get().setReviews(comments);
-            return ResponseEntity.ok(movie.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        Movie movie = movieServiceImpl.findOptionalMovieById(id);
+        return ResponseEntity.ok(movie);
     }
 
     private static final Map<String, Sort.Order> SORT_TYPE_TO_ORDER = new HashMap<>();
