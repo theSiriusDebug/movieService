@@ -47,13 +47,6 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void deleteMovie(@Valid Movie movie) {
-        log.info(String.format("Deleting movie with ID: %d", movie.getId()));
-        movieRepository.delete(Objects.requireNonNull(movie, "Movie cannot be null."));
-        log.info("Movie deleted successfully");
-    }
-
-    @Override
     public void saveMovie(@Valid Movie movie) {
         log.info("Saving movie: {}", movie.getTitle());
         movieRepository.save(Objects.requireNonNull(movie, "Movie cannot be null."));
@@ -64,12 +57,6 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> findMovieByTitle(String title, Sort sorting) {
         log.debug("Searching movies by title containing: {}", title);
         return movieRepository.findByTitleContainingIgnoreCase(title, sorting);
-    }
-
-    @Override
-    public List<Movie> findByMovieTitle(String title) {
-        log.debug("Searching movies by title starting with: {}", title);
-        return movieRepository.findByTitleStartingWithIgnoreCase(title);
     }
 
     @Override

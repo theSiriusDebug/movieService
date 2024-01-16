@@ -11,13 +11,9 @@ public interface MovieService {
 
     Movie findOptionalMovieById(long id);
 
-    void deleteMovie(Movie movie);
-
     void saveMovie(Movie movie);
 
     List<Movie>findMovieByTitle(String title, Sort sorting);
-
-    List<Movie> findByMovieTitle(String title);
 
     Optional<Movie> findMovieById(Long id);
 
