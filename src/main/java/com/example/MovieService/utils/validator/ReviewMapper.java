@@ -7,7 +7,8 @@ public class ReviewMapper {
     public static ReviewDto mapToReviewDto(Review review){
         return new ReviewDto(
                 review.getReviewText(),
-                review.getUser().getUsername()
+                review.getUser().getUsername(),
+                review.getReplies()
         );
     }
 }
