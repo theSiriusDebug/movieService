@@ -31,10 +31,9 @@ public class MovieController {
     @ApiOperation("Get all movies")
     @GetMapping
     public ResponseEntity<List<Movie>> getAllMovies(
-            @RequestParam(required = false, defaultValue = "by date") String sortType,
-            @RequestParam(required = false, defaultValue = "imdbRating") String sortBy) {
+            @RequestParam(required = false, defaultValue = "by date") String sortType) {
 
-        Sort sorting = getSorting(sortType, sortBy);
+        Sort sorting = getSorting(sortType);
         List<Movie> movies = movieServiceImpl.findAllMoviesSorted(sorting);
 
         return ResponseEntity.ok(movies);
@@ -44,10 +43,9 @@ public class MovieController {
     @GetMapping("/search")
     public ResponseEntity<List<Movie>> getMoviesByTitle(
             @RequestParam(required = false) String title,
-            @RequestParam(required = false) String sortType,
-            @RequestParam(required = false) String sortBy) {
+            @RequestParam(required = false) String sortType) {
 
-        Sort sorting = getSorting(sortType, sortBy);
+        Sort sorting = getSorting(sortType);
         List<Movie> movies;
 
         if (title != null && !title.isEmpty()) {
@@ -180,19 +178,19 @@ public class MovieController {
         return comparator;
     }
 
-    private Sort getSorting(String sortType, String sortBy) {
-        Map<String, Sort.Direction> sortTypes = Map.of(
-                "by_date", Sort.Direction.DESC,
-                "by_date_reverse", Sort.Direction.ASC,
-                "by_alphabet", Sort.Direction.ASC,
-                "by_alphabet_reverse", Sort.Direction.DESC,
-                "by_rating", Sort.Direction.DESC,
-                "by_rating_reverse", Sort.Direction.ASC,
-                "by_title", Sort.Direction.ASC,
-                "by_title_reverse", Sort.Direction.DESC
+    private Sort getSorting(String sortType) {
+        Map<String, Sort.Order> sortTypes = Map.of(
+                "by_date", Sort.Order.desc("year"),
+                "by_date_reverse", Sort.Order.asc("year"),
+                "by_alphabet", Sort.Order.desc("title"),
+                "by_alphabet_reverse", Sort.Order.asc("title"),
+                "by_rating", Sort.Order.desc("imdbRating"),
+                "by_rating_reverse", Sort.Order.asc("imdbRating"),
+                "by_kinopoisk_rating", Sort.Order.desc("kinopoiskRating"),
+                "by_kinopoisk_rating_reverse", Sort.Order.asc("kinopoiskRating")
         );
 
-        Sort.Direction direction = sortTypes.getOrDefault(sortType, Sort.Direction.DESC);
-        return Sort.by(direction, sortBy);
+        Sort.Order order = sortTypes.getOrDefault(sortType, Sort.Order.desc("year"));
+        return Sort.by(order);
     }
 }
