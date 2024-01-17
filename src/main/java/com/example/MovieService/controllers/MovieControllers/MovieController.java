@@ -1,8 +1,6 @@
 package com.example.MovieService.controllers.MovieControllers;
 
 import com.example.MovieService.models.Movie;
-import com.example.MovieService.models.Review;
-import com.example.MovieService.models.User;
 import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
 import io.swagger.annotations.Api;
@@ -36,7 +34,7 @@ public class MovieController {
             @RequestParam(required = false, defaultValue = "by date") String sortType,
             @RequestParam(required = false, defaultValue = "imdbRating") String sortBy) {
 
-        Sort sorting = determineSorting(sortType, sortBy);
+        Sort sorting = getSorting(sortType, sortBy);
         List<Movie> movies = movieServiceImpl.findAllMoviesSorted(sorting);
 
         return ResponseEntity.ok(movies);
@@ -49,7 +47,7 @@ public class MovieController {
             @RequestParam(required = false) String sortType,
             @RequestParam(required = false) String sortBy) {
 
-        Sort sorting = determineSorting(sortType, sortBy);
+        Sort sorting = getSorting(sortType, sortBy);
         List<Movie> movies;
 
         if (title != null && !title.isEmpty()) {
@@ -94,30 +92,6 @@ public class MovieController {
     public ResponseEntity<Movie> getMovieDetails(@PathVariable("id") Long id) {
         Movie movie = movieServiceImpl.findOptionalMovieById(id);
         return ResponseEntity.ok(movie);
-    }
-
-    private static final Map<String, Sort.Order> SORT_TYPE_TO_ORDER = new HashMap<>();
-    static {
-        SORT_TYPE_TO_ORDER.put("by date", Sort.Order.desc("year"));
-        SORT_TYPE_TO_ORDER.put("by date reverse", Sort.Order.asc("year"));
-        SORT_TYPE_TO_ORDER.put("by alphabet", Sort.Order.asc("title"));
-        SORT_TYPE_TO_ORDER.put("by alphabet reverse", Sort.Order.desc("title"));
-        SORT_TYPE_TO_ORDER.put("rating", Sort.Order.desc("imdbRating"));
-        SORT_TYPE_TO_ORDER.put("rating reverse", Sort.Order.asc("imdbRating"));
-        SORT_TYPE_TO_ORDER.put("by title", Sort.Order.asc("title"));
-        SORT_TYPE_TO_ORDER.put("by title reverse", Sort.Order.desc("title"));
-    }
-
-    private Sort determineSorting(String sortType, String sortBy) {
-        Sort sorting = Sort.unsorted();
-        Sort.Order order = SORT_TYPE_TO_ORDER.get(sortType);
-        if (order != null) {
-            sorting = Sort.by(order);
-        }
-        if (sortBy != null && !sortBy.isEmpty()) {
-            sorting = sorting.and(Sort.by(sortBy));
-        }
-        return sorting;
     }
 
     private void applyFilters(
@@ -204,5 +178,21 @@ public class MovieController {
             comparator = comparator.reversed();
         }
         return comparator;
+    }
+
+    private Sort getSorting(String sortType, String sortBy) {
+        Map<String, Sort.Direction> sortTypes = Map.of(
+                "by_date", Sort.Direction.DESC,
+                "by_date_reverse", Sort.Direction.ASC,
+                "by_alphabet", Sort.Direction.ASC,
+                "by_alphabet_reverse", Sort.Direction.DESC,
+                "by_rating", Sort.Direction.DESC,
+                "by_rating_reverse", Sort.Direction.ASC,
+                "by_title", Sort.Direction.ASC,
+                "by_title_reverse", Sort.Direction.DESC
+        );
+
+        Sort.Direction direction = sortTypes.getOrDefault(sortType, Sort.Direction.DESC);
+        return Sort.by(direction, sortBy);
     }
 }
