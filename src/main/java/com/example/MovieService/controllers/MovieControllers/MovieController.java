@@ -2,7 +2,6 @@ package com.example.MovieService.controllers.MovieControllers;
 
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.sevices.MovieServiceImpl;
-import com.example.MovieService.sevices.ReviewServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +19,10 @@ import java.util.*;
 @CrossOrigin
 public class MovieController {
     private final MovieServiceImpl movieServiceImpl;
-    private final ReviewServiceImpl reviewServiceImpl;
 
     @Autowired
-    public MovieController(MovieServiceImpl movieServiceImpl, ReviewServiceImpl reviewServiceImpl) {
+    public MovieController(MovieServiceImpl movieServiceImpl) {
         this.movieServiceImpl = movieServiceImpl;
-        this.reviewServiceImpl = reviewServiceImpl;
     }
 
     @ApiOperation("Get all movies")
