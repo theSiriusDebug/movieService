@@ -9,19 +9,7 @@ To run the project, please follow these steps:
     Once the deployment is successful, you can access the project at http://localhost:8080.
 
 Available Endpoints:
-
-    /registration - User registration page.
-    /login - User login page.
-    /movies - Get a list of all movies.
-    /movies/{id} - Get movie information by ID.
-    /movies/create - Create a new movie.
-    / - Homepage.
-    /edit - Edit user information (login and password).
-    /profile - Logout or edit user profile information.
-    /movies/watch/{id} - Watch a movie.
-    /movies/trailer/{id} - Watch a movie trailer.
-    /movies/search - Search for a movie by title.
-    /movies/review/create - Create a movie review.
+http://localhost:8080/swagger-ui/#/
 
 We have strived to create user-friendly and intuitive endpoints, allowing you to easily manage your movies and access the information you need.
 
