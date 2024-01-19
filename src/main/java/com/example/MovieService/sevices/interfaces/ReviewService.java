@@ -15,7 +15,5 @@ public interface ReviewService {
 
     void deleteReview(Review review);
 
-    List<Review> findReviewByMovie(Movie movie);
-
     void saveReview(Review review);
 }

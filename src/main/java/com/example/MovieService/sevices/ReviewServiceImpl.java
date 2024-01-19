@@ -1,6 +1,5 @@
 package com.example.MovieService.sevices;
 
-import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.dtos.ReviewDto;
 import com.example.MovieService.repositories.ReviewRepository;
@@ -66,19 +65,6 @@ public class ReviewServiceImpl implements ReviewService {
         log.info("Deleting review with ID: {}", review.getId());
         reviewRepository.delete(Objects.requireNonNull(review, "Review cannot be null."));
         log.info("Review deleted successfully");
-    }
-
-    @Override
-    public List<Review> findReviewByMovie(@Valid Movie movie) {
-        List<Review> reviews = reviewRepository.findByMovie(Objects.requireNonNull(movie, "Movie cannot be null."));
-
-        if (reviews == null) {
-            log.error("No reviews found for movie with ID: " + movie.getId());
-        } else {
-            log.info("Found " + reviews.size() + " reviews for movie with ID: " + movie.getId());
-        }
-
-        return reviews;
     }
 
     @Override
