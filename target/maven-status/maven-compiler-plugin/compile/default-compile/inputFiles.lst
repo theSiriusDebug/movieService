@@ -7,12 +7,14 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserRegistrationDto.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/interfaces/RoleService.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/MovieRepository.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/MovieDto.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/RoleServiceImpl.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/Reply.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/jwt/JwtTokenProvider.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/MovieServiceImpl.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/jwt/JwtAuthorizationFilter.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserController.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/validator/MovieMapper.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/ReplyRepository.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/RoleRepository.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/parser/MovieDataParser.java

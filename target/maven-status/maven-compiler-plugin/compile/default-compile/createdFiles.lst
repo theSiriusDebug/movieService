@@ -18,6 +18,7 @@ com/example/MovieService/controllers/MovieControllers/WatchLaterMoviesController
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReplyCreationController.class
 com/example/MovieService/controllers/UserControllers/RoleControllers/RoleController.class
 com/example/MovieService/models/Movie.class
+com/example/MovieService/utils/validator/MovieMapper.class
 com/example/MovieService/models/Rating.class
 com/example/MovieService/sevices/ReplyServiceImpl.class
 com/example/MovieService/repositories/MovieRepository.class
@@ -48,3 +49,4 @@ com/example/MovieService/MovieServiceApplication.class
 com/example/MovieService/repositories/UserRepository.class
 com/example/MovieService/controllers/MovieControllers/StreamMovieController.class
 com/example/MovieService/repositories/ReplyRepository.class
+com/example/MovieService/models/dtos/MovieDto.class

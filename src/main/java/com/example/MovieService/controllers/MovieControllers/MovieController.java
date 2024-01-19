@@ -1,6 +1,7 @@
 package com.example.MovieService.controllers.MovieControllers;
 
 import com.example.MovieService.models.Movie;
+import com.example.MovieService.models.dtos.MovieDto;
 import com.example.MovieService.sevices.MovieServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,14 +35,14 @@ public class MovieController {
 
     @ApiOperation("Get all movies")
     @GetMapping
-    public ResponseEntity<List<Movie>> getAllMovies(
+    public ResponseEntity<List<MovieDto>> getAllMovies(
             @RequestParam(required = false, defaultValue = "by date") String sortType) {
 
         // Get the sorting order from the request parameter
         Sort sorting = getSorting(sortType);
 
         // Find all movies sorted by the specified criteria
-        List<Movie> movies = movieServiceImpl.findAllMoviesSorted(sorting);
+        List<MovieDto> movies = movieServiceImpl.findAllMovieDto(sorting);
 
         // Return the list of movies in the requested format
         return ResponseEntity.ok(movies);
