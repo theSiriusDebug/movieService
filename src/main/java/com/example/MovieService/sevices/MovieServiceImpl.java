@@ -1,8 +1,10 @@
 package com.example.MovieService.sevices;
 
 import com.example.MovieService.models.Movie;
+import com.example.MovieService.models.dtos.MovieDto;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.sevices.interfaces.MovieService;
+import com.example.MovieService.utils.validator.MovieMapper;
 import jakarta.validation.Valid;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,6 +31,15 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> findAllMovies(){
         log.info("Return all movies");
         return movieRepository.findAll();
+    }
+
+    @Override
+    public List<MovieDto> findAllMovieDto(Sort sorting) {
+        log.info("Return all movies");
+        List<Movie> movies = movieRepository.findAll(sorting);
+        return movies.stream()
+                .map(MovieMapper::mapToMovieDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -59,11 +71,5 @@ public class MovieServiceImpl implements MovieService {
             return movieRepository.search(title, sorting);
         }
         return movieRepository.findAll();
-    }
-
-    @Override
-    public List<Movie> findAllMoviesSorted(Sort sorting) {
-        log.debug("Return all sorted movies");
-        return movieRepository.findAll(sorting);
     }
 }
