@@ -4,7 +4,6 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.sevices.interfaces.MovieService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public Movie findOptionalMovieById(@NotBlank long id) {
+    public Movie findOptionalMovieById(long id) {
         log.info(String.format("Searching for movie with ID: %s", id));
 
         try {
@@ -56,13 +55,10 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<Movie> findMovieByTitle(String title, Sort sorting) {
         log.debug("Searching movies by title containing: {}", title);
-        return movieRepository.findByTitleContainingIgnoreCase(title, sorting);
-    }
-
-    @Override
-    public Optional<Movie> findMovieById(Long id) {
-        log.debug("Retrieving movie with ID: {}", id);
-        return movieRepository.findById(id);
+        if (title != null) {
+            return movieRepository.search(title, sorting);
+        }
+        return movieRepository.findAll();
     }
 
     @Override
