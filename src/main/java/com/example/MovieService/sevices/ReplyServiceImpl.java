@@ -4,7 +4,6 @@ import com.example.MovieService.models.Reply;
 import com.example.MovieService.repositories.ReplyRepository;
 import com.example.MovieService.sevices.interfaces.ReplyService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public Reply findReplyById(@Min(0) Long id) {
+    public Reply findReplyById(Long id) {
         try {
             Reply reply = replyRepository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Reply not found with ID: " + id));

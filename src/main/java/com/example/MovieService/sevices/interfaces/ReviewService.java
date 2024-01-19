@@ -1,6 +1,5 @@
 package com.example.MovieService.sevices.interfaces;
 
-import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.dtos.ReviewDto;
 

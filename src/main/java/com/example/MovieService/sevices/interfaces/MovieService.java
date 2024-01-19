@@ -2,7 +2,6 @@ package com.example.MovieService.sevices.interfaces;
 
 import com.example.MovieService.models.Movie;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
