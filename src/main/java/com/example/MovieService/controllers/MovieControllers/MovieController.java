@@ -25,31 +25,57 @@ public class MovieController {
         this.movieServiceImpl = movieServiceImpl;
     }
 
+    @ApiOperation("Get movie details by movie ID")
+    @GetMapping("/{id}")
+    public ResponseEntity<Movie> getMovieDetails(@PathVariable("id") Long id) {
+        Movie movie = movieServiceImpl.findOptionalMovieById(id);
+        return ResponseEntity.ok(movie);
+    }
+
     @ApiOperation("Get all movies")
     @GetMapping
     public ResponseEntity<List<Movie>> getAllMovies(
             @RequestParam(required = false, defaultValue = "by date") String sortType) {
 
+        // Get the sorting order from the request parameter
         Sort sorting = getSorting(sortType);
+
+        // Find all movies sorted by the specified criteria
         List<Movie> movies = movieServiceImpl.findAllMoviesSorted(sorting);
 
+        // Return the list of movies in the requested format
         return ResponseEntity.ok(movies);
+    }
+
+    // Helper method to get the sorting order from the request parameter
+    private Sort getSorting(String sortType) {
+        Map<String, Sort.Order> sortTypes = Map.of(
+                "by_date", Sort.Order.desc("year"),
+                "by_date_reverse", Sort.Order.asc("year"),
+                "by_alphabet", Sort.Order.desc("title"),
+                "by_alphabet_reverse", Sort.Order.asc("title"),
+                "by_rating", Sort.Order.desc("imdbRating"),
+                "by_rating_reverse", Sort.Order.asc("imdbRating"),
+                "by_kinopoisk_rating", Sort.Order.desc("kinopoiskRating"),
+                "by_kinopoisk_rating_reverse", Sort.Order.asc("kinopoiskRating")
+        );
+
+        // Get the sorting order from the request parameter
+        Sort.Order order = sortTypes.getOrDefault(sortType, Sort.Order.desc("year"));
+
+        // Create a Sort object with the specified order
+        return Sort.by(order);
     }
 
     @ApiOperation("Search movies")
     @GetMapping("/search")
     public ResponseEntity<List<Movie>> getMoviesByTitle(
             @RequestParam(required = false) String title,
-            @RequestParam(required = false) String sortType) {
+            @RequestParam(required = false, defaultValue = "by date") String sortType) {
 
         Sort sorting = getSorting(sortType);
-        List<Movie> movies;
 
-        if (title != null && !title.isEmpty()) {
-            movies = movieServiceImpl.findMovieByTitle(title, sorting);
-        } else {
-            movies = movieServiceImpl.findAllMoviesSorted(sorting);
-        }
+        List<Movie> movies = movieServiceImpl.findMovieByTitle(title, sorting);
 
         return ResponseEntity.ok(movies);
     }
@@ -79,14 +105,6 @@ public class MovieController {
         filteredMovies.sort(comparator);
 
         return ResponseEntity.ok(filteredMovies);
-    }
-
-
-    @ApiOperation("Get movie details by movie ID")
-    @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovieDetails(@PathVariable("id") Long id) {
-        Movie movie = movieServiceImpl.findOptionalMovieById(id);
-        return ResponseEntity.ok(movie);
     }
 
     private void applyFilters(
@@ -173,21 +191,5 @@ public class MovieController {
             comparator = comparator.reversed();
         }
         return comparator;
-    }
-
-    private Sort getSorting(String sortType) {
-        Map<String, Sort.Order> sortTypes = Map.of(
-                "by_date", Sort.Order.desc("year"),
-                "by_date_reverse", Sort.Order.asc("year"),
-                "by_alphabet", Sort.Order.desc("title"),
-                "by_alphabet_reverse", Sort.Order.asc("title"),
-                "by_rating", Sort.Order.desc("imdbRating"),
-                "by_rating_reverse", Sort.Order.asc("imdbRating"),
-                "by_kinopoisk_rating", Sort.Order.desc("kinopoiskRating"),
-                "by_kinopoisk_rating_reverse", Sort.Order.asc("kinopoiskRating")
-        );
-
-        Sort.Order order = sortTypes.getOrDefault(sortType, Sort.Order.desc("year"));
-        return Sort.by(order);
     }
 }
