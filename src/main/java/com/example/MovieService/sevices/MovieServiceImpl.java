@@ -65,11 +65,11 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> findMovieByTitle(String title, Sort sorting) {
+    public List<MovieDto> findMovieByTitle(String title, Sort sorting) {
         log.debug("Searching movies by title containing: {}", title);
-        if (title != null) {
-            return movieRepository.search(title, sorting);
-        }
-        return movieRepository.findAll();
+        List<Movie> movies = movieRepository.search(title, sorting);
+        return movies.stream()
+                .map(MovieMapper::mapToMovieDto)
+                .collect(Collectors.toList());
     }
 }

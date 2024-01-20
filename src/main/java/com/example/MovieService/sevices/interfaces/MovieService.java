@@ -15,5 +15,5 @@ public interface MovieService {
 
     void saveMovie(Movie movie);
 
-    List<Movie>findMovieByTitle(String title, Sort sorting);
+    List<MovieDto>findMovieByTitle(String title, Sort sorting);
 }

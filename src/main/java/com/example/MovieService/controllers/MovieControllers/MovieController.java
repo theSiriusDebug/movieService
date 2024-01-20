@@ -70,13 +70,13 @@ public class MovieController {
 
     @ApiOperation("Search movies")
     @GetMapping("/search")
-    public ResponseEntity<List<Movie>> getMoviesByTitle(
+    public ResponseEntity<List<MovieDto>> getMoviesByTitle(
             @RequestParam(required = false) String title,
             @RequestParam(required = false, defaultValue = "by date") String sortType) {
 
         Sort sorting = getSorting(sortType);
 
-        List<Movie> movies = movieServiceImpl.findMovieByTitle(title, sorting);
+        List<MovieDto> movies = movieServiceImpl.findMovieByTitle(title, sorting);
 
         return ResponseEntity.ok(movies);
     }
