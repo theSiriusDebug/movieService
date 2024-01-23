@@ -122,4 +122,24 @@ public class ReviewCreationController {
         log.info("Review edited successfully with ID: " + reviewId);
         return ResponseEntity.ok("Review updated successfully");
     }
+
+    @ApiOperation("Create a reply.")
+    @PostMapping("/create/{movieId}/{reviewId}")
+    public ResponseEntity<Review> createReply(@PathVariable Long movieId, @PathVariable Long reviewId, @RequestBody String reviewText) {
+        log.info("Creating review for movie with ID: " + movieId);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
+
+        Review reply = new Review();
+        reply.setUser(currentUser);
+        reply.setParent(reviewServiceImpl.findReviewById(reviewId));
+        reply.setReviewText(reviewText);
+        reply.setMovie(movieServiceImpl.findOptionalMovieById(movieId));
+
+        reviewServiceImpl.saveReview(reply);
+
+        log.info("Review created successfully for movie with ID: " + movieId);
+        return ResponseEntity.ok(reply);
+    }
 }
