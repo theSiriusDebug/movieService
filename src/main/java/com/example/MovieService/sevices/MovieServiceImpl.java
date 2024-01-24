@@ -49,7 +49,7 @@ public class MovieServiceImpl implements MovieService {
         try {
             Movie movie = Optional.ofNullable(movieRepository.findById(id))
                     .orElseThrow(() -> new NotFoundException("Movie not found"));
-            log.info(String.format("Movie found: %s", movie));
+            log.info(String.format("Movie found: %s", movie.getId()));
             return movie;
         } catch (NotFoundException e) {
             log.info(String.format("Movie not found for ID: %s", id));
