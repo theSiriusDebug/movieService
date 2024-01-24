@@ -38,5 +38,5 @@ public class Review {
     private List<Review> replies = new ArrayList<>();
 
     @NotBlank(message = "reviewText must not be blank")
-    @Min(value = 1)
-    private String reviewText;}
+    private String reviewText;
+}
