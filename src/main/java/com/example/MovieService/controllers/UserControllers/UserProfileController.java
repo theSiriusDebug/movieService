@@ -1,7 +1,9 @@
 package com.example.MovieService.controllers.UserControllers;
 
 import com.example.MovieService.models.User;
+import com.example.MovieService.models.dtos.UserDto;
 import com.example.MovieService.sevices.UserServiceImpl;
+import com.example.MovieService.utils.validator.UserMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,10 @@ public class UserProfileController {
 
     @ApiOperation("Get user profile")
     @GetMapping("/profile")
-    public ResponseEntity<User> getUserProfile() {
+    public ResponseEntity<UserDto> getUserProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userService.findByOptionalUsername(authentication.getName());
 
-        return ResponseEntity.ok(currentUser);
+        return ResponseEntity.ok(UserMapper.mapToUserDto(currentUser));
     }
 }
