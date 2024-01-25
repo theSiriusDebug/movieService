@@ -53,6 +53,7 @@ public class User {
                     name = "movie_id", referencedColumnName = "id"))
     private List<Movie> watchLaterMovies = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
