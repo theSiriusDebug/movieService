@@ -13,7 +13,6 @@ public class UserMapper {
                 user.getFavoriteMovies().stream().map(UserMoviesMapper::mapToUserMovieDto).collect(Collectors.toList()),
                 user.getFavoriteMovies().stream().map(UserMoviesMapper::mapToUserMovieDto).collect(Collectors.toList()),
                 user.getReviews().stream()
-                        .filter(r -> r.getParent()==null)
                         .map(UserReviewsMapper::mapToUserReviewsDto)
                         .collect(Collectors.toList())
         );
