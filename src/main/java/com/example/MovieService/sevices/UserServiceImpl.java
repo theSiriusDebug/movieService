@@ -2,10 +2,10 @@ package com.example.MovieService.sevices;
 
 import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
+import com.example.MovieService.models.dtos.UserDto;
 import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.interfaces.UserService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import com.example.MovieService.utils.validator.UserMapper;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,15 +50,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User findByUsername(@Valid @NotBlank String username) {
-        User user = userRepository.findByUsername(username);
-        log.info("Retrieved user with username {} ", username);
-
-        return user;
-    }
-
-    @Override
-    public User findByOptionalUsername(@Valid @NotBlank String username) {
+    public User findByOptionalUsername(String username) {
         try {
             log.info("Retrieved optional user with username {} ", username);
             return Optional.ofNullable(userRepository.findByUsername(username))
@@ -75,12 +67,24 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> findAllUsers() {
+        log.info("Fetching all users");
+        return userRepository.findAll()
+                .stream()
+                .map(UserMapper::mapToUserDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.getById(id);
+    public UserDto findUserById(Long id) {
+        log.info("Fetching user with ID: " + id);
+        try {
+
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new NotFoundException("Not found"));
+            return UserMapper.mapToUserDto(user);
+        } catch (NotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
