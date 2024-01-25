@@ -13,6 +13,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/MovieServiceImpl.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/jwt/JwtAuthorizationFilter.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserController.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/MovieDetailsDto.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/validator/MovieMapper.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/RoleRepository.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/parser/MovieDataParser.java
@@ -31,6 +32,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserDto.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/UserRepository.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/ReviewServiceImpl.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/validator/MovieDetailsMapper.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/FavouriteMoviesController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/configurations/CorsConfig.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/StreamMovieController.java

@@ -1,8 +1,10 @@
 package com.example.MovieService.controllers.MovieControllers;
 
 import com.example.MovieService.models.Movie;
+import com.example.MovieService.models.dtos.MovieDetailsDto;
 import com.example.MovieService.models.dtos.MovieDto;
 import com.example.MovieService.sevices.MovieServiceImpl;
+import com.example.MovieService.utils.validator.MovieDetailsMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +30,9 @@ public class MovieController {
 
     @ApiOperation("Get movie details by movie ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Movie> getMovieDetails(@PathVariable("id") Long id) {
+    public ResponseEntity<MovieDetailsDto> getMovieDetails(@PathVariable("id") Long id) {
         Movie movie = movieServiceImpl.findOptionalMovieById(id);
-        return ResponseEntity.ok(movie);
+        return ResponseEntity.ok(MovieDetailsMapper.mapToMovieDetailsDto(movie));
     }
 
     @ApiOperation("Get all movies")

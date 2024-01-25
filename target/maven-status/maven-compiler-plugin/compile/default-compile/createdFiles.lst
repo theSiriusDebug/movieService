@@ -5,6 +5,7 @@ com/example/MovieService/models/dtos/UserReviewsDto.class
 com/example/MovieService/sevices/ReviewServiceImpl.class
 com/example/MovieService/controllers/HomeController.class
 com/example/MovieService/controllers/MovieControllers/CreateMovieController.class
+com/example/MovieService/models/dtos/MovieDetailsDto.class
 com/example/MovieService/models/dtos/UserRegistrationDto.class
 com/example/MovieService/utils/validator/UserMoviesMapper.class
 com/example/MovieService/models/Role.class
@@ -14,6 +15,7 @@ com/example/MovieService/controllers/UserControllers/UserController.class
 com/example/MovieService/parser/MovieDataParser.class
 com/example/MovieService/sevices/RoleServiceImpl.class
 com/example/MovieService/models/dtos/UserMoviesDto.class
+com/example/MovieService/utils/validator/MovieDetailsMapper.class
 com/example/MovieService/sevices/interfaces/UserService.class
 com/example/MovieService/controllers/MovieControllers/WatchLaterMoviesController.class
 com/example/MovieService/controllers/UserControllers/RoleControllers/RoleController.class
