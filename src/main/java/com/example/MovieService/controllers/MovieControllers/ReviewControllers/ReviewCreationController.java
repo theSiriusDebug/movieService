@@ -79,7 +79,7 @@ public class ReviewCreationController {
 
         // Authorization check
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userServiceImpl.findByUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
         if ((!currentUser.hasRole("ROLE_ADMIN") && !review.getUser().equals(currentUser))) {
             log.error("Unauthorized deletion attempt for review with ID: " + reviewId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to delete this review.");
@@ -109,7 +109,7 @@ public class ReviewCreationController {
 
         // Authorization check
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userServiceImpl.findByUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
         if (!review.getUser().equals(currentUser)) {
             log.error("Unauthorized edit attempt for review with ID: " + reviewId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to edit this review.");

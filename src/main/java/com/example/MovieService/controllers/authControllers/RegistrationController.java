@@ -42,7 +42,7 @@ public class RegistrationController {
         try {
             String username = registrationDto.getUsername();
             logger.info("Registration attempt for username: {}", username);
-            if (userServiceImpl.findByUsername(username) == null) {
+            if (userServiceImpl.findByOptionalUsername(username) == null) {
                 logger.info("Username '{}' is available for registration", username);
                 User newUser = new User();
                 newUser.setUsername(username);

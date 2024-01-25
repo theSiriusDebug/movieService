@@ -34,7 +34,7 @@ public class FavouriteMoviesController {
     public ResponseEntity<String> addFavoriteMovie(@PathVariable("movieId") long movieId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userServiceImpl.findByUsername(authentication.getName());
+        User user = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
 
@@ -53,7 +53,7 @@ public class FavouriteMoviesController {
     public ResponseEntity<String> removeFavoriteMovie(@PathVariable("movieId") long movieId) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userServiceImpl.findByUsername(authentication.getName());
+        User user = userServiceImpl.findByOptionalUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
 
