@@ -1,6 +1,7 @@
 package com.example.MovieService.controllers.UserControllers;
 
 import com.example.MovieService.models.User;
+import com.example.MovieService.models.dtos.UserDto;
 import com.example.MovieService.models.dtos.UserRegistrationDto;
 import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
@@ -14,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @Api(tags = "UserController")
@@ -61,12 +61,14 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> get(){
-        return ResponseEntity.ok(userServiceImpl.getAllUsers());
+    public ResponseEntity<List<UserDto>> get(){
+        List<UserDto>users = userServiceImpl.findAllUsers();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<Optional<User>> get(@PathVariable("id") long id){
-        return ResponseEntity.ok(Optional.ofNullable(userServiceImpl.getUserById(id)));
+    public ResponseEntity<UserDto> get(@PathVariable("id") long id){
+        UserDto user = userServiceImpl.findUserById(id);
+        return ResponseEntity.ok(user);
     }
 }
