@@ -22,7 +22,10 @@ public class MovieDetailsMapper {
                 movie.getTrailerLink(),
                 movie.getMovieLink(),
                 movie.getActors(),
-                movie.getReviews().stream().map(ReviewMapper::mapToReviewDto).collect(Collectors.toList())
+                movie.getReviews().stream()
+                        .filter(r -> r.getParent()==null)
+                        .map(ReviewMapper::mapToReviewDto)
+                        .collect(Collectors.toList())
         );
     }
 }
