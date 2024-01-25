@@ -14,7 +14,7 @@ import java.util.Set;
 public class UserDto {
     private String username;
     private Set<Role> roles;
-    private List<Movie> favoriteMovies;
-    private List<Movie> watchLaterMovies;
+    private List<UserMoviesDto> favoriteMovies;
+    private List<UserMoviesDto> watchLaterMovies;
     private List<UserReviewsDto> reviews;
 }
