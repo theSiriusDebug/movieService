@@ -22,4 +22,5 @@ public class MovieDto {
     private double kinopoiskRating;
     private String posterLink;
     private int reviewsCount;
+    private double userRating;
 }
