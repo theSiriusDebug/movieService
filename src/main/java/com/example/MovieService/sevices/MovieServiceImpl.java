@@ -6,7 +6,6 @@ import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.sevices.interfaces.MovieService;
 import com.example.MovieService.utils.validator.MovieMapper;
 import jakarta.validation.Valid;
-import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,26 +33,26 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDto> findAllMovieDto(Sort sorting) {
-        log.info("Return all movies");
+        log.info("Retrieving all movies from the database");
+
         List<Movie> movies = movieRepository.findAll(sorting);
-        return movies.stream()
+
+        List<MovieDto> movieDtos = movies.stream()
                 .map(MovieMapper::mapToMovieDto)
                 .collect(Collectors.toList());
+
+        log.info("Found {} movies", movieDtos.size());
+
+        return movieDtos;
     }
 
     @Override
     public Movie findOptionalMovieById(long id) {
-        log.info(String.format("Searching for movie with ID: %s", id));
+        log.info("Searching for movie with ID: {}", id);
+        Movie movie = Objects.requireNonNull(movieRepository.findById(id), "Movie cannot be null");
 
-        try {
-            Movie movie = Optional.ofNullable(movieRepository.findById(id))
-                    .orElseThrow(() -> new NotFoundException("Movie not found"));
-            log.info(String.format("Movie found: %s", movie.getId()));
-            return movie;
-        } catch (NotFoundException e) {
-            log.info(String.format("Movie not found for ID: %s", id));
-            throw new RuntimeException(e);
-        }
+        log.info("Movie found: {}", movie.getTitle());
+        return movie;
     }
 
     @Override
@@ -66,10 +64,15 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDto> findMovieByTitle(String title, Sort sorting) {
-        log.debug("Searching movies by title containing: {}", title);
+        log.info("Searching movies by title containing: {}", title);
         List<Movie> movies = movieRepository.search(title, sorting);
-        return movies.stream()
+
+        List<MovieDto> movieDtos = movies.stream()
                 .map(MovieMapper::mapToMovieDto)
                 .collect(Collectors.toList());
+
+        log.info("Returning {} movie DTOs for title: {}", movieDtos.size(), title);
+
+        return movieDtos;
     }
 }
