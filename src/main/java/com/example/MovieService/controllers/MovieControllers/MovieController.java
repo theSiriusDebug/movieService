@@ -7,6 +7,7 @@ import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.utils.validator.MovieDetailsMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
+@Slf4j
 @RequestMapping("/movies")
 @Api(tags = "MovieController API")
 @CrossOrigin
@@ -40,18 +42,15 @@ public class MovieController {
     public ResponseEntity<List<MovieDto>> getAllMovies(
             @RequestParam(required = false, defaultValue = "by date") String sortType) {
 
-        // Get the sorting order from the request parameter
-        Sort sorting = getSorting(sortType);
+        Sort sorting = getSorting(sortType); // Get the sorting order from the request parameter
 
-        // Find all movies sorted by the specified criteria
-        List<MovieDto> movies = movieServiceImpl.findAllMovieDto(sorting);
-
-        // Return the list of movies in the requested format
+        List<MovieDto> movies = movieServiceImpl.findAllMovieDto(sorting); // Find all movies sorted by the specified criteria
         return ResponseEntity.ok(movies);
     }
 
     // Helper method to get the sorting order from the request parameter
     private Sort getSorting(String sortType) {
+        log.info("getSorting method started with sortType: {}", sortType);
         Map<String, Sort.Order> sortTypes = Map.of(
                 "by_date", Sort.Order.desc("year"),
                 "by_date_reverse", Sort.Order.asc("year"),
@@ -65,9 +64,9 @@ public class MovieController {
 
         // Get the sorting order from the request parameter
         Sort.Order order = sortTypes.getOrDefault(sortType, Sort.Order.desc("year"));
+        log.info("Selected sorting order: {}", order);
 
-        // Create a Sort object with the specified order
-        return Sort.by(order);
+        return Sort.by(order); // Create a Sort object with the specified order
     }
 
     @ApiOperation("Search movies")
