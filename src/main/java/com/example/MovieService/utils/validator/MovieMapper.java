@@ -3,11 +3,15 @@ package com.example.MovieService.utils.validator;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Rating;
 import com.example.MovieService.models.dtos.MovieDto;
+import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MovieMapper {
-    public static MovieDto mapToMovieDto(Movie movie){
+    public static MovieDto mapToMovieDto(@Valid Movie movie){
+        if (movie == null)
+            throw new NullPointerException();
         return new MovieDto(
                 movie.getTitle(),
                 movie.getYear(),
