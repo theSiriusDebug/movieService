@@ -15,6 +15,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/MovieDetailsDto.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/validator/MovieMapper.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/validator/RoleMapper.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/repositories/RoleRepository.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/parser/MovieDataParser.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/parser/MovieDetailsExtractor.java
@@ -27,6 +28,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/validator/UserMapper.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/configurations/WebSecurityConfig.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/MovieServiceApplication.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/userDtos/RoleDto.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserProfileController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/Movie.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserDto.java

@@ -45,6 +45,8 @@ com/example/MovieService/jwt/JwtAuthenticationFilter.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.class
 com/example/MovieService/sevices/UserServiceImpl.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/RatingCreationController.class
+com/example/MovieService/utils/validator/RoleMapper.class
+com/example/MovieService/models/dtos/userDtos/RoleDto.class
 com/example/MovieService/models/User.class
 com/example/MovieService/sevices/interfaces/MovieService.class
 com/example/MovieService/MovieServiceApplication.class
