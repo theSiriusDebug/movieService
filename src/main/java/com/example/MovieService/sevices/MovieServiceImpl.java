@@ -4,7 +4,7 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.dtos.MovieDto;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.sevices.interfaces.MovieService;
-import com.example.MovieService.utils.validator.MovieMapper;
+import com.example.MovieService.utils.mappers.MovieMapper;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

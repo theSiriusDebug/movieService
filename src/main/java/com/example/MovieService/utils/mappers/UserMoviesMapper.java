@@ -1,4 +1,4 @@
-package com.example.MovieService.utils.validator;
+package com.example.MovieService.utils.mappers;
 
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.dtos.UserMoviesDto;

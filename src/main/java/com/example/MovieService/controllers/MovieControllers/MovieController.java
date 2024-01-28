@@ -4,7 +4,7 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.dtos.MovieDetailsDto;
 import com.example.MovieService.models.dtos.MovieDto;
 import com.example.MovieService.sevices.MovieServiceImpl;
-import com.example.MovieService.utils.validator.MovieDetailsMapper;
+import com.example.MovieService.utils.mappers.MovieDetailsMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

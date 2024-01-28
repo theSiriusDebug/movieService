@@ -4,7 +4,7 @@ import com.example.MovieService.models.Review;
 import com.example.MovieService.models.dtos.ReviewDto;
 import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.sevices.interfaces.ReviewService;
-import com.example.MovieService.utils.validator.ReviewMapper;
+import com.example.MovieService.utils.mappers.ReviewMapper;
 import jakarta.validation.Valid;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
