@@ -9,6 +9,8 @@ public interface UserService {
 
     User findByOptionalUsername(String username);
 
+    User findByUsername(String username);
+
     User save(User user);
 
     List<UserDto> findAllUsers();

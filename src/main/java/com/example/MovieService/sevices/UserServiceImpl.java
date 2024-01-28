@@ -61,6 +61,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        log.info("Retrieved user with username {} ", username);
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
     public User save(User user) {
         log.info("Save user with username {} ", user.getUsername());
         return userRepository.save(Objects.requireNonNull(user, "User cannot be null."));
