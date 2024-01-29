@@ -39,27 +39,23 @@ public class MovieController {
 
     @ApiOperation("Get all movies")
     @GetMapping
-    public ResponseEntity<List<MovieDto>> getAllMovies(
-            @RequestParam(required = false, defaultValue = "by date") String sortType) {
-
+    public ResponseEntity<List<MovieDto>> getAllMovies(@RequestParam(required = false, defaultValue = "by date") String sortType) {
         Sort sorting = getSorting(sortType); // Get the sorting order from the request parameter
-
-        List<MovieDto> movies = movieServiceImpl.findAllMovieDto(sorting); // Find all movies sorted by the specified criteria
+        List<MovieDto> movies = movieServiceImpl.findAllMovieDto(sorting);
         return ResponseEntity.ok(movies);
     }
 
-    // Helper method to get the sorting order from the request parameter
-    private Sort getSorting(String sortType) {
+    private Sort getSorting(String sortType) { // Helper method to get the sorting order from the request parameter
         log.info("getSorting method started with sortType: {}", sortType);
         Map<String, Sort.Order> sortTypes = Map.of(
-                "by_date", Sort.Order.desc("year"),
-                "by_date_reverse", Sort.Order.asc("year"),
-                "by_alphabet", Sort.Order.desc("title"),
-                "by_alphabet_reverse", Sort.Order.asc("title"),
-                "by_rating", Sort.Order.desc("imdbRating"),
-                "by_rating_reverse", Sort.Order.asc("imdbRating"),
-                "by_kinopoisk_rating", Sort.Order.desc("kinopoiskRating"),
-                "by_kinopoisk_rating_reverse", Sort.Order.asc("kinopoiskRating")
+            "by_date", Sort.Order.desc("year"),
+            "by_date_reverse", Sort.Order.asc("year"),
+            "by_alphabet", Sort.Order.desc("title"),
+            "by_alphabet_reverse", Sort.Order.asc("title"),
+            "by_rating", Sort.Order.desc("imdbRating"),
+            "by_rating_reverse", Sort.Order.asc("imdbRating"),
+            "by_kinopoisk_rating", Sort.Order.desc("kinopoiskRating"),
+            "by_kinopoisk_rating_reverse", Sort.Order.asc("kinopoiskRating")
         );
 
         // Get the sorting order from the request parameter
@@ -73,12 +69,10 @@ public class MovieController {
     @GetMapping("/search")
     public ResponseEntity<List<MovieDto>> getMoviesByTitle(
             @RequestParam(required = false) String title,
-            @RequestParam(required = false, defaultValue = "by date") String sortType) {
-
+            @RequestParam(required = false, defaultValue = "by date") String sortType
+    ) {
         Sort sorting = getSorting(sortType);
-
         List<MovieDto> movies = movieServiceImpl.findMovieByTitle(title, sorting);
-
         return ResponseEntity.ok(movies);
     }
 

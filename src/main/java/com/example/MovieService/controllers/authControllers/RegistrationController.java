@@ -28,9 +28,7 @@ public class RegistrationController {
     private final RoleServiceImpl roleServiceImpl;
 
     @Autowired
-    public RegistrationController(
-            UserServiceImpl userServiceImpl, JwtTokenProvider jwtTokenProvider, RoleServiceImpl roleServiceImpl) {
-
+    public RegistrationController(UserServiceImpl userServiceImpl, JwtTokenProvider jwtTokenProvider, RoleServiceImpl roleServiceImpl) {
         this.userServiceImpl = userServiceImpl;
         this.jwtTokenProvider = jwtTokenProvider;
         this.roleServiceImpl = roleServiceImpl;
@@ -50,7 +48,6 @@ public class RegistrationController {
                     Role role = roleServiceImpl.findRoleByName(registrationDto.getRole());
                     newUser.setRoles(Collections.singleton(role));
                 } else {
-                    // Set a default role if no role is provided
                     Role defaultRole = roleServiceImpl.findRoleByName("ROLE_USER");
                     newUser.setRoles(Collections.singleton(defaultRole));
                 }
