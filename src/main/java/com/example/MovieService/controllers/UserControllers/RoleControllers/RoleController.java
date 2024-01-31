@@ -11,28 +11,28 @@ import java.util.List;
 @RestController
 @RequestMapping("/roles")
 public class RoleController {
-    private final RoleServiceImpl roleServiceImpl;
+    private final RoleServiceImpl service;
 
     @Autowired
-    public RoleController(RoleServiceImpl roleServiceImpl) {
-        this.roleServiceImpl = roleServiceImpl;
+    public RoleController(RoleServiceImpl service) {
+        this.service = service;
     }
 
     @GetMapping
     public String pasteRoles(){
         RoleDto user = new RoleDto();
         user.setName("ROLE_USER");
-        roleServiceImpl.saveRole(user);
+        service.saveRole(user);
 
         RoleDto admin = new RoleDto();
         admin.setName("ROLE_ADMIN");
-        roleServiceImpl.saveRole(admin);
+        service.saveRole(admin);
 
         return "successfully";
     }
 
     @GetMapping("/roletest")
     public ResponseEntity<List<RoleDto>> getRoles() {
-        return ResponseEntity.ok(roleServiceImpl.findAllRoles());
+        return ResponseEntity.ok(service.findAllRoles());
     }
 }
