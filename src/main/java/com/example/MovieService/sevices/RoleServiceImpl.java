@@ -18,30 +18,30 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class RoleServiceImpl implements RoleService {
-    private final RoleRepository roleRepository;
+    private final RoleRepository repository;
 
     @Autowired
-    public RoleServiceImpl(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
+    public RoleServiceImpl(RoleRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<RoleDto> findAllRoles() {
-        log.info("Retrieving all roles");
-        return roleRepository.findAll()
-                .stream()
+        log.info("Retrieving all roles from the database");
+        return repository.findAll().stream()
                 .map(RoleMapper::mapToRoleDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public void saveRole(@Valid RoleDto role) {
-        roleRepository.save(Objects.requireNonNull(RoleMapper.mapToRole(role), "Role cannot be null."));
-        log.info("Role saved successfully.");
+        log.info("Saving role: {}", role.getName());
+        repository.save(Objects.requireNonNull(RoleMapper.mapToRole(role), "Role cannot be null."));
     }
 
     @Override
     public Role findRoleByName(@NotBlank String roleName) {
-        return Objects.requireNonNull(roleRepository.findByName(roleName));
+        log.info("Searching for role with name: {}", roleName);
+        return Objects.requireNonNull(repository.findByName(roleName));
     }
 }
