@@ -35,6 +35,7 @@ com/example/MovieService/sevices/interfaces/ReviewService.class
 com/example/MovieService/configurations/WebSecurityConfig.class
 com/example/MovieService/models/dtos/ReviewDto.class
 com/example/MovieService/repositories/ReviewRepository.class
+com/example/MovieService/models/dtos/userDtos/EditUserDto.class
 com/example/MovieService/parser/MovieDetailsExtractor.class
 com/example/MovieService/sevices/interfaces/RoleService.class
 com/example/MovieService/utils/mappers/UserMapper.class

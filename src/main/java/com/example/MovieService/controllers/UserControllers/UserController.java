@@ -2,7 +2,7 @@ package com.example.MovieService.controllers.UserControllers;
 
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserDto;
-import com.example.MovieService.models.dtos.UserRegistrationDto;
+import com.example.MovieService.models.dtos.userDtos.EditUserDto;
 import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,11 +29,31 @@ public class UserController {
 
     @ApiOperation("Update user")
     @PostMapping("/edit")
-    public ResponseEntity<?> updateUser(@RequestBody UserRegistrationDto registrationDto) {
+    public ResponseEntity<?> updateUser(@RequestBody EditUserDto editUserDto) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = service.findByOptionalUsername(auth.getName());
-        user.setPassword(encoder.encode(registrationDto.getPassword()));
+        updateUser(editUserDto, user);
         return ResponseEntity.ok(service.save(user));
+    }
+
+    private void updateUser(EditUserDto editUser, User user){
+        String currentPassword = user.getPassword();
+        String currentUsername = user.getUsername();
+
+        String editUserPassword = editUser.getPassword();
+        String editUserUsername = editUser.getUsername();
+
+        String newPassword = editUser.getNew_password();
+        String newUsername = editUser.getNew_username();
+
+        if (encoder.matches(editUserPassword, currentPassword) && editUserUsername.equals(currentUsername)) {
+            if (newUsername != null) {
+                user.setUsername(newUsername);
+            }
+            if (newPassword != null) {
+                user.setPassword(encoder.encode(newPassword));
+            }
+        }
     }
 
     @ApiOperation("Retrieve all users")

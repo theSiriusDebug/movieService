@@ -28,6 +28,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/MovieServiceApplication.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/mappers/UserMoviesMapper.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/userDtos/RoleDto.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/userDtos/EditUserDto.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/UserControllers/UserProfileController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/Movie.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/models/dtos/UserDto.java
