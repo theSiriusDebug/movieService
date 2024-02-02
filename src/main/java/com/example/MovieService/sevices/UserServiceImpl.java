@@ -3,16 +3,19 @@ package com.example.MovieService.sevices;
 import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserDto;
+import com.example.MovieService.models.dtos.userDtos.EditUserDto;
 import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.interfaces.UserService;
 import com.example.MovieService.utils.mappers.UserMapper;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +28,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, @Lazy BCryptPasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     @Override
@@ -70,6 +75,30 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public User save(User user) {
         log.info("Save user with username {} ", user.getUsername());
         return userRepository.save(Objects.requireNonNull(user, "User cannot be null."));
+    }
+
+    @Override
+    public User updateUser(EditUserDto editUser, User user) {
+        log.info("Updating user with ID {} ", user.getId());
+        if (isPasswordAndUsernameValid(editUser, user)) {
+            if (editUser.getNewUsername() != null) {
+                log.info("Updating username");
+                user.setUsername(editUser.getNewUsername());
+            }
+            if (editUser.getNewPassword() != null) {
+                log.info("Updating password");
+                user.setPassword(encoder.encode(editUser.getNewPassword()));
+            }
+            log.info("User updated successfully");
+            return userRepository.save(user);
+        } else {
+            throw new RuntimeException("Wrong password or username");
+        }
+    }
+
+    private boolean isPasswordAndUsernameValid(EditUserDto editUser, User user) {
+        log.info("Checking if password and username are valid");
+        return encoder.matches(editUser.getPassword(), user.getPassword()) && editUser.getUsername().equals(user.getUsername());
     }
 
     @Override
