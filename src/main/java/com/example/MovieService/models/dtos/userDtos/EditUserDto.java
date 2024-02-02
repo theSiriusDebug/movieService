@@ -1,5 +1,6 @@
 package com.example.MovieService.models.dtos.userDtos;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EditUserDto {
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
-    private String new_username;
-    private String new_password;
+    private String newUsername;
+    private String newPassword;
 }

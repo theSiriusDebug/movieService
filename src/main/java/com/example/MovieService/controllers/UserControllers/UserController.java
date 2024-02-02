@@ -29,32 +29,29 @@ public class UserController {
 
     @ApiOperation("Update user")
     @PostMapping("/edit")
-    public ResponseEntity<?> updateUser(@RequestBody EditUserDto editUserDto) {
+    public ResponseEntity<User> updateUser(@RequestBody EditUserDto editUser) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = service.findByOptionalUsername(auth.getName());
-        updateUser(editUserDto, user);
-        return ResponseEntity.ok(service.save(user));
+        return ResponseEntity.ok(updateUser(editUser, service.findByOptionalUsername(auth.getName())));
     }
 
-    private void updateUser(EditUserDto editUser, User user){
-        String currentPassword = user.getPassword();
-        String currentUsername = user.getUsername();
-
-        String editUserPassword = editUser.getPassword();
-        String editUserUsername = editUser.getUsername();
-
-        String newPassword = editUser.getNew_password();
-        String newUsername = editUser.getNew_username();
-
-        if (encoder.matches(editUserPassword, currentPassword) && editUserUsername.equals(currentUsername)) {
-            if (newUsername != null) {
-                user.setUsername(newUsername);
+    private User updateUser(EditUserDto editUser, User user){
+        if (isPasswordAndUsernameValid(editUser, user)) {
+            if (editUser.getNewUsername() != null) {
+                user.setUsername(editUser.getNewUsername());
             }
-            if (newPassword != null) {
-                user.setPassword(encoder.encode(newPassword));
+            if (editUser.getNewPassword() != null) {
+                user.setPassword(encoder.encode(editUser.getNewPassword()));
             }
+            return service.save(user);
+        } else {
+            throw new RuntimeException("Wrong password or username");
         }
     }
+
+    private boolean isPasswordAndUsernameValid(EditUserDto editUser, User user) {
+        return encoder.matches(editUser.getPassword(), user.getPassword()) && editUser.getUsername().equals(user.getUsername());
+    }
+
 
     @ApiOperation("Retrieve all users")
     @GetMapping("/users")
