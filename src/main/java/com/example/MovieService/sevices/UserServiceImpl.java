@@ -1,5 +1,6 @@
 package com.example.MovieService.sevices;
 
+import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserDto;
@@ -75,6 +76,20 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public User save(User user) {
         log.info("Save user with username {} ", user.getUsername());
         return userRepository.save(Objects.requireNonNull(user, "User cannot be null."));
+    }
+
+    @Override
+    public User addMovieToList(User u, Movie m, List<Movie> movies) {
+        boolean exist = movies.stream()
+                .anyMatch(movie -> movie.getId() == m.getId());
+        if (!exist) {
+            log.info("Movie with ID {} added to list for user {}.", m.getId(), u.getUsername());
+            movies.add(m);
+            return userRepository.save(u);
+        } else {
+            log.info("Movie with ID {} already in list for user {}.", m.getId(), u.getUsername());
+            throw new RuntimeException("Movie already in list");
+        }
     }
 
     @Override

@@ -10,7 +10,7 @@ public class UserMapper {
         return new UserDto(
                 user.getUsername(),
                 user.getRoles(),
-                user.getFavoriteMovies().stream().map(UserMoviesMapper::mapToUserMovieDto).collect(Collectors.toList()),
+                user.getWatchLaterMovies().stream().map(UserMoviesMapper::mapToUserMovieDto).collect(Collectors.toList()),
                 user.getFavoriteMovies().stream().map(UserMoviesMapper::mapToUserMovieDto).collect(Collectors.toList()),
                 user.getReviews().stream()
                         .map(UserReviewsMapper::mapToUserReviewsDto)
