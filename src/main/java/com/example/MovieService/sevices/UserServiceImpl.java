@@ -21,25 +21,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class UserServiceImpl implements UserDetailsService, UserService {
-    private final UserRepository userRepository;
+    private final UserRepository repository;
     private final BCryptPasswordEncoder encoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, @Lazy BCryptPasswordEncoder encoder) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserRepository repository, @Lazy BCryptPasswordEncoder encoder) {
+        this.repository = repository;
         this.encoder = encoder;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = repository.findByUsername(username);
         if (user == null) {
             log.info("User is not found.");
             throw new UsernameNotFoundException("User is not found");
@@ -57,37 +56,30 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User findByOptionalUsername(String username) {
-        try {
-            log.info("Retrieved optional user with username {} ", username);
-            return Optional.ofNullable(userRepository.findByUsername(username))
-                    .orElseThrow(() -> new NotFoundException("User not found"));
-        } catch (NotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        log.info("Retrieved optional user with username {} ", username);
+        return Objects.requireNonNull(repository.findByUsername(username));
     }
 
     @Override
     public User findByUsername(String username) {
         log.info("Retrieved user with username {} ", username);
-        return userRepository.findByUsername(username);
+        return repository.findByUsername(username);
     }
 
     @Override
     public User save(User user) {
         log.info("Save user with username {} ", user.getUsername());
-        return userRepository.save(Objects.requireNonNull(user, "User cannot be null."));
+        return repository.save(Objects.requireNonNull(user, "User cannot be null."));
     }
 
     @Override
-    public User addMovieToList(User u, Movie m, List<Movie> movies) {
-        boolean exist = movies.stream()
-                .anyMatch(movie -> movie.getId() == m.getId());
-        if (!exist) {
-            log.info("Movie with ID {} added to list for user {}.", m.getId(), u.getUsername());
-            movies.add(m);
-            return userRepository.save(u);
+    public User addMovieToList(User user, Movie movie, List<Movie> movies) {
+        if (!movies.stream().anyMatch(m -> m.getId() == movie.getId())) {
+            log.info("Movie with ID {} added to list for user {}.", movie.getId(), user.getUsername());
+            movies.add(movie);
+            return repository.save(user);
         } else {
-            log.info("Movie with ID {} already in list for user {}.", m.getId(), u.getUsername());
+            log.info("Movie with ID {} already in list for user {}.", movie.getId(), user.getUsername());
             throw new RuntimeException("Movie already in list");
         }
     }
@@ -105,7 +97,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 user.setPassword(encoder.encode(editUser.getNewPassword()));
             }
             log.info("User updated successfully");
-            return userRepository.save(user);
+            return repository.save(user);
         } else {
             throw new RuntimeException("Wrong password or username");
         }
@@ -119,7 +111,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public List<UserDto> findAllUsers() {
         log.info("Fetching all users");
-        return userRepository.findAll()
+        return repository.findAll()
                 .stream()
                 .map(UserMapper::mapToUserDto)
                 .collect(Collectors.toList());
@@ -129,8 +121,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     public UserDto findUserById(Long id) {
         log.info("Fetching user with ID: " + id);
         try {
-
-            User user = userRepository.findById(id)
+            User user = repository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Not found"));
             return UserMapper.mapToUserDto(user);
         } catch (NotFoundException e) {
