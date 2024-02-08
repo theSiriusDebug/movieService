@@ -32,18 +32,9 @@ public class FavouriteMoviesController {
     @ApiOperation("add movie to favourite list")
     @PostMapping("/favoriteMovies/{movieId}")
     public ResponseEntity<String> addFavoriteMovie(@PathVariable("movieId") long movieId) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userServiceImpl.findByOptionalUsername(authentication.getName());
-
+        User user = userServiceImpl.findByOptionalUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
-
-        List<Movie> favoriteMovies = user.getFavoriteMovies();
-        if (!favoriteMovies.contains(movie)) {
-            favoriteMovies.add(movie);
-            userServiceImpl.save(user);
-            logger.info("Movie with ID {} added to favorites for user {}.", movieId, user.getUsername());
-        }
+        userServiceImpl.addMovieToList(user, movie, user.getFavoriteMovies());
 
         return ResponseEntity.ok("Movie added to favorites");
     }
