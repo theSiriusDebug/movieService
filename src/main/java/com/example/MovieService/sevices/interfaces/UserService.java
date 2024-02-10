@@ -8,7 +8,8 @@ import com.example.MovieService.models.dtos.userDtos.EditUserDto;
 import java.util.List;
 
 public interface UserService {
-    User addMovieToList(User user, Movie movie, List<Movie> movies);
+    void removeFromList(User user, long movieId, List<Movie> movies);
+    User addMovieToList(User user, long movieId, List<Movie> movies);
 
     User updateUser(EditUserDto editUser, User user);
 

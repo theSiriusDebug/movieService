@@ -28,11 +28,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final UserRepository repository;
+    private final MovieServiceImpl movieService;
     private final BCryptPasswordEncoder encoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, @Lazy BCryptPasswordEncoder encoder) {
+    public UserServiceImpl(UserRepository repository, MovieServiceImpl movieService, @Lazy BCryptPasswordEncoder encoder) {
         this.repository = repository;
+        this.movieService = movieService;
         this.encoder = encoder;
     }
 
@@ -66,6 +68,18 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return repository.findByUsername(username);
     }
 
+    public void removeFromList(User user, long movieId, List<Movie> movies) {
+        Movie movie = movieService.findOptionalMovieById(movieId);
+        if (movies.contains(movie)) {
+            movies.remove(movie);
+            log.info("Removed movie with id {}", movieId);
+            repository.save(user);
+        } else {
+            log.info("Movie with ID {} already in list for user {}.", movie.getId(), user.getUsername());
+            throw new RuntimeException("Movie already in list");
+        }
+    }
+
     @Override
     public User save(User user) {
         log.info("Save user with username {} ", user.getUsername());
@@ -73,8 +87,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User addMovieToList(User user, Movie movie, List<Movie> movies) {
-        if (!movies.stream().anyMatch(m -> m.getId() == movie.getId())) {
+    public User addMovieToList(User user, long movieId, List<Movie> movies) {
+        Movie movie = movieService.findOptionalMovieById(movieId);
+        if (!movies.stream().anyMatch(m -> m.getId() == movieId)) {
             log.info("Movie with ID {} added to list for user {}.", movie.getId(), user.getUsername());
             movies.add(movie);
             return repository.save(user);
