@@ -1,6 +1,5 @@
 package com.example.MovieService.controllers.UserControllers;
 
-import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserDto;
 import com.example.MovieService.sevices.UserServiceImpl;
 import com.example.MovieService.utils.mappers.UserMapper;
@@ -15,19 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Api(tags = "UserProfileController API")
 public class UserProfileController {
-    private final UserServiceImpl userService;
+    private final UserServiceImpl service;
 
     @Autowired
-    public UserProfileController(UserServiceImpl userService) {
-        this.userService = userService;
+    public UserProfileController(UserServiceImpl service) {
+        this.service = service;
     }
 
     @ApiOperation("Get user profile")
     @GetMapping("/profile")
     public ResponseEntity<UserDto> getUserProfile() {
-        User currentUser = userService.findByOptionalUsername(
-                SecurityContextHolder.getContext().getAuthentication().getName());
-
-        return ResponseEntity.ok(UserMapper.mapToUserDto(currentUser));
+        return ResponseEntity.ok(UserMapper.mapToUserDto(
+                service.findByOptionalUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
     }
 }

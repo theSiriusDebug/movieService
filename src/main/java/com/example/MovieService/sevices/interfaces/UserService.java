@@ -15,7 +15,7 @@ public interface UserService {
 
     User findByOptionalUsername(String username);
 
-    User findByUsername(String username);
+    boolean userExists(String username);
 
     User save(User user);
 

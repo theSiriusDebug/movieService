@@ -10,7 +10,7 @@ import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -36,38 +36,33 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegistrationDto registrationDto) {
-        try {
-            String username = registrationDto.getUsername();
-            logger.info("Registration attempt for username: {}", username);
-            if (userServiceImpl.findByUsername(username) == null) {
-                logger.info("Username '{}' is available for registration", username);
-                User newUser = new User();
-                newUser.setUsername(username);
-                newUser.setPassword(new BCryptPasswordEncoder().encode(registrationDto.getPassword()));
-                if (registrationDto.getRole() != null && !registrationDto.getRole().isEmpty()) {
-                    Role role = roleServiceImpl.findRoleByName(registrationDto.getRole());
-                    newUser.setRoles(Collections.singleton(role));
-                } else {
-                    Role defaultRole = roleServiceImpl.findRoleByName("ROLE_USER");
-                    newUser.setRoles(Collections.singleton(defaultRole));
-                }
-                userServiceImpl.save(newUser);
-
-                String token = jwtTokenProvider.createToken(newUser.getUsername(), newUser.getRoles());
-
-                Map<Object, Object> response = new HashMap<>();
-                response.put("username", newUser.getUsername());
-                response.put("token", token);
-
-                logger.info("User registered successfully: {}", newUser.getUsername());
-                return ResponseEntity.ok(response);
+        String username = registrationDto.getUsername();
+        logger.info("Registration attempt for username: {}", username);
+        if (userServiceImpl.userExists(username)) {
+            logger.info("Username '{}' is available for registration", username);
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setPassword(new BCryptPasswordEncoder().encode(registrationDto.getPassword()));
+            if (registrationDto.getRole() != null && !registrationDto.getRole().isEmpty()) {
+                Role role = roleServiceImpl.findRoleByName(registrationDto.getRole());
+                newUser.setRoles(Collections.singleton(role));
             } else {
-                logger.warn("Registration attempt failed - Username already exists: {}", username);
-                return ResponseEntity.badRequest().body("Username already exists");
+                Role defaultRole = roleServiceImpl.findRoleByName("ROLE_USER");
+                newUser.setRoles(Collections.singleton(defaultRole));
             }
-        } catch (Exception e) {
-            logger.error("An error occurred during user registration: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            userServiceImpl.save(newUser);
+
+            String token = jwtTokenProvider.createToken(newUser.getUsername(), newUser.getRoles());
+
+            Map<Object, Object> response = new HashMap<>();
+            response.put("username", newUser.getUsername());
+            response.put("token", token);
+
+            logger.info("User registered successfully: {}", newUser.getUsername());
+            return ResponseEntity.ok(response);
+        } else {
+            logger.warn("Registration attempt failed - Username already exists: {}", username);
+            return ResponseEntity.badRequest().body("Username already exists");
         }
     }
 }

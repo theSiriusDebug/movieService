@@ -18,18 +18,17 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class ReviewServiceImpl implements ReviewService {
-    private final ReviewRepository reviewRepository;
+    private final ReviewRepository repository;
 
     @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository) {
-        this.reviewRepository = reviewRepository;
+    public ReviewServiceImpl(ReviewRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<ReviewDto> findAllReviews() {
         log.info("Return all replies");
-        List<Review> reviews = reviewRepository.findAll();
-        return reviews.stream()
+        return repository.findAll().stream()
                 .map(ReviewMapper::mapToReviewDto)
                 .collect(Collectors.toList());
     }
@@ -37,12 +36,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Review findReviewById(long id) {
         try {
-            Review review = reviewRepository.findById(id)
+            log.info("Return review with id {}", id);
+            return repository.findById(id)
                     .orElseThrow(() -> new NotFoundException("Review not found with ID: " + id));
-            log.info("Review found: {}", review.getId());
-            return review;
         } catch (NotFoundException e) {
-            log.info("Review not found with ID: {}", id);
             throw new RuntimeException(e);
         }
     }
@@ -50,12 +47,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewDto findReviewDtoById(long id) {
         try {
-            Review review = reviewRepository.findById(id)
-                    .orElseThrow(() -> new NotFoundException("Review not found with ID: " + id));
-            log.info("Review found: {}", review.getId());
-            return ReviewMapper.mapToReviewDto(review);
+            log.info("Return review with id {}", id);
+            return ReviewMapper.mapToReviewDto(repository.findById(id)
+                    .orElseThrow(() -> new NotFoundException("Review not found with ID: " + id)));
         } catch (NotFoundException e) {
-            log.info("Review not found with ID: {}", id);
             throw new RuntimeException(e);
         }
     }
@@ -63,13 +58,13 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void deleteReview(@Valid Review review) {
         log.info("Deleting review with ID: {}", review.getId());
-        reviewRepository.delete(Objects.requireNonNull(review, "Review cannot be null."));
-        log.info("Review deleted successfully");
+        repository.delete(Objects.requireNonNull(
+                review, "Review cannot be null."));
     }
 
     @Override
-    public void saveReview(@Valid Review review){
-        reviewRepository.save(Objects.requireNonNull(review, "Review cannot be null."));
+    public void saveReview(@Valid Review review) {
+        repository.save(Objects.requireNonNull(review, "Review cannot be null."));
         log.info("Review saved successfully.");
     }
 }

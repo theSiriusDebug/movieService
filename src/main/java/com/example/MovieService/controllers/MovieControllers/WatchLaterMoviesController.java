@@ -13,30 +13,30 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/watchLaterMovies")
 public class WatchLaterMoviesController {
-    private final UserServiceImpl userService;
+    private final UserServiceImpl service;
 
     @Autowired
-    public WatchLaterMoviesController(UserServiceImpl userService) {
-        this.userService = userService;
+    public WatchLaterMoviesController(UserServiceImpl service) {
+        this.service = service;
     }
 
     @ApiOperation("add movie to watch later list")
     @PostMapping("/{movieId}")
     public ResponseEntity<String> addWatchLaterMovie(@PathVariable("movieId") long movieId) {
-        User user = userService.findByOptionalUsername(
+        User user = service.findByOptionalUsername(
                 SecurityContextHolder.getContext().getAuthentication().getName());
 
-        userService.addMovieToList(user, movieId, user.getWatchLaterMovies());
+        service.addMovieToList(user, movieId, user.getWatchLaterMovies());
         return ResponseEntity.ok("Movie added to watch later");
     }
 
     @ApiOperation("remove movie from watch later list")
     @DeleteMapping("/{movieId}")
     public ResponseEntity<String> removeWatchLaterMovie(@PathVariable("movieId") long movieId) {
-        User user = userService.findByOptionalUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        User user = service.findByOptionalUsername(
+                SecurityContextHolder.getContext().getAuthentication().getName());
 
-        userService.removeFromList(user, movieId, user.getWatchLaterMovies());
-
+        service.removeFromList(user, movieId, user.getWatchLaterMovies());
         return ResponseEntity.ok("Movie removed from watch later");
     }
 }

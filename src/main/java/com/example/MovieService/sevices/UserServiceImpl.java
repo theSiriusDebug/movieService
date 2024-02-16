@@ -63,9 +63,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User findByUsername(String username) {
+    public boolean userExists(String username) {
         log.info("Retrieved user with username {} ", username);
-        return repository.findByUsername(username);
+        User user = repository.findByUsername(username);
+        if (user == null) {
+            log.info("User is not found.");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void removeFromList(User user, long movieId, List<Movie> movies) {

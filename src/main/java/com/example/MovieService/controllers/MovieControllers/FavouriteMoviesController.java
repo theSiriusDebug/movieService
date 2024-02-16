@@ -13,30 +13,30 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/favoriteMovies")
 public class FavouriteMoviesController {
-    private final UserServiceImpl userService;
+    private final UserServiceImpl service;
 
     @Autowired
-    public FavouriteMoviesController(UserServiceImpl userService) {
-        this.userService = userService;
+    public FavouriteMoviesController(UserServiceImpl service) {
+        this.service = service;
     }
 
     @ApiOperation("add movie to favourite list")
     @PostMapping("/{movieId}")
     public ResponseEntity<String> addFavoriteMovie(@PathVariable("movieId") long movieId) {
-        User user = userService.findByOptionalUsername(
+        User user = service.findByOptionalUsername(
                 SecurityContextHolder.getContext().getAuthentication().getName());
 
-        userService.addMovieToList(user, movieId, user.getFavoriteMovies());
+        service.addMovieToList(user, movieId, user.getFavoriteMovies());
         return ResponseEntity.ok("Movie added to favorites");
     }
 
     @ApiOperation("remove movie from favourite list")
     @DeleteMapping("/{movieId}")
     public ResponseEntity<String> removeFavoriteMovie(@PathVariable("movieId") long movieId) {
-        User user = userService.findByOptionalUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        User user = service.findByOptionalUsername(
+                SecurityContextHolder.getContext().getAuthentication().getName());
 
-        userService.removeFromList(user, movieId, user.getFavoriteMovies());
-
+        service.removeFromList(user, movieId, user.getFavoriteMovies());
         return ResponseEntity.ok("Movie removed from favorites");
     }
 }
