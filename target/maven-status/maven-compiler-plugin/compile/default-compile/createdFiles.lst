@@ -29,7 +29,6 @@ com/example/MovieService/jwt/JwtAuthorizationFilter.class
 com/example/MovieService/controllers/MovieControllers/FavouriteMoviesController.class
 com/example/MovieService/configurations/CorsConfig.class
 com/example/MovieService/controllers/MovieControllers/MovieController.class
-com/example/MovieService/controllers/UserControllers/UserProfileController.class
 com/example/MovieService/repositories/RoleRepository.class
 com/example/MovieService/sevices/interfaces/ReviewService.class
 com/example/MovieService/configurations/WebSecurityConfig.class

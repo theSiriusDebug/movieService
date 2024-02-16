@@ -4,6 +4,7 @@ import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserDto;
 import com.example.MovieService.models.dtos.userDtos.EditUserDto;
 import com.example.MovieService.sevices.UserServiceImpl;
+import com.example.MovieService.utils.mappers.UserMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,5 +42,12 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDto> get(@PathVariable("id") long id){
         return ResponseEntity.ok(service.findUserById(id));
+    }
+
+    @ApiOperation("Get user profile")
+    @GetMapping("/profile")
+    public ResponseEntity<UserDto> getUserProfile() {
+        return ResponseEntity.ok(UserMapper.mapToUserDto(
+                service.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
     }
 }
