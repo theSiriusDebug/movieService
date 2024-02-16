@@ -25,7 +25,7 @@ public class StreamMovieController {
     @GetMapping("/{id}")
     public ResponseEntity<String> getMovieVideoByMovieId(@PathVariable long id) {
         log.info("Received request to get movie video for movie ID: {}", id);
-        Movie movieById = movieServiceImpl.findOptionalMovieById(id);
+        Movie movieById = movieServiceImpl.findMovieById(id);
         String videoUrl = movieById.getMovieLink();
         log.info("Returning movie video URL: {}", videoUrl);
         return ResponseEntity.ok(videoUrl);
@@ -35,7 +35,7 @@ public class StreamMovieController {
     @GetMapping("/trailer/{id}")
     public ResponseEntity<String> getTrailerByMovieId(@PathVariable long id) {
         log.info("Received request to get trailer for movie ID: {}", id);
-        Movie movieById = movieServiceImpl.findOptionalMovieById(id);
+        Movie movieById = movieServiceImpl.findMovieById(id);
         String trailerUrl = movieById.getTrailerLink();
         log.info("Returning trailer URL: {}", trailerUrl);
         return ResponseEntity.ok(trailerUrl);

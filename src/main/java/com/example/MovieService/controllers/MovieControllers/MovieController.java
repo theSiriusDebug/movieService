@@ -33,7 +33,7 @@ public class MovieController {
     @ApiOperation("Get movie details by movie ID")
     @GetMapping("/{id}")
     public ResponseEntity<MovieDetailsDto> getMovieDetails(@PathVariable("id") Long id) {
-        Movie movie = movieServiceImpl.findOptionalMovieById(id);
+        Movie movie = movieServiceImpl.findMovieById(id);
         return ResponseEntity.ok(MovieDetailsMapper.mapToMovieDetailsDto(movie));
     }
 

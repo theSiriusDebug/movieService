@@ -18,61 +18,44 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class MovieServiceImpl implements MovieService {
-    private final MovieRepository movieRepository;
+    private final MovieRepository repository;
 
     @Autowired
-    public MovieServiceImpl(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
+    public MovieServiceImpl(MovieRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<Movie> findAllMovies(){
         log.info("Return all movies");
-        return movieRepository.findAll();
+        return repository.findAll();
     }
 
     @Override
     public List<MovieDto> findAllMovieDto(Sort sorting) {
         log.info("Retrieving all movies from the database");
-
-        List<Movie> movies = movieRepository.findAll(sorting);
-
-        List<MovieDto> movieDtos = movies.stream()
+        return repository.findAll(sorting).stream()
                 .map(MovieMapper::mapToMovieDto)
                 .collect(Collectors.toList());
-
-        log.info("Found {} movies", movieDtos.size());
-
-        return movieDtos;
     }
 
     @Override
-    public Movie findOptionalMovieById(long id) {
+    public Movie findMovieById(long id) {
         log.info("Searching for movie with ID: {}", id);
-        Movie movie = Objects.requireNonNull(movieRepository.findById(id), "Movie cannot be null");
-
-        log.info("Movie found: {}", movie.getTitle());
-        return movie;
+        return Objects.requireNonNull(repository.findById(id), "Movie cannot be null");
     }
 
     @Override
     public void saveMovie(@Valid Movie movie) {
         log.info("Saving movie: {}", movie.getTitle());
-        movieRepository.save(Objects.requireNonNull(movie, "Movie cannot be null."));
-        log.info("Movie saved successfully: {}", movie.getTitle());
+        repository.save(Objects.requireNonNull(movie, "Movie cannot be null."));
     }
 
     @Override
     public List<MovieDto> findMovieByTitle(String title, Sort sorting) {
         log.info("Searching movies by title containing: {}", title);
-        List<Movie> movies = movieRepository.search(title, sorting);
-
-        List<MovieDto> movieDtos = movies.stream()
+        return repository.search(title, sorting).stream()
                 .map(MovieMapper::mapToMovieDto)
                 .collect(Collectors.toList());
-
-        log.info("Returning {} movie DTOs for title: {}", movieDtos.size(), title);
-
-        return movieDtos;
     }
 }

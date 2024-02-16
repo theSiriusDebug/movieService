@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     public void removeFromList(User user, long movieId, List<Movie> movies) {
-        Movie movie = movieService.findOptionalMovieById(movieId);
+        Movie movie = movieService.findMovieById(movieId);
         if (movies.contains(movie)) {
             movies.remove(movie);
             log.info("Removed movie with id {}", movieId);
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User addMovieToList(User user, long movieId, List<Movie> movies) {
-        Movie movie = movieService.findOptionalMovieById(movieId);
+        Movie movie = movieService.findMovieById(movieId);
         if (!movies.stream().anyMatch(m -> m.getId() == movieId)) {
             log.info("Movie with ID {} added to list for user {}.", movie.getId(), user.getUsername());
             movies.add(movie);

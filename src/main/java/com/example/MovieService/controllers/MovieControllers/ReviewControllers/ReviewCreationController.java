@@ -56,7 +56,7 @@ public class ReviewCreationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userServiceImpl.findByUsername(authentication.getName());
 
-        Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
+        Movie movie = movieServiceImpl.findMovieById(movieId);
 
         Review review = new Review();
         review.setUser(currentUser);
@@ -135,7 +135,7 @@ public class ReviewCreationController {
         reply.setUser(currentUser);
         reply.setParent(reviewServiceImpl.findReviewById(reviewId));
         reply.setReviewText(reviewText);
-        reply.setMovie(movieServiceImpl.findOptionalMovieById(movieId));
+        reply.setMovie(movieServiceImpl.findMovieById(movieId));
 
         reviewServiceImpl.saveReview(reply);
 

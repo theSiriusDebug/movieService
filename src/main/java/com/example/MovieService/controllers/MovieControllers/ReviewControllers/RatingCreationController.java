@@ -34,7 +34,7 @@ public class RatingCreationController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userServiceImpl.findByUsername(authentication.getName());
 
-        Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
+        Movie movie = movieServiceImpl.findMovieById(movieId);
 
         for (Rating existingRating : user.getRating()) {
             if (existingRating.getMovie().getId().equals(movieId)) {

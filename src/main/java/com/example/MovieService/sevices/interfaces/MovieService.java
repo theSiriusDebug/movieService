@@ -11,7 +11,7 @@ public interface MovieService {
 
     List<MovieDto> findAllMovieDto(Sort sorting);
 
-    Movie findOptionalMovieById(long id);
+    Movie findMovieById(long id);
 
     void saveMovie(Movie movie);
 
