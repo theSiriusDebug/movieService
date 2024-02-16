@@ -13,7 +13,7 @@ public interface UserService {
 
     User updateUser(EditUserDto editUser, User user);
 
-    User findByOptionalUsername(String username);
+    User findByUsername(String username);
 
     boolean userExists(String username);
 

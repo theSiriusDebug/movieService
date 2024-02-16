@@ -23,7 +23,7 @@ public class FavouriteMoviesController {
     @ApiOperation("add movie to favourite list")
     @PostMapping("/{movieId}")
     public ResponseEntity<String> addFavoriteMovie(@PathVariable("movieId") long movieId) {
-        User user = service.findByOptionalUsername(
+        User user = service.findByUsername(
                 SecurityContextHolder.getContext().getAuthentication().getName());
 
         service.addMovieToList(user, movieId, user.getFavoriteMovies());
@@ -33,7 +33,7 @@ public class FavouriteMoviesController {
     @ApiOperation("remove movie from favourite list")
     @DeleteMapping("/{movieId}")
     public ResponseEntity<String> removeFavoriteMovie(@PathVariable("movieId") long movieId) {
-        User user = service.findByOptionalUsername(
+        User user = service.findByUsername(
                 SecurityContextHolder.getContext().getAuthentication().getName());
 
         service.removeFromList(user, movieId, user.getFavoriteMovies());

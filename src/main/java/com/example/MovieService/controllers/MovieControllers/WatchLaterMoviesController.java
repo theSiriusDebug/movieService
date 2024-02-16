@@ -23,7 +23,7 @@ public class WatchLaterMoviesController {
     @ApiOperation("add movie to watch later list")
     @PostMapping("/{movieId}")
     public ResponseEntity<String> addWatchLaterMovie(@PathVariable("movieId") long movieId) {
-        User user = service.findByOptionalUsername(
+        User user = service.findByUsername(
                 SecurityContextHolder.getContext().getAuthentication().getName());
 
         service.addMovieToList(user, movieId, user.getWatchLaterMovies());
@@ -33,7 +33,7 @@ public class WatchLaterMoviesController {
     @ApiOperation("remove movie from watch later list")
     @DeleteMapping("/{movieId}")
     public ResponseEntity<String> removeWatchLaterMovie(@PathVariable("movieId") long movieId) {
-        User user = service.findByOptionalUsername(
+        User user = service.findByUsername(
                 SecurityContextHolder.getContext().getAuthentication().getName());
 
         service.removeFromList(user, movieId, user.getWatchLaterMovies());

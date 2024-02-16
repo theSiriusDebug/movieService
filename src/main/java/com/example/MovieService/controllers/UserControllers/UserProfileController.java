@@ -25,6 +25,6 @@ public class UserProfileController {
     @GetMapping("/profile")
     public ResponseEntity<UserDto> getUserProfile() {
         return ResponseEntity.ok(UserMapper.mapToUserDto(
-                service.findByOptionalUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
+                service.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName())));
     }
 }

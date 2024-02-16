@@ -28,7 +28,7 @@ public class UserController {
     @PostMapping("/edit")
     public ResponseEntity<User> updateUser(@RequestBody EditUserDto editUser) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok(service.updateUser(editUser, service.findByOptionalUsername(auth.getName())));
+        return ResponseEntity.ok(service.updateUser(editUser, service.findByUsername(auth.getName())));
     }
 
     @ApiOperation("Retrieve all users")

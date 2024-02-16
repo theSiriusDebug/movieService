@@ -32,7 +32,7 @@ public class RatingCreationController {
     @PostMapping("/create/{movieId}")
     public ResponseEntity<String> createRating(@PathVariable Long movieId, @RequestBody Rating rating) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userServiceImpl.findByOptionalUsername(authentication.getName());
+        User user = userServiceImpl.findByUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
 

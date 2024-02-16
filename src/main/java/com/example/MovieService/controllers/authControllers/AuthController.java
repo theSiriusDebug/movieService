@@ -49,7 +49,7 @@ public class AuthController {
             String username = authRequest.getUsername();
             authenticateUser(username, authRequest.getPassword());
 
-            User user = userServiceImpl.findByOptionalUsername(username);
+            User user = userServiceImpl.findByUsername(username);
             String token = jwtTokenProvider.createToken(username, user.getRoles());
             setTokenCookie(response, token);
 

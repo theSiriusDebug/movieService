@@ -54,7 +54,7 @@ public class ReviewCreationController {
         log.info("Creating review for movie with ID: " + movieId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByUsername(authentication.getName());
 
         Movie movie = movieServiceImpl.findOptionalMovieById(movieId);
 
@@ -79,7 +79,7 @@ public class ReviewCreationController {
 
         // Authorization check
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByUsername(authentication.getName());
         if ((!currentUser.hasRole("ROLE_ADMIN") && !review.getUser().equals(currentUser))) {
             log.error("Unauthorized deletion attempt for review with ID: " + reviewId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to delete this review.");
@@ -109,7 +109,7 @@ public class ReviewCreationController {
 
         // Authorization check
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByUsername(authentication.getName());
         if (!review.getUser().equals(currentUser)) {
             log.error("Unauthorized edit attempt for review with ID: " + reviewId);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized to edit this review.");
@@ -129,7 +129,7 @@ public class ReviewCreationController {
         log.info("Creating review for movie with ID: " + movieId);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = userServiceImpl.findByOptionalUsername(authentication.getName());
+        User currentUser = userServiceImpl.findByUsername(authentication.getName());
 
         Review reply = new Review();
         reply.setUser(currentUser);

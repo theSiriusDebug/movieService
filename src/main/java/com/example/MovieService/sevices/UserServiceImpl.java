@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public User findByOptionalUsername(String username) {
+    public User findByUsername(String username) {
         log.info("Retrieved optional user with username {} ", username);
         return Objects.requireNonNull(repository.findByUsername(username));
     }
