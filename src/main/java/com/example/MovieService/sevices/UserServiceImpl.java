@@ -12,6 +12,7 @@ import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -149,5 +150,18 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         } catch (NotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void addToViewedMovies(long id, Authentication auth){
+        if (!userExists(auth.getName())) {
+            User user = findByUsername(auth.getName());
+            if (!isMovieInList(user.getViewedMovies(), id)) {
+                addMovieToList(user, id, user.getViewedMovies());
+            }
+        }
+    }
+    private boolean isMovieInList(List<Movie> viewedMovies, long id) {
+        return viewedMovies.stream().anyMatch(m -> m.getId().equals(id));
     }
 }

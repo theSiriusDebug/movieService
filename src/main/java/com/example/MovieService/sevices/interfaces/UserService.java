@@ -4,10 +4,12 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.UserDto;
 import com.example.MovieService.models.dtos.userDtos.EditUserDto;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
 public interface UserService {
+    void addToViewedMovies(long id, Authentication auth);
     void removeFromList(User user, long movieId, List<Movie> movies);
     User addMovieToList(User user, long movieId, List<Movie> movies);
 

@@ -40,11 +40,8 @@ public class MovieController {
     @GetMapping("/{id}")
     public ResponseEntity<MovieDetailsDto> getMovieDetails(@PathVariable("id") Long id) {
         Movie movie = service.findMovieById(id);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (!userService.userExists(auth.getName())) {
-            User user = userService.findByUsername(auth.getName());
-            userService.addMovieToList(user, id, user.getViewedMovies());
-        }
+        userService.addToViewedMovies(
+                id, SecurityContextHolder.getContext().getAuthentication());
         return ResponseEntity.ok(MovieDetailsMapper.mapToMovieDetailsDto(movie));
     }
 
