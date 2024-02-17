@@ -53,6 +53,15 @@ public class User {
                     name = "movie_id", referencedColumnName = "id"))
     private List<Movie> watchLaterMovies = new ArrayList<>();
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "viewed_movies",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "movie_id", referencedColumnName = "id"))
+    private List<Movie> viewedMovies = new ArrayList<>();
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();

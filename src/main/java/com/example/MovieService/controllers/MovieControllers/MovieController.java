@@ -1,9 +1,11 @@
 package com.example.MovieService.controllers.MovieControllers;
 
 import com.example.MovieService.models.Movie;
+import com.example.MovieService.models.User;
 import com.example.MovieService.models.dtos.MovieDetailsDto;
 import com.example.MovieService.models.dtos.MovieDto;
 import com.example.MovieService.sevices.MovieServiceImpl;
+import com.example.MovieService.sevices.UserServiceImpl;
 import com.example.MovieService.utils.mappers.MovieDetailsMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -23,17 +27,24 @@ import java.util.*;
 @Api(tags = "MovieController API")
 @CrossOrigin
 public class MovieController {
-    private final MovieServiceImpl movieServiceImpl;
+    private final MovieServiceImpl service;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public MovieController(MovieServiceImpl movieServiceImpl) {
-        this.movieServiceImpl = movieServiceImpl;
+    public MovieController(MovieServiceImpl service, UserServiceImpl userService) {
+        this.service = service;
+        this.userService = userService;
     }
 
     @ApiOperation("Get movie details by movie ID")
     @GetMapping("/{id}")
     public ResponseEntity<MovieDetailsDto> getMovieDetails(@PathVariable("id") Long id) {
-        Movie movie = movieServiceImpl.findMovieById(id);
+        Movie movie = service.findMovieById(id);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!userService.userExists(auth.getName())) {
+            User user = userService.findByUsername(auth.getName());
+            userService.addMovieToList(user, id, user.getViewedMovies());
+        }
         return ResponseEntity.ok(MovieDetailsMapper.mapToMovieDetailsDto(movie));
     }
 
@@ -41,7 +52,7 @@ public class MovieController {
     @GetMapping
     public ResponseEntity<List<MovieDto>> getAllMovies(@RequestParam(required = false, defaultValue = "by date") String sortType) {
         Sort sorting = getSorting(sortType); // Get the sorting order from the request parameter
-        List<MovieDto> movies = movieServiceImpl.findAllMovieDto(sorting);
+        List<MovieDto> movies = service.findAllMovieDto(sorting);
         return ResponseEntity.ok(movies);
     }
 
@@ -72,7 +83,7 @@ public class MovieController {
             @RequestParam(required = false, defaultValue = "by date") String sortType
     ) {
         Sort sorting = getSorting(sortType);
-        List<MovieDto> movies = movieServiceImpl.findMovieByTitle(title, sorting);
+        List<MovieDto> movies = service.findMovieByTitle(title, sorting);
         return ResponseEntity.ok(movies);
     }
 
@@ -94,7 +105,7 @@ public class MovieController {
             @RequestParam(name = "orderBy", defaultValue = "title") String orderBy,
             @RequestParam(name = "order", defaultValue = "asc") String order
     ) {
-        List<Movie> filteredMovies = movieServiceImpl.findAllMovies();
+        List<Movie> filteredMovies = service.findAllMovies();
 
         applyFilters(filteredMovies, yearMin, yearMax, durationMin, durationMax, imdbRatingMin, imdbRatingMax, kinopoiskRatingMin, kinopoiskRatingMax, language, country, genres, director);
         Comparator<Movie> comparator = determineComparator(orderBy, order);

@@ -16,5 +16,6 @@ public class UserDto {
     private Set<Role> roles;
     private List<UserMoviesDto> favoriteMovies;
     private List<UserMoviesDto> watchLaterMovies;
+    private List<UserMoviesDto> viewedMovies;
     private List<UserReviewsDto> reviews;
 }
