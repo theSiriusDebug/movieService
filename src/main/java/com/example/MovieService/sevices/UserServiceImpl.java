@@ -74,6 +74,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
     }
 
+    @Override
     public void removeFromList(User user, long movieId, List<Movie> movies) {
         Movie movie = movieService.findMovieById(movieId);
         if (movies.contains(movie)) {
