@@ -11,7 +11,7 @@ public interface MovieService {
     List<MovieDto> filteredMovies(MovieFilterDTO dto);
     List<Movie> findAllMovies();
 
-    List<MovieDto> findAllMovieDto(Sort sorting);
+    List<MovieDto> findAllMovieDto(String sortType);
 
     Movie findMovieById(long id);
 

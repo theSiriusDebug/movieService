@@ -4,6 +4,7 @@ import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.dtos.MovieDto;
 import com.example.MovieService.models.dtos.movieDtos.MovieFilterDTO;
 import com.example.MovieService.utils.mappers.MovieMapper;
+import com.example.MovieService.utils.sorting.SortingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.query.QueryUtils;
@@ -16,7 +17,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
@@ -78,29 +78,12 @@ public class CustomMovieRepositoryImpl implements CustomMovieRepository{
         query.where(predicates.toArray(new Predicate[0]));
 
         if (filterDto.getSortCriteria() != null) {
-            query.orderBy(QueryUtils.toOrders(getSorting(filterDto.getSortCriteria()), root, builder));
+            query.orderBy(QueryUtils.toOrders(SortingUtil.getSorting(filterDto.getSortCriteria()), root, builder));
         } else {
             query.orderBy(QueryUtils.toOrders(Sort.by(Sort.Direction.DESC,"year"), root, builder));
         }
         return entityManager.createQuery(query).getResultList().stream()
                 .map(MovieMapper::mapToMovieDto)
                 .collect(Collectors.toList());
-    }
-    private Sort getSorting(String sortType) { // Helper method to get the sorting order from the request parameter
-        Map<String, Sort.Order> sortTypes = Map.of(
-                "by_date", Sort.Order.desc("year"),
-                "by_date_reverse", Sort.Order.asc("year"),
-                "by_alphabet", Sort.Order.desc("title"),
-                "by_alphabet_reverse", Sort.Order.asc("title"),
-                "by_rating", Sort.Order.desc("imdbRating"),
-                "by_rating_reverse", Sort.Order.asc("imdbRating"),
-                "by_kinopoisk_rating", Sort.Order.desc("kinopoiskRating"),
-                "by_kinopoisk_rating_reverse", Sort.Order.asc("kinopoiskRating")
-        );
-
-        // Get the sorting order from the request parameter
-        Sort.Order order = sortTypes.getOrDefault(sortType, Sort.Order.desc("year"));
-
-        return Sort.by(order); // Create a Sort object with the specified order
     }
 }

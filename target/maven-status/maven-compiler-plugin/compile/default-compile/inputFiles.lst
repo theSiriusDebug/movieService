@@ -41,6 +41,7 @@
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/mappers/MovieMapper.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/FavouriteMoviesController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/mappers/RoleMapper.java
+/home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/utils/sorting/SortingUtil.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/configurations/CorsConfig.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/controllers/MovieControllers/StreamMovieController.java
 /home/kwd/IdeaProjects/MovieService/src/main/java/com/example/MovieService/sevices/UserServiceImpl.java

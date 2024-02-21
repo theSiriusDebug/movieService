@@ -7,6 +7,7 @@ import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.custom.CustomMovieRepositoryImpl;
 import com.example.MovieService.sevices.interfaces.MovieService;
 import com.example.MovieService.utils.mappers.MovieMapper;
+import com.example.MovieService.utils.sorting.SortingUtil;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieDto> findAllMovieDto(Sort sorting) {
+    public List<MovieDto> findAllMovieDto(String sortType) {
         log.info("Retrieving all movies from the database");
-        return repository.findAll(sorting).stream()
+        return repository.findAll(SortingUtil.getSorting(sortType)).stream()
                 .map(MovieMapper::mapToMovieDto)
                 .collect(Collectors.toList());
     }
