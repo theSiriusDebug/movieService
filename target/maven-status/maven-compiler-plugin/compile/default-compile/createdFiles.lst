@@ -41,13 +41,16 @@ com/example/MovieService/utils/mappers/UserMapper.class
 com/example/MovieService/models/Review.class
 com/example/MovieService/jwt/JwtAuthenticationFilter.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/ReviewCreationController.class
+com/example/MovieService/repositories/custom/CustomMovieRepositoryImpl.class
 com/example/MovieService/sevices/UserServiceImpl.class
+com/example/MovieService/repositories/custom/CustomMovieRepository.class
 com/example/MovieService/controllers/MovieControllers/ReviewControllers/RatingCreationController.class
 com/example/MovieService/models/dtos/userDtos/RoleDto.class
 com/example/MovieService/models/User.class
 com/example/MovieService/sevices/interfaces/MovieService.class
 com/example/MovieService/MovieServiceApplication.class
 com/example/MovieService/repositories/UserRepository.class
+com/example/MovieService/models/dtos/movieDtos/MovieFilterDTO.class
 com/example/MovieService/controllers/MovieControllers/StreamMovieController.class
 com/example/MovieService/utils/mappers/UserReviewsMapper.class
 com/example/MovieService/utils/mappers/ReviewMapper.class
