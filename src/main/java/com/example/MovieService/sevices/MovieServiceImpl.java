@@ -11,11 +11,9 @@ import com.example.MovieService.utils.sorting.SortingUtil;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,18 +29,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> findAllMovies(){
-        log.info("Return all movies");
-        return repository.findAll();
+    public List<MovieDto> getFilteredMovies(MovieFilterDTO options) {
+        return customRepository.findMovies(options);
     }
 
     @Override
-    public List<MovieDto> filteredMovies(MovieFilterDTO dto) {
-        return customRepository.findMovies(dto);
-    }
-
-    @Override
-    public List<MovieDto> findAllMovieDto(String sortType) {
+    public List<MovieDto> getMovies(String sortType) {
         log.info("Retrieving all movies from the database");
         return repository.findAll(SortingUtil.getSorting(sortType)).stream()
                 .map(MovieMapper::mapToMovieDto)
@@ -52,20 +44,12 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie findMovieById(long id) {
         log.info("Searching for movie with ID: {}", id);
-        return Objects.requireNonNull(repository.findById(id), "Movie cannot be null");
+        return repository.findById(id);
     }
 
     @Override
     public void saveMovie(@Valid Movie movie) {
         log.info("Saving movie: {}", movie.getTitle());
-        repository.save(Objects.requireNonNull(movie, "Movie cannot be null."));
-    }
-
-    @Override
-    public List<MovieDto> findMovieByTitle(String title, Sort sorting) {
-        log.info("Searching movies by title containing: {}", title);
-        return repository.search(title, sorting).stream()
-                .map(MovieMapper::mapToMovieDto)
-                .collect(Collectors.toList());
+        repository.save(movie);
     }
 }

@@ -44,12 +44,12 @@ public class MovieController {
     @ApiOperation("Get all movies")
     @GetMapping
     public ResponseEntity<List<MovieDto>> findAll(@RequestParam(required = false, defaultValue = "by_date") String sortType) {
-        return ResponseEntity.ok(service.findAllMovieDto(sortType));
+        return ResponseEntity.ok(service.getMovies(sortType));
     }
 
     @ApiOperation("search movies")
     @GetMapping("/search")
     public ResponseEntity<List<MovieDto>> search(@RequestBody MovieFilterDTO dto) {
-        return ResponseEntity.ok(service.filteredMovies(dto));
+        return ResponseEntity.ok(service.getFilteredMovies(dto));
     }
 }
