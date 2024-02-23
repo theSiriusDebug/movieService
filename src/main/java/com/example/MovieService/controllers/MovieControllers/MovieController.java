@@ -6,7 +6,7 @@ import com.example.MovieService.models.dtos.movieDtos.MovieDto;
 import com.example.MovieService.models.dtos.movieDtos.MovieFilterDTO;
 import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;
-import com.example.MovieService.utils.mappers.MovieDetailsMapper;
+import com.example.MovieService.utils.mappers.movie.MovieDetailsMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +43,8 @@ public class MovieController {
 
     @ApiOperation("Get all movies")
     @GetMapping
-    public ResponseEntity<List<MovieDto>> findAll(@RequestParam(required = false, defaultValue = "by_date") String sortType) {
+    public ResponseEntity<List<MovieDto>> findAll(
+            @RequestParam(required = false, defaultValue = "by_date") String sortType) {
         return ResponseEntity.ok(service.getMovies(sortType));
     }
 

@@ -6,7 +6,7 @@ import com.example.MovieService.models.dtos.movieDtos.MovieFilterDTO;
 import com.example.MovieService.repositories.MovieRepository;
 import com.example.MovieService.repositories.custom.CustomMovieRepositoryImpl;
 import com.example.MovieService.sevices.interfaces.MovieService;
-import com.example.MovieService.utils.mappers.MovieMapper;
+import com.example.MovieService.utils.mappers.movie.MovieMapper;
 import com.example.MovieService.utils.sorting.SortingUtil;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

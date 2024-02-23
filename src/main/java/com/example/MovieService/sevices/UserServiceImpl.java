@@ -7,7 +7,7 @@ import com.example.MovieService.models.dtos.userDtos.UserDto;
 import com.example.MovieService.models.dtos.userDtos.EditUserDto;
 import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.interfaces.UserService;
-import com.example.MovieService.utils.mappers.UserMapper;
+import com.example.MovieService.utils.mappers.user.UserMapper;
 import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

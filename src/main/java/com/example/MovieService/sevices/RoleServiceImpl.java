@@ -4,7 +4,7 @@ import com.example.MovieService.models.Role;
 import com.example.MovieService.models.dtos.userDtos.RoleDto;
 import com.example.MovieService.repositories.RoleRepository;
 import com.example.MovieService.sevices.interfaces.RoleService;
-import com.example.MovieService.utils.mappers.RoleMapper;
+import com.example.MovieService.utils.mappers.user.RoleMapper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.extern.slf4j.Slf4j;

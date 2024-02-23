@@ -3,7 +3,7 @@ package com.example.MovieService.repositories.custom;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.dtos.movieDtos.MovieDto;
 import com.example.MovieService.models.dtos.movieDtos.MovieFilterDTO;
-import com.example.MovieService.utils.mappers.MovieMapper;
+import com.example.MovieService.utils.mappers.movie.MovieMapper;
 import com.example.MovieService.utils.sorting.SortingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
