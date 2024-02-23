@@ -1,7 +1,7 @@
 package com.example.MovieService.sevices.interfaces;
 
 import com.example.MovieService.models.Movie;
-import com.example.MovieService.models.dtos.MovieDto;
+import com.example.MovieService.models.dtos.movieDtos.MovieDto;
 import com.example.MovieService.models.dtos.movieDtos.MovieFilterDTO;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.example.MovieService.repositories.custom;
 
-import com.example.MovieService.models.dtos.MovieDto;
+import com.example.MovieService.models.dtos.movieDtos.MovieDto;
 import com.example.MovieService.models.dtos.movieDtos.MovieFilterDTO;
 import org.springframework.stereotype.Repository;
 

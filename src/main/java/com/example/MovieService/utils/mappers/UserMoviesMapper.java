@@ -1,7 +1,7 @@
 package com.example.MovieService.utils.mappers;
 
 import com.example.MovieService.models.Movie;
-import com.example.MovieService.models.dtos.UserMoviesDto;
+import com.example.MovieService.models.dtos.userDtos.UserMoviesDto;
 
 public class UserMoviesMapper {
     public static UserMoviesDto mapToUserMovieDto(Movie movie){

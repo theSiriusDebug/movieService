@@ -3,7 +3,7 @@ package com.example.MovieService.controllers.authControllers;
 import com.example.MovieService.jwt.JwtTokenProvider;
 import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
-import com.example.MovieService.models.dtos.UserRegistrationDto;
+import com.example.MovieService.models.dtos.userDtos.UserRegistrationDto;
 import com.example.MovieService.sevices.RoleServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;
 import io.swagger.annotations.Api;

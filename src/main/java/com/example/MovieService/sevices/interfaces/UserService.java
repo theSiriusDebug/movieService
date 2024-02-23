@@ -2,7 +2,7 @@ package com.example.MovieService.sevices.interfaces;
 
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.User;
-import com.example.MovieService.models.dtos.UserDto;
+import com.example.MovieService.models.dtos.userDtos.UserDto;
 import com.example.MovieService.models.dtos.userDtos.EditUserDto;
 import org.springframework.security.core.Authentication;
 

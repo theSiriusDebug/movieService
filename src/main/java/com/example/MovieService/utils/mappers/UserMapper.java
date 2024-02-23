@@ -1,7 +1,7 @@
 package com.example.MovieService.utils.mappers;
 
 import com.example.MovieService.models.User;
-import com.example.MovieService.models.dtos.UserDto;
+import com.example.MovieService.models.dtos.userDtos.UserDto;
 
 import java.util.stream.Collectors;
 

@@ -1,7 +1,7 @@
 package com.example.MovieService.sevices;
 
 import com.example.MovieService.models.Review;
-import com.example.MovieService.models.dtos.ReviewDto;
+import com.example.MovieService.models.dtos.reviewDtos.ReviewDto;
 import com.example.MovieService.repositories.ReviewRepository;
 import com.example.MovieService.sevices.interfaces.ReviewService;
 import com.example.MovieService.utils.mappers.ReviewMapper;

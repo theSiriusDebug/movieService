@@ -3,7 +3,7 @@ package com.example.MovieService.controllers.MovieControllers.ReviewControllers;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Review;
 import com.example.MovieService.models.User;
-import com.example.MovieService.models.dtos.ReviewDto;
+import com.example.MovieService.models.dtos.reviewDtos.ReviewDto;
 import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.ReviewServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;

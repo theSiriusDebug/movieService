@@ -1,7 +1,7 @@
 package com.example.MovieService.sevices.interfaces;
 
 import com.example.MovieService.models.Review;
-import com.example.MovieService.models.dtos.ReviewDto;
+import com.example.MovieService.models.dtos.reviewDtos.ReviewDto;
 
 import java.util.List;
 

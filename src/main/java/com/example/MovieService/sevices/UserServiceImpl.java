@@ -3,7 +3,7 @@ package com.example.MovieService.sevices;
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Role;
 import com.example.MovieService.models.User;
-import com.example.MovieService.models.dtos.UserDto;
+import com.example.MovieService.models.dtos.userDtos.UserDto;
 import com.example.MovieService.models.dtos.userDtos.EditUserDto;
 import com.example.MovieService.repositories.UserRepository;
 import com.example.MovieService.sevices.interfaces.UserService;

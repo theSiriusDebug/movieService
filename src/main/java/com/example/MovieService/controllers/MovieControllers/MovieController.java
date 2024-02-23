@@ -1,8 +1,8 @@
 package com.example.MovieService.controllers.MovieControllers;
 
 import com.example.MovieService.models.Movie;
-import com.example.MovieService.models.dtos.MovieDetailsDto;
-import com.example.MovieService.models.dtos.MovieDto;
+import com.example.MovieService.models.dtos.movieDtos.MovieDetailsDto;
+import com.example.MovieService.models.dtos.movieDtos.MovieDto;
 import com.example.MovieService.models.dtos.movieDtos.MovieFilterDTO;
 import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;

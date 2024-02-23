@@ -1,7 +1,7 @@
 package com.example.MovieService.utils.mappers;
 
 import com.example.MovieService.models.Review;
-import com.example.MovieService.models.dtos.ReviewDto;
+import com.example.MovieService.models.dtos.reviewDtos.ReviewDto;
 import jakarta.validation.Valid;
 
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
 package com.example.MovieService.controllers.UserControllers;
 
 import com.example.MovieService.models.User;
-import com.example.MovieService.models.dtos.UserDto;
+import com.example.MovieService.models.dtos.userDtos.UserDto;
 import com.example.MovieService.models.dtos.userDtos.EditUserDto;
 import com.example.MovieService.sevices.UserServiceImpl;
 import com.example.MovieService.utils.mappers.UserMapper;

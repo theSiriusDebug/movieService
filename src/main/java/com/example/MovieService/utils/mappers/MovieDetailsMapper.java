@@ -1,7 +1,7 @@
 package com.example.MovieService.utils.mappers;
 
 import com.example.MovieService.models.Movie;
-import com.example.MovieService.models.dtos.MovieDetailsDto;
+import com.example.MovieService.models.dtos.movieDtos.MovieDetailsDto;
 
 import java.util.stream.Collectors;
 

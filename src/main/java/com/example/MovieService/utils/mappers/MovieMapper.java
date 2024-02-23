@@ -2,7 +2,7 @@ package com.example.MovieService.utils.mappers;
 
 import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.Rating;
-import com.example.MovieService.models.dtos.MovieDto;
+import com.example.MovieService.models.dtos.movieDtos.MovieDto;
 import jakarta.validation.Valid;
 
 import java.util.List;
