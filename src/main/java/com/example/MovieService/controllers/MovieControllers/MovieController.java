@@ -1,12 +1,10 @@
 package com.example.MovieService.controllers.MovieControllers;
 
-import com.example.MovieService.models.Movie;
 import com.example.MovieService.models.dtos.movieDtos.MovieDetailsDto;
 import com.example.MovieService.models.dtos.movieDtos.MovieDto;
 import com.example.MovieService.models.dtos.movieDtos.MovieFilterDTO;
 import com.example.MovieService.sevices.MovieServiceImpl;
 import com.example.MovieService.sevices.UserServiceImpl;
-import com.example.MovieService.utils.mappers.movie.MovieDetailsMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -35,10 +33,9 @@ public class MovieController {
     @ApiOperation("Get movie details by movie ID")
     @GetMapping("/{id}")
     public ResponseEntity<MovieDetailsDto> getMovieDetails(@PathVariable("id") Long id) {
-        Movie movie = service.findMovieById(id);
         userService.addToViewedMovies(
                 id, SecurityContextHolder.getContext().getAuthentication());
-        return ResponseEntity.ok(MovieDetailsMapper.mapToMovieDetailsDto(movie));
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @ApiOperation("Get all movies")
